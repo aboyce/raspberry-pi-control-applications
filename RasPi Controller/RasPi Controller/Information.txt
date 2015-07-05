@@ -6,3 +6,4 @@ Label = lb
 Textbox = tbx
 Button = btn
 Password Box = pw
+List box = lbx

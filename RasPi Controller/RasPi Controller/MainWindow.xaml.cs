@@ -41,6 +41,10 @@ namespace RasPi_Controller
             {
                 MessageBox.Show("Loaded in from configuration", "Loaded", MessageBoxButton.OK);
             }
+
+            lbxRaspberryPis.ItemsSource = _model.RaspberryPis;
+            lbxScripts.ItemsSource = _model.Scripts;
+            
         }
 
         private void btnSend_Click(object sender, RoutedEventArgs e)

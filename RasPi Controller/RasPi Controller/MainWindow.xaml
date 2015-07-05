@@ -3,14 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="RasPi Controller" Height="423.304" Width="771.755">
     <Grid>
-        <Label x:Name="lbIPAddress" Content="IP Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="91,62,0,0"/>
-        <TextBox x:Name="tbxIPAddress" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="IP Address" VerticalAlignment="Top" Width="120" Margin="91,88,0,0"/>
-        <Label x:Name="lbUsername" Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="91,183,0,0"/>
-        <TextBox x:Name="tbxUsername" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="120" Margin="91,209,0,0"/>
-        <Label x:Name="lbPassword" Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="91,258,0,0"/>
-        <PasswordBox x:Name="pwPassword" HorizontalAlignment="Left" Margin="91,284,0,0" VerticalAlignment="Top" Width="117" Height="23"/>
+        <Label x:Name="lbIPAddress" Content="IP Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="471,57,0,0"/>
+        <TextBox x:Name="tbxIPAddress" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="IP Address" VerticalAlignment="Top" Width="120" Margin="471,83,0,0"/>
+        <Label x:Name="lbUsername" Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="471,113,0,0"/>
+        <TextBox x:Name="tbxUsername" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="120" Margin="471,139,0,0"/>
+        <Label x:Name="lbPassword" Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="471,188,0,0"/>
+        <PasswordBox x:Name="pwPassword" HorizontalAlignment="Left" Margin="471,214,0,0" VerticalAlignment="Top" Width="117" Height="23"/>
         <Button x:Name="btnSend" Content="Send" HorizontalAlignment="Left" Margin="268,319,0,0" VerticalAlignment="Top" Width="54" Height="37" Click="btnSend_Click"/>
         <Button x:Name="btnLoad" Content="Load" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="47" Height="22" Click="btnLoad_Click"/>
+        <ListBox x:Name="lbxRaspberryPis" HorizontalAlignment="Left" Height="47" Margin="43,84,0,0" VerticalAlignment="Top" Width="365"/>
+        <Label x:Name="lbRaspberryPis" Content="Raspberry Pis" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="43,53,0,0"/>
+        <ListBox x:Name="lbxScripts" HorizontalAlignment="Left" Height="47" Margin="43,172,0,0" VerticalAlignment="Top" Width="365"/>
+        <Label x:Name="lbScripts" Content="Scripts" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="43,141,0,0"/>
 
     </Grid>
 </Window>
