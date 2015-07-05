@@ -12,6 +12,9 @@
     <OutputPath>.</OutputPath>
     <Name>RasPi Scripts</Name>
     <RootNamespace>RasPi Scripts</RootNamespace>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>url 34 "154 1C 7F C6"</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
