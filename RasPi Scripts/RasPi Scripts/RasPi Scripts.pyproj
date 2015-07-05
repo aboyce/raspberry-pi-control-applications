@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>22dad9fe-3960-4e0f-ad6d-9670d611506b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>RasPi_Scripts.py</StartupFile>
+    <StartupFile>DoorManagement.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DoorManagement.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="RasPi_Scripts.py" />
   </ItemGroup>
   <PropertyGroup>
