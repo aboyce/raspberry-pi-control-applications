@@ -3,7 +3,7 @@ using Renci.SshNet;
 
 namespace RasPi_Controller
 {
-    static class SSHController
+    static class SshController
     {
         public static string SendCommand(string address, string username, string password, string scriptName, string scriptArguments)
         {
