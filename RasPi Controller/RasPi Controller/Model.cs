@@ -35,9 +35,10 @@ namespace RasPi_Controller
                     {
                         if (raspberryPi.Attributes == null) continue;
                         string id = raspberryPi.Attributes.GetNamedItem("id").Value;
-                        string name = raspberryPi.Attributes.GetNamedItem("name").Value;
+                        string networkName = raspberryPi.Attributes.GetNamedItem("networkName").Value;
                         string ipAddress = raspberryPi.Attributes.GetNamedItem("ipAddress").Value;
-                        RaspberryPis.Add(new RaspberryPi {Id = id, Name = name, IpAddress = ipAddress});
+                        string username = raspberryPi.Attributes.GetNamedItem("username").Value;
+                        RaspberryPis.Add(new RaspberryPi {Id = id, NetworkName = networkName, IpAddress = ipAddress, Username = username});
                     }
 
                 XmlNode scriptsNode = doc.SelectSingleNode("/Configuration/Scripts");
@@ -47,7 +48,9 @@ namespace RasPi_Controller
                         if (script.Attributes == null) continue;
                         string id = script.Attributes.GetNamedItem("id").Value;
                         string name = script.Attributes.GetNamedItem("name").Value;
-                        Scripts.Add(new Script {Id = id, Name = name});
+                        string description = script.Attributes.GetNamedItem("description").Value;
+                        string argumentFormat = script.Attributes.GetNamedItem("argumentFormat").Value;
+                        Scripts.Add(new Script {Id = id, Name = name, Description = description, ArgumentFormat = argumentFormat});
                     }
             }
             catch (Exception e)

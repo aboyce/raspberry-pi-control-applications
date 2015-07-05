@@ -3,18 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="RasPi Controller" Height="423.304" Width="771.755">
     <Grid>
-        <Label x:Name="LbIpAddress" Content="IP Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="471,57,0,0"/>
-        <TextBox x:Name="TbxIpAddress" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="IP Address" VerticalAlignment="Top" Width="120" Margin="471,83,0,0"/>
-        <Label x:Name="LbUsername" Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="471,113,0,0"/>
-        <TextBox x:Name="TbxUsername" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="120" Margin="471,139,0,0"/>
-        <Label x:Name="LbPassword" Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="471,188,0,0"/>
-        <PasswordBox x:Name="PwPassword" HorizontalAlignment="Left" Margin="471,214,0,0" VerticalAlignment="Top" Width="117" Height="23"/>
-        <Button x:Name="BtnSend" Content="Send" HorizontalAlignment="Left" Margin="268,319,0,0" VerticalAlignment="Top" Width="54" Height="37" Click="btnSend_Click"/>
-        <Button x:Name="BtnLoad" Content="Load" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="47" Height="22" Click="btnLoad_Click"/>
-        <ListBox x:Name="LbxRaspberryPis" HorizontalAlignment="Left" Height="47" Margin="43,84,0,0" VerticalAlignment="Top" Width="365"/>
-        <Label x:Name="LbRaspberryPis" Content="Raspberry Pis" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="43,53,0,0"/>
-        <ListBox x:Name="LbxScripts" HorizontalAlignment="Left" Height="47" Margin="43,172,0,0" VerticalAlignment="Top" Width="365"/>
-        <Label x:Name="LbScripts" Content="Scripts" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="43,141,0,0"/>
+        <Label x:Name="LbRasPiIpAddress" Content="IP Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="430,84,0,0" IsEnabled="False"/>
+        <TextBox x:Name="TbxRasPiIpAddress" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="430,110,0,0" IsEnabled="False"/>
+        <Label x:Name="LbRasPiUsername" Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="430,138,0,0" IsEnabled="False"/>
+        <TextBox x:Name="TbxRasPiUsername" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="430,164,0,0" IsEnabled="False"/>
+        <Label x:Name="LbRasPiPassword" Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="430,192,0,0" IsEnabled="False"/>
+        <PasswordBox x:Name="PwPasPiPassword" HorizontalAlignment="Left" Margin="430,218,0,0" VerticalAlignment="Top" Width="120" Height="23" IsEnabled="False"/>
+        <Button x:Name="BtnSend" Content="Send" HorizontalAlignment="Left" Margin="268,319,0,0" VerticalAlignment="Top" Width="54" Height="37" Click="BtnSend_Click" IsEnabled="False"/>
+        <Button x:Name="BtnLoadConfig" Content="Load Config" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="112" Height="22" Click="BtnLoadConfig_Click" Background="#FF1EE200" BorderThickness="1,1,2,2"/>
+        <ListBox x:Name="LbxRasPis" HorizontalAlignment="Left" Height="47" Margin="12,87,0,0" VerticalAlignment="Top" Width="365" SelectionChanged="LbxRasPis_SelectionChanged" IsEnabled="False"/>
+        <Label x:Name="LbRasPis" Content="Raspberry Pis" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,56,0,0" IsEnabled="False"/>
+        <ListBox x:Name="LbxScripts" HorizontalAlignment="Left" Height="47" Margin="12,175,0,0" VerticalAlignment="Top" Width="365" SelectionChanged="LbxScripts_SelectionChanged" IsEnabled="False"/>
+        <Label x:Name="LbScripts" Content="Scripts" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,144,0,0" IsEnabled="False"/>
+        <Label x:Name="LbRasPiHeader" Content="Raspberry Pi" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="430,6,0,0" FontWeight="Bold" IsEnabled="False"/>
+        <Label x:Name="LbRasPiNetworkName" Content="Network Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="430,30,0,0" IsEnabled="False"/>
+        <TextBox x:Name="TbxRasPiNetworkName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="430,56,0,0" IsEnabled="False"/>
+        <Label x:Name="LbScriptArguments" Content="Arguments" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="594,84,0,0" IsEnabled="False"/>
+        <TextBox x:Name="TbxScriptArguments" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="594,110,0,0" IsEnabled="False"/>
+        <Label x:Name="LbScriptHeader" Content="Raspberry Pi" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="594,6,0,0" FontWeight="Bold" IsEnabled="False"/>
+        <Label x:Name="LbScriptName" Content="Script Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="594,30,0,0" IsEnabled="False"/>
+        <TextBox x:Name="TbxScriptName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="594,56,0,0" IsEnabled="False"/>
+        <Label x:Name="LbScriptDescription" Content="Script Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="594,138,0,0" IsEnabled="False"/>
+        <TextBox x:Name="TbxScriptDescription" HorizontalAlignment="Left" Height="104" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="594,164,0,0" IsEnabled="False"/>
+        <Label x:Name="LbScriptArgumentFormat" Content="Arguments Format" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,242,0,0" IsEnabled="False" Width="110"/>
+        <TextBox x:Name="TbxScriptArgumentFormat" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Margin="12,268,0,0" IsEnabled="False"/>
 
     </Grid>
 </Window>
