@@ -46,33 +46,61 @@ namespace RasPi_Controller
 
             LbxRasPis.ItemsSource = _model.RaspberryPis;
             LbxScripts.ItemsSource = _model.Scripts;
-            
+
         }
 
         private void BtnSend_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: Get everything validated and then send command.
+        }
+
+        private void BtnTestNetworkName_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Repeat for BtnTestIpAddress_Click.
+        }
+
+        private void BtnTestIpAddress_Click(object sender, RoutedEventArgs e)
+        {
+            string pingResult = _logic.TryToPing(new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd).Text);
+
+            if (pingResult == null)
+            {
+                // TODO: Work out how to change the text colour, this doesn't seem to be working.
+                TbxRasPiIpAddress.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.Green);
+                MessageBox.Show("Success");
+            }
+            else
+            {
+                TbxRasPiIpAddress.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
+                MessageBox.Show(pingResult);
+            }
 
 
-
-            //string returnval = SSHController.SendCommand("192.168.1.93", "remote", "RCoolingSystem", "sudo python PowerManager.py", "S R");
         }
 
         private void LbxRasPis_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LbxRasPis.SelectedItem == null) return;
             RaspberryPi rasPi = (RaspberryPi)LbxRasPis.SelectedItem;
-            TbxRasPiNetworkName.Text = rasPi.NetworkName;
-            TbxRasPiIpAddress.Text = rasPi.IpAddress;
+            TbxRasPiNetworkName.Document.Blocks.Clear();
+            TbxRasPiNetworkName.Document.Blocks.Add(new Paragraph(new Run(rasPi.NetworkName)));
+            TbxRasPiIpAddress.Document.Blocks.Clear();
+            TbxRasPiIpAddress.Document.Blocks.Add(new Paragraph(new Run(rasPi.IpAddress)));
             TbxRasPiUsername.Text = rasPi.Username;
         }
 
         private void LbxScripts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LbxScripts.SelectedItem == null) return;
-            Script script = (Script) LbxScripts.SelectedItem;
+            Script script = (Script)LbxScripts.SelectedItem;
             TbxScriptName.Text = script.Name;
             TbxScriptDescription.Text = script.Description;
             TbxScriptArgumentFormat.Text = script.ArgumentFormat;
+        }
+
+        private void TbxRasPiIpAddress_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //TbxRasPiIpAddress.Selection.ApplyPropertyValue(RichTextBox.ForegroundProperty, Brushes.Black);
         }
 
         private void EnableAll()
@@ -103,8 +131,8 @@ namespace RasPi_Controller
             TbxScriptArgumentFormat.IsEnabled = IsEnabled;
 
             BtnSend.IsEnabled = IsEnabled;
+            BtnTestIpAddress.IsEnabled = IsEnabled;
+            BtnTestNetworkName.IsEnabled = IsEnabled;
         }
-
-
     }
 }
