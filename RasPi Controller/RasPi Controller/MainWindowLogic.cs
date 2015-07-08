@@ -48,12 +48,13 @@ namespace RasPi_Controller
 
             if (!IPAddress.TryParse(toCheck, out ipAddress)) // Try to parse the string into an IP Address.
             {
-                // TODO: if it cannot resolve it, it seems to crash...
                 // If that fails, it may be a hostname, try to resolve it into an IP Address (seems to throw a lot of exceptions when it doesn't like something).
 
                 IPHostEntry ipHost;
 
-                try {
+                // TODO: if it cannot resolve it, it seems to crash... The Try-Catch works for now, but would be nice to relay the actual error to the user.
+                try
+                {
                     ipHost = Dns.GetHostEntry(toCheck);
                 }
                 catch (Exception e)
@@ -88,7 +89,21 @@ namespace RasPi_Controller
                 return "Invalid IP Address/Hostname";
 
             Ping ping = new Ping();
-            PingReply reply = ping.Send(ipAddress);
+            PingReply reply = null;
+
+            try
+            {
+                reply = ping.Send(ipAddress);
+            }
+            catch (PingException pe)
+            {
+                return string.Format("Could not ping {0}, {1}", toPing, pe.Message);
+            }
+            catch (Exception e)
+            {
+                return string.Format("Could not ping {0}, {1}", toPing, e.Message);
+            }
+
             if (reply != null && reply.Status == IPStatus.Success)
             {
                 //string message = reply.Status.ToString();

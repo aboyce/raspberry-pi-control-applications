@@ -56,7 +56,18 @@ namespace RasPi_Controller
 
         private void BtnTestNetworkName_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Repeat for BtnTestIpAddress_Click.
+            string pingResult = _logic.TryToPing(new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd).Text);
+
+            if (pingResult == null)
+            {
+                // TODO: Make the text green
+                MessageBox.Show("Success");
+            }
+            else
+            {
+                // TODO: Make the text red
+                MessageBox.Show(pingResult, "Error");
+            }
         }
 
         private void BtnTestIpAddress_Click(object sender, RoutedEventArgs e)
@@ -65,14 +76,14 @@ namespace RasPi_Controller
 
             if (pingResult == null)
             {
-                // TODO: Work out how to change the text colour, this doesn't seem to be working.
-                TbxRasPiIpAddress.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.Green);
+                // TODO: Make the text green
                 MessageBox.Show("Success");
+                TbxRasPiIpAddress.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.Green);
             }
             else
             {
                 TbxRasPiIpAddress.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
-                MessageBox.Show(pingResult);
+                MessageBox.Show(pingResult, "Error");
             }
 
 
