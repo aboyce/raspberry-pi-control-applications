@@ -4,7 +4,7 @@
         Title="RasPi Controller" Height="423.304" Width="771.755">
     <Grid>
         <Label x:Name="LbRasPiIpAddress" Content="IP Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,84,0,0" IsEnabled="False"/>
-        <RichTextBox x:Name="TbxRasPiIpAddress" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="464,110,0,0" IsEnabled="False" TextChanged="TbxRasPiIpAddress_TextChanged"/>
+        <RichTextBox x:Name="TbxRasPiIpAddress" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="464,110,0,0" IsEnabled="False" KeyDown="TbxRasPiIpAddress_KeyDown"/>
         <Label x:Name="LbRasPiUsername" Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,138,0,0" IsEnabled="False"/>
         <TextBox x:Name="TbxRasPiUsername" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="464,164,0,0" IsEnabled="False"/>
         <Label x:Name="LbRasPiPassword" Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,192,0,0" IsEnabled="False"/>
@@ -17,7 +17,7 @@
         <Label x:Name="LbScripts" Content="Scripts" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,144,0,0" IsEnabled="False"/>
         <Label x:Name="LbRasPiHeader" Content="Raspberry Pi" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,6,0,0" FontWeight="Bold" IsEnabled="False"/>
         <Label x:Name="LbRasPiNetworkName" Content="Network Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,30,0,0" IsEnabled="False"/>
-        <RichTextBox x:Name="TbxRasPiNetworkName" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="464,56,0,0" IsEnabled="False"/>
+        <RichTextBox x:Name="TbxRasPiNetworkName" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="464,56,0,0" IsEnabled="False" KeyDown="TbxRasPiNetworkName_KeyDown"/>
         <Label x:Name="LbScriptArguments" Content="Arguments" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,84,0,0" IsEnabled="False"/>
         <TextBox x:Name="TbxScriptArguments" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,110,0,0" IsEnabled="False"/>
         <Label x:Name="LbScriptHeader" Content="Raspberry Pi" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,6,0,0" FontWeight="Bold" IsEnabled="False"/>

@@ -56,37 +56,46 @@ namespace RasPi_Controller
 
         private void BtnTestNetworkName_Click(object sender, RoutedEventArgs e)
         {
-            string pingResult = _logic.TryToPing(new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd).Text);
+            TextRange content = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
+            string pingResult = _logic.TryToPing(content.Text);
 
             if (pingResult == null)
             {
-                // TODO: Make the text green
-                MessageBox.Show("Success");
+                content.ApplyPropertyValue(ForegroundProperty, Brushes.Green);
             }
             else
             {
-                // TODO: Make the text red
+                content.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
                 MessageBox.Show(pingResult, "Error");
             }
         }
 
+        private void TbxRasPiNetworkName_KeyDown(object sender, KeyEventArgs e)
+        {
+            TextRange content = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
+            content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
+        }
+
         private void BtnTestIpAddress_Click(object sender, RoutedEventArgs e)
         {
-            string pingResult = _logic.TryToPing(new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd).Text);
+            TextRange content = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
+            string pingResult = _logic.TryToPing(content.Text);
 
             if (pingResult == null)
             {
-                // TODO: Make the text green
-                MessageBox.Show("Success");
-                TbxRasPiIpAddress.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.Green);
+                content.ApplyPropertyValue(ForegroundProperty, Brushes.Green);
             }
             else
             {
-                TbxRasPiIpAddress.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
+                content.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
                 MessageBox.Show(pingResult, "Error");
             }
+        }
 
-
+        private void TbxRasPiIpAddress_KeyDown(object sender, KeyEventArgs e)
+        {
+            TextRange content = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
+            content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
         }
 
         private void LbxRasPis_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -107,11 +116,6 @@ namespace RasPi_Controller
             TbxScriptName.Text = script.Name;
             TbxScriptDescription.Text = script.Description;
             TbxScriptArgumentFormat.Text = script.ArgumentFormat;
-        }
-
-        private void TbxRasPiIpAddress_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //TbxRasPiIpAddress.Selection.ApplyPropertyValue(RichTextBox.ForegroundProperty, Brushes.Black);
         }
 
         private void EnableAll()
