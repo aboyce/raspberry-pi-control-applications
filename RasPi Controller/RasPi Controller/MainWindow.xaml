@@ -25,10 +25,11 @@
         <TextBox x:Name="TbxScriptName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="623,56,0,0" IsEnabled="False"/>
         <Label x:Name="LbScriptDescription" Content="Script Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,138,0,0" IsEnabled="False"/>
         <TextBox x:Name="TbxScriptDescription" HorizontalAlignment="Left" Height="104" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="623,164,0,0" IsEnabled="False"/>
-        <Label x:Name="LbScriptArgumentFormat" Content="Arguments Format" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,242,0,0" IsEnabled="False" Width="110"/>
-        <TextBox x:Name="TbxScriptArgumentFormat" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Margin="12,268,0,0" IsEnabled="False"/>
-        <Button x:Name="BtnTestNetworkName" Content="Test" HorizontalAlignment="Left" Margin="413,56,0,0" VerticalAlignment="Top" Width="32" Height="23" Click="BtnTestNetworkName_Click" IsEnabled="False"/>
-        <Button x:Name="BtnTestIpAddress" Content="Test" HorizontalAlignment="Left" Margin="413,110,0,0" VerticalAlignment="Top" Width="32" Height="23" Click="BtnTestIpAddress_Click" IsEnabled="False"/>
+        <Label x:Name="LbScriptArgumentFormat" Content="Arguments Format" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,226,0,0" IsEnabled="False" Width="110" FontStyle="Italic"/>
+        <TextBox x:Name="TbxScriptArgumentFormat" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Margin="12,252,0,0" IsEnabled="False" FontStyle="Italic"/>
+        <Button x:Name="BtnTestNetworkName" Content="Test" HorizontalAlignment="Left" Margin="432,56,0,0" VerticalAlignment="Top" Width="32" Height="23" Click="BtnTestNetworkName_Click" IsEnabled="False"/>
+        <Button x:Name="BtnTestIpAddress" Content="Test" HorizontalAlignment="Left" Margin="432,110,0,0" VerticalAlignment="Top" Width="32" Height="23" Click="BtnTestIpAddress_Click" IsEnabled="False"/>
+        <Button x:Name="BtnHelp" Content="?" HorizontalAlignment="Left" Margin="127,10,0,0" VerticalAlignment="Top" Width="19" Height="22" Background="#FFF5DDA8" Click="BtnHelp_Click"/>
 
     </Grid>
 </Window>

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xaml;
 
 namespace RasPi_Controller
 {
@@ -52,6 +53,12 @@ namespace RasPi_Controller
         private void BtnSend_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Get everything validated and then send command.
+
+            // TODO: Check network name and ip address, if possible pick ip address.
+            // TODO: Check username is valid.
+            // TODO: See if passwords are required, if so check this, if not it should be fine.
+            // TODO: Check the script name is valid.
+            // TODO: Return the result.
         }
 
         private void BtnTestNetworkName_Click(object sender, RoutedEventArgs e)
@@ -148,6 +155,21 @@ namespace RasPi_Controller
             BtnSend.IsEnabled = IsEnabled;
             BtnTestIpAddress.IsEnabled = IsEnabled;
             BtnTestNetworkName.IsEnabled = IsEnabled;
+        }
+
+        private void BtnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(string.Format("This application is indented to send SSH commands to a remote location. {0}{0}" +
+                                          "The minimal requirements are; {0}" +
+                                          " - Network Name or IP Address {0}" +
+                                          " - Username/Password and Script Name/SSH Command. {0}{0}" +
+                                          "The 'Test' buttons will ping the relevant field, and return either green or red with error. {0}{0}" +
+                                          "The arguments can be left blank, but if present, will be added to the end of the script/command. {0}{0}" +
+                                          "'Arguments Format' and 'Script Description' are both just for information but may be useful to other users. {0}{0}" +
+                                          "You can store both Raspberry Pi (remote machine) and Script information in the XML file that is referenced in the .config file, this is to save retyping the same data. {0}" +
+                                          "[Ensure that the XML file follows the examples formatting, and is valid XML] {0}{0}" +
+                                          "Any queries contact via https://github.com/aboyce"
+                                          , Environment.NewLine), "Help", MessageBoxButton.OK);
         }
     }
 }
