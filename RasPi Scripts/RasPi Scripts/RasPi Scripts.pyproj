@@ -29,13 +29,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RasPi_Scripts.py" />
-    <Compile Include="Relay Scripts\RelayTestStepThrough.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Relay\StepThroughTest.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Door Management\" />
-    <Folder Include="Relay Scripts\" />
+    <Folder Include="Relay\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
