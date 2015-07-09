@@ -3,14 +3,22 @@ import time
 
 SLEEP_TIME = 0.5
 
+RELAY_ONE = 14
+RELAY_TWO = 15
+RELAY_THREE = 18
+RELAY_FOUR = 23
+RELAY_FIVE = 24
+RELAY_SIX = 25
+RELAY_SEVEN = 8
+RELAY_EIGHT = 7
+
 GPIO.setmode(GPIO.BCM)
 
-pinList = [14, 15, 18, 23, 24, 25, 8, 7]
+pinList = [RELAY_ONE, RELAY_TWO, RELAY_THREE, RELAY_FOUR, RELAY_FIVE, RELAY_SIX, RELAY_SEVEN, RELAY_EIGHT]
 
 for p in pinList:
     GPIO.setup(p, GPIO.OUT)
     GPIO.output(p, GPIO.HIGH)
-
 
 for p in pinList:
     GPIO.output(p, GPIO.LOW)
