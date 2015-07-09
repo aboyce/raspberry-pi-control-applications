@@ -126,10 +126,6 @@ def open_door():
 
     GPIO.setmode(GPIO.BCM)
 
-
-
-
-
     GPIO.cleanup()
 
 
