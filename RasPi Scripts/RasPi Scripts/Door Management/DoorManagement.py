@@ -11,12 +11,25 @@ import sys
 import time
 import requests
 
-VERSION_NUMBER = '0.1'
-URL_TESTING = 'http://add.url.here'
+# DoorManagement.py version
+VERSION_NUMBER = '0.2'
 
-# GPIO Ports
-RELAY_ONE = 1
-RELAY_TWO = 2
+TIME_TO_OPEN_DOOR = 2  # seconds
+
+# Server door IDs
+DOOR_ID_ONE = None
+DOOR_ID_TWO = None
+DOOR_ID_THREE = None
+DOOR_ID_FOUR = None
+
+# GPIO Ports/Doors
+DOOR_RELAY_ONE = None
+DOOR_RELAY_TWO = None
+DOOR_RELAY_THREE = None
+DOOR_RELAY_FOUR = None
+
+door_to_gpio_dict = {DOOR_ID_ONE: DOOR_RELAY_ONE, DOOR_ID_TWO: DOOR_RELAY_TWO,
+                     DOOR_ID_THREE: DOOR_RELAY_THREE, DOOR_ID_FOUR: DOOR_RELAY_FOUR}
 
 # string url
 url = None
@@ -29,7 +42,6 @@ card_id = None
 # For debugging, prints the message out in the format [time] - [script(version)] - [message]
 # For consistency, 'message' should be either, 'Debug: MESSAGE', 'Info: MESSAGE', 'Warn: MESSAGE', 'Error: MESSAGE'.
 # Example; Log('Error: no values provided')
-
 def log(message):
     log_message = time.strftime("%H:%M:%S") + ' - HFRRasPi(v' + VERSION_NUMBER + ') - ' + '[ ' + message + ' ]'
     print(log_message)
@@ -72,6 +84,9 @@ def valid_arguments():
                 global door_id
                 door_id = sys.argv[2]
                 log('Info: door_id = ' + door_id)
+                if door_id not in door_to_gpio_dict:
+                    log('Error: the door_id ' + door_id + ' is not managed by this device')
+                    return False
             else:
                 log('Error: the door_id is not an int')
                 return False
@@ -124,9 +139,20 @@ def open_door():
         log('Warn: script running on a Windows OS, cannot open door directly')
         return False
 
-    GPIO.setmode(GPIO.BCM)
+    gpio_to_open = door_to_gpio_dict.get(door_id, default=None)
 
+    if gpio_to_open is None:
+        log('Error: could not get GPIO for the door_id ' + door_id)
+        return False
+
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(gpio_to_open, GPIO.OUT)
+    GPIO.output(gpio_to_open, GPIO.HIGH)
+    time.sleep(TIME_TO_OPEN_DOOR)
+    GPIO.output(gpio_to_open, GPIO.LOW)
     GPIO.cleanup()
+
+    return True
 
 
 def main():
@@ -141,23 +167,13 @@ def main():
         return
 
     if not open_door():
-        log('Failure...')
+        log('Info: stopping due to not being able to open the door')
+        return
 
-    # printDebug("%s" % validArgs)
-
-    log('Finished')
+    log('Info: finished successfully')
 
 
-# printDebug('door_id = ' + door_id)
-# printDebug('card_id = ' + card_id)
-# """numOfArguments = len(sys.argv)
-# for val in sys.argv:
-#    print(val)
-# print('')
-# printDebug('This is a test')"""
-# printDebug('Finished')
-
-# The Python interpreter checks that the module as the main program, if it is imported from another module
+# The Python interpreter checks that the module is running as the main program, if it is imported from another module
 #  the '__name__' value will be that module's name.
 # Apparently it is a convention to do this, and not really necessary for this project but is future proofing
 #  and good practice.
