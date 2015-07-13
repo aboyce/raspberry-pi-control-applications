@@ -7,8 +7,8 @@
   </RaspberryPis>
   
   <Scripts>
-    <Script id="Door Management" name="DoorManagement.py" description="To control the opening of doors" argumentFormat="[url] [doorId] [cardId]"/>
-    <Script id="Testing" name="PowerManager.py" description="To control up to two machines" argumentFormat="[S or D] [P or R or PH]"/>
+    <Script id="Door Management" name="DoorManagement.py" description="To control the opening of doors." argumentFormat="[url] [doorId] [cardId]"/>
+    <Script id="Testing" name="PowerManager.py" description="To turn on, off or reset up to two machines." argumentFormat="[S or D] [P or R or PH]"/>
   </Scripts>
 
 </Configuration>

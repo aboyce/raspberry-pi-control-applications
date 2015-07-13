@@ -29,11 +29,13 @@ namespace RasPi_Controller
             InitializeComponent();
         }
 
+#region Buttons
+
         private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)
         {
             _logic = new MainWindowLogic();
             _model = new Model();
-            string loadInConfiguration = _model.LoadInConfiguration();
+            string loadInConfiguration = _model.LoadConfiguration();
             if (loadInConfiguration != null)
             {
                 MessageBox.Show(loadInConfiguration, "Error", MessageBoxButton.OK);
@@ -48,6 +50,11 @@ namespace RasPi_Controller
             LbxRasPis.ItemsSource = _model.RaspberryPis;
             LbxScripts.ItemsSource = _model.Scripts;
 
+        }
+
+        private void BtnSaveConfig_Click(object sender, RoutedEventArgs e)
+        {
+            _model.SaveConfiguration();
         }
 
         private void BtnSend_Click(object sender, RoutedEventArgs e)
@@ -77,12 +84,6 @@ namespace RasPi_Controller
             }
         }
 
-        private void TbxRasPiNetworkName_KeyDown(object sender, KeyEventArgs e)
-        {
-            TextRange content = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
-            content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
-        }
-
         private void BtnTestIpAddress_Click(object sender, RoutedEventArgs e)
         {
             TextRange content = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
@@ -99,16 +100,102 @@ namespace RasPi_Controller
             }
         }
 
+        private void BtnSaveRasPi_Click(object sender, RoutedEventArgs e)
+        {
+            TextRange idContent = new TextRange(TbxRasPiId.Document.ContentStart, TbxRasPiId.Document.ContentEnd);
+            string id = _logic.CleanString(idContent.Text);
+            TextRange networkNameContent = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
+            string networkName = _logic.CleanString(networkNameContent.Text);
+            TextRange ipAddressContent = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
+            string ipAddress = _logic.CleanString(ipAddressContent.Text);
+            string username = TbxRasPiUsername.Text;
+
+            if (!_model.CheckRaspberryPiIdIsUnique(id))
+            {
+                MessageBox.Show("The Id already exists", "Error");
+                TextRange content = new TextRange(TbxRasPiId.Document.ContentStart, TbxRasPiId.Document.ContentEnd);
+                content.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
+                return;
+            }
+
+            if (networkName == string.Empty || ipAddress == string.Empty || username == string.Empty)
+            {
+                MessageBox.Show("Cannot save Raspberry Pi as there is missing content, please fill in relevant fields.", "Error");
+            }
+            else
+            {
+                _model.RaspberryPis.Add(new RaspberryPi { Id = id, NetworkName = networkName, IpAddress = ipAddress, Username = username });
+            }
+
+            // TODO: Update list box
+        }
+
+        private void BtnSaveScript_Click(object sender, RoutedEventArgs e)
+        {
+            TextRange idContent = new TextRange(TbxScriptId.Document.ContentStart, TbxScriptId.Document.ContentEnd);
+            string id = _logic.CleanString(idContent.Text);
+            string name = TbxScriptName.Text;
+            string description = TbxScriptDescription.Text;
+            string argumentsFormat = TbxScriptArgumentFormat.Text;
+
+            if (!_model.CheckScriptIdIsUnique(id))
+            {
+                MessageBox.Show("The Id already exists", "Error");
+                TextRange content = new TextRange(TbxScriptId.Document.ContentStart, TbxScriptId.Document.ContentEnd);
+                content.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
+                return;
+            }
+
+            if (name == string.Empty || description == string.Empty || argumentsFormat == string.Empty)
+            {
+                MessageBox.Show("Cannot save Script as there is missing content, please fill in all relevant fields (including 'Arguments Format').", "Error");
+            }
+            else
+            {
+                _model.Scripts.Add(new Script { Id = id, Name = name, Description = description, ArgumentFormat = argumentsFormat });
+            }
+
+            // TODO: Update list box
+        }
+
+#endregion
+
+#region Changed Text
+
+        private void TbxRasPiNetworkName_KeyDown(object sender, KeyEventArgs e)
+        {
+            TextRange content = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
+            content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
+        }
+
         private void TbxRasPiIpAddress_KeyDown(object sender, KeyEventArgs e)
         {
             TextRange content = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
             content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
         }
 
+        private void TbxRasPiId_KeyDown(object sender, KeyEventArgs e)
+        {
+            TextRange content = new TextRange(TbxRasPiId.Document.ContentStart, TbxRasPiId.Document.ContentEnd);
+            content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
+        }
+
+        private void TbxScriptId_KeyDown(object sender, KeyEventArgs e)
+        {
+            TextRange content = new TextRange(TbxScriptId.Document.ContentStart, TbxScriptId.Document.ContentEnd);
+            content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
+        }
+
+#endregion
+
+#region Selection Changed
+
         private void LbxRasPis_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LbxRasPis.SelectedItem == null) return;
             RaspberryPi rasPi = (RaspberryPi)LbxRasPis.SelectedItem;
+            TbxRasPiId.Document.Blocks.Clear();
+            TbxRasPiId.Document.Blocks.Add(new Paragraph(new Run(rasPi.Id)));
             TbxRasPiNetworkName.Document.Blocks.Clear();
             TbxRasPiNetworkName.Document.Blocks.Add(new Paragraph(new Run(rasPi.NetworkName)));
             TbxRasPiIpAddress.Document.Blocks.Clear();
@@ -120,10 +207,14 @@ namespace RasPi_Controller
         {
             if (LbxScripts.SelectedItem == null) return;
             Script script = (Script)LbxScripts.SelectedItem;
+            TbxScriptId.Document.Blocks.Clear();
+            TbxScriptId.Document.Blocks.Add(new Paragraph(new Run(script.Id)));
             TbxScriptName.Text = script.Name;
             TbxScriptDescription.Text = script.Description;
             TbxScriptArgumentFormat.Text = script.ArgumentFormat;
         }
+
+#endregion
 
         private void EnableAll()
         {
@@ -133,6 +224,8 @@ namespace RasPi_Controller
             LbxScripts.IsEnabled = IsEnabled;
 
             LbRasPiHeader.IsEnabled = IsEnabled;
+            LbRasPiId.IsEnabled = IsEnabled;
+            TbxRasPiId.IsEnabled = IsEnabled;
             LbRasPiNetworkName.IsEnabled = IsEnabled;
             TbxRasPiNetworkName.IsEnabled = IsEnabled;
             LbRasPiIpAddress.IsEnabled = IsEnabled;
@@ -143,6 +236,8 @@ namespace RasPi_Controller
             PwPasPiPassword.IsEnabled = IsEnabled;
 
             LbScriptHeader.IsEnabled = IsEnabled;
+            LbScriptId.IsEnabled = IsEnabled;
+            TbxScriptId.IsEnabled = IsEnabled;
             LbScriptName.IsEnabled = IsEnabled;
             TbxScriptName.IsEnabled = IsEnabled;
             LbScriptArguments.IsEnabled = IsEnabled;
@@ -155,6 +250,9 @@ namespace RasPi_Controller
             BtnSend.IsEnabled = IsEnabled;
             BtnTestIpAddress.IsEnabled = IsEnabled;
             BtnTestNetworkName.IsEnabled = IsEnabled;
+            BtnSaveRasPi.IsEnabled = IsEnabled;
+            BtnSaveScript.IsEnabled = IsEnabled;
+            BtnSaveConfig.IsEnabled = IsEnabled;
         }
 
         private void BtnHelp_Click(object sender, RoutedEventArgs e)
