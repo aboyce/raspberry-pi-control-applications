@@ -43,7 +43,7 @@ card_id = None
 # For consistency, 'message' should be either, 'Debug: MESSAGE', 'Info: MESSAGE', 'Warn: MESSAGE', 'Error: MESSAGE'.
 # Example; Log('Error: no values provided')
 def log(message):
-    log_message = time.strftime("%H:%M:%S") + ' - HFRRasPi(v' + VERSION_NUMBER + ') - ' + '[ ' + message + ' ]'
+    log_message = time.strftime("%H:%M:%S") + ' - DoorManagement(v' + VERSION_NUMBER + ') - ' + '[ ' + message + ' ]'
     print(log_message)
     return
 
