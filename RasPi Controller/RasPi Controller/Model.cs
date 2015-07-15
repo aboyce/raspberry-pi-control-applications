@@ -68,7 +68,7 @@ namespace RasPi_Controller
         /// <returns>The error message if something goes wrong. Null if successful.</returns>
         public string SaveConfiguration()
         {
-            // TODO: Currently only adds new values, would be ideal to be able to update existing entries. Would also need implementing throught the app.
+            // TODO: Currently only adds new values, would be ideal to be able to update existing entries. Would also need implementing through out the app.
 
             string configurationFilePath = ConfigurationManager.AppSettings["ConfigurationFilePath"];
 
