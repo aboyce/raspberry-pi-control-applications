@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xaml;
 
 namespace RasPi_Controller
@@ -49,12 +50,15 @@ namespace RasPi_Controller
 
             LbxRasPis.ItemsSource = _model.RaspberryPis;
             LbxScripts.ItemsSource = _model.Scripts;
-
         }
 
         private void BtnSaveConfig_Click(object sender, RoutedEventArgs e)
         {
-            _model.SaveConfiguration();
+            string result = _model.SaveConfiguration();
+            if (result == null)
+                MessageBox.Show("Saved to Config File", "Success");
+            else
+                MessageBox.Show(result, "Error");
         }
 
         private void BtnSend_Click(object sender, RoutedEventArgs e)
@@ -125,9 +129,10 @@ namespace RasPi_Controller
             else
             {
                 _model.RaspberryPis.Add(new RaspberryPi { Id = id, NetworkName = networkName, IpAddress = ipAddress, Username = username });
+                MessageBox.Show("Raspberry Pi Added", "Success");
             }
 
-            // TODO: Update list box
+            LbxRasPis.Items.Refresh();
         }
 
         private void BtnSaveScript_Click(object sender, RoutedEventArgs e)
@@ -153,9 +158,10 @@ namespace RasPi_Controller
             else
             {
                 _model.Scripts.Add(new Script { Id = id, Name = name, Description = description, ArgumentFormat = argumentsFormat });
+                MessageBox.Show("Script Added", "Success");
             }
 
-            // TODO: Update list box
+            LbxScripts.Items.Refresh();
         }
 
 #endregion

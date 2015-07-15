@@ -68,6 +68,8 @@ namespace RasPi_Controller
         /// <returns>The error message if something goes wrong. Null if successful.</returns>
         public string SaveConfiguration()
         {
+            // TODO: Currently only adds new values, would be ideal to be able to update existing entries. Would also need implementing throught the app.
+
             string configurationFilePath = ConfigurationManager.AppSettings["ConfigurationFilePath"];
 
             if (!File.Exists(configurationFilePath))
@@ -78,7 +80,39 @@ namespace RasPi_Controller
             XmlDocument doc = new XmlDocument();
             doc.Load(configurationFilePath);
 
-            // TODO: See what exists, if there is extra entries in either list, add them to the XML document.
+            List<string> rasPiIdsInConfigFile = new List<string>();
+            XmlNode raspberryPisNode = doc.SelectSingleNode("/Configuration/RaspberryPis");
+
+            if (raspberryPisNode != null)
+                rasPiIdsInConfigFile.AddRange(from XmlNode rp in raspberryPisNode where rp.Attributes != null select rp.Attributes.GetNamedItem("id").Value);
+
+            foreach (RaspberryPi pi in RaspberryPis)
+            {
+                if (rasPiIdsInConfigFile.Any(id => id == pi.Id)) continue;
+                XmlElement rasPiElement = doc.CreateElement(string.Empty, "RaspberryPi", string.Empty);
+                if (raspberryPisNode != null) raspberryPisNode.AppendChild(rasPiElement);
+                rasPiElement.SetAttribute("id", pi.Id);
+                rasPiElement.SetAttribute("networkName", pi.NetworkName);
+                rasPiElement.SetAttribute("ipAddress", pi.IpAddress);
+                rasPiElement.SetAttribute("username", pi.Username);
+            }
+
+            List<string> scriptIdsInConfigFile = new List<string>();
+            XmlNode scriptsNode = doc.SelectSingleNode("/Configuration/Scripts");
+
+            if(scriptsNode != null)
+                scriptIdsInConfigFile.AddRange(from XmlNode s in scriptsNode where s.Attributes != null select s.Attributes.GetNamedItem("id").Value);
+
+            foreach (Script s in Scripts)
+            {
+                if (scriptIdsInConfigFile.Any(id => id == s.Id)) continue;
+                XmlElement scriptElement = doc.CreateElement(string.Empty, "Script", string.Empty);
+                if (scriptsNode != null) scriptsNode.AppendChild(scriptElement);
+                scriptElement.SetAttribute("id", s.Id);
+                scriptElement.SetAttribute("name", s.Name);
+                scriptElement.SetAttribute("description", s.Description);
+                scriptElement.SetAttribute("argumentFormat", s.ArgumentFormat);
+            }
 
             doc.Save(configurationFilePath);
 
