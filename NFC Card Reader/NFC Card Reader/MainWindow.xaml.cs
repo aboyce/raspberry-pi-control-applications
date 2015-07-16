@@ -88,6 +88,7 @@ namespace NFC_Card_Reader
             BtnDisconnect.IsEnabled = IsEnabled;
             BtnGetProtocol.IsEnabled = IsEnabled;
             BtnGetStatus.IsEnabled = IsEnabled;
+            BtnListen.IsEnabled = IsEnabled;
         }
 
         private void _disconncted()
@@ -107,7 +108,7 @@ namespace NFC_Card_Reader
 
         private void BtnListen_Click(object sender, RoutedEventArgs e)
         {
-
+            reader.Listen();
         }
     }
 }

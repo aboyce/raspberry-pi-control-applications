@@ -16,9 +16,6 @@ namespace NFC_Card_Reader.Peripheral
         private SCardMonitor _monitor;
         private SCardProtocol _protocol = SCardProtocol.Unset;
 
-        public delegate void CardInitializedEvent(object sender, CardStatusEventArgs e);
-
-
         public CardReader()
         {
 
@@ -134,13 +131,28 @@ namespace NFC_Card_Reader.Peripheral
             return result != SCardError.Success ? null : array.ToString();
         }
 
-        //public bool Listen()
-        //{
-        //    //SCardMonitor monitor = new SCardMonitor(new SCardContext(), SCardScope.System);
-        //    //monitor.Initialized += new CardInitializedEvent(_CardInitialized);
-        //    //monitor.Start("");
+        public bool Listen()
+        {
+            _monitor = new SCardMonitor(new SCardContext(), SCardScope.System, true);
+            _monitor.Initialized += new CardInitializedEvent(_cardInitalised);
+            _monitor.CardInserted += new CardInsertedEvent(_cardInserted);
+            _monitor.CardRemoved += new CardRemovedEvent(_cardRemoved);
+            _monitor.Start(_reader.ReaderName);
 
-        //}
+            return true;
+        }
+
+        private void _cardInitalised(object sender, CardStatusEventArgs e)
+        {
+        }
+        private void _cardInserted(object sender, CardStatusEventArgs e)
+        {
+        }
+        private void _cardRemoved(object sender, CardStatusEventArgs e)
+        {
+        }
+
+
 
         //public void _CardInitialized(object sender, CardEventArgs e)
         //{
