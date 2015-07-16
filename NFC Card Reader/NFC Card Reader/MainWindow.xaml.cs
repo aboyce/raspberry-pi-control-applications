@@ -28,27 +28,42 @@ namespace NFC_Card_Reader
             InitializeComponent();
         }
 
-        private void BtnStart_Click(object sender, RoutedEventArgs e)
+        private void BtnInitialise_Click(object sender, RoutedEventArgs e)
         {
             reader = new CardReader();
-            string result = reader.PopulateReaders();
+            string[] result = reader.PopulateReaders();
 
-            if (result != null)
+            if (result == null)
             {
-                MessageBox.Show(result, "Error");
+                MessageBox.Show("Cannot connect to any readers", "Error");
                 return;
             }
 
-            result = reader.ConnectToReader();
+            LbxReaders.ItemsSource = result;
 
-            if (result != null)
+            LbxReaders.IsEnabled = IsEnabled;
+        }
+
+        private void LbxReaders_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            BtnConnect.IsEnabled = IsEnabled;
+        }
+
+        private void BtnConnect_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = LbxReaders.SelectedItem;
+            if (selected == null) return;
+
+            string result = reader.ConnectToReader(selected.ToString());
+
+            if (result == null)
             {
-                MessageBox.Show(result, "Error");
-                return;
+                MessageBox.Show(string.Format("Connected to {0}", selected.ToString()));
+                _connected();
             }
+            else
+                MessageBox.Show(result);
 
-            MessageBox.Show(string.Format("Connected to {0}", reader.GetConnectedReader()));
-            _connected();
         }
 
         private void BtnDisconnect_Click(object sender, RoutedEventArgs e)
@@ -62,16 +77,37 @@ namespace NFC_Card_Reader
             MessageBox.Show(reader.GetProtocol(), "Protocol");
         }
 
+        private void _initialised()
+        {
+            BtnConnect.IsEnabled = IsEnabled;
+            LbxReaders.IsEnabled = IsEnabled;
+        }
+
         private void _connected()
         {
             BtnDisconnect.IsEnabled = IsEnabled;
             BtnGetProtocol.IsEnabled = IsEnabled;
+            BtnGetStatus.IsEnabled = IsEnabled;
         }
 
         private void _disconncted()
         {
+            LbxReaders.ItemsSource = null;
+
             BtnDisconnect.IsEnabled = false;
             BtnGetProtocol.IsEnabled = false;
+            BtnGetStatus.IsEnabled = false;
+            BtnConnect.IsEnabled = false;
+        }
+
+        private void BtnGetStatus_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(reader.GetStatus(), "Result");
+        }
+
+        private void BtnListen_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
