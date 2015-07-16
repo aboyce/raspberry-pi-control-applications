@@ -16,11 +16,6 @@ namespace NFC_Card_Reader.Peripheral
         private SCardMonitor _monitor;
         private SCardProtocol _protocol = SCardProtocol.Unset;
 
-        public CardReader()
-        {
-
-        }
-
         private string _checks()
         {
             if (_context == null) return "The context is not set";
@@ -54,32 +49,43 @@ namespace NFC_Card_Reader.Peripheral
             return _readers;
         }
 
-        public string[] GetReaders()
+        public string GetConnectedReader()
         {
-            return _readers;
+            return _reader != null ? _reader.ReaderName : null;
         }
 
         /// <summary>
         /// Tries to connect to the selected reader.
         /// </summary>
         /// <returns>Null if successful. The error message if not.</returns>
-        public string ConnectToReader(string readerName)
+        public string SetSelectedReader(string readerName)
         {
             if (string.IsNullOrEmpty(readerName)) return "Reader name is null or empty";
+            if (!_readers.Contains(readerName)) return "The reader does not exist. [Logic Error]";
             string checks = _checks();
             if (checks != null)
                 return checks;
 
             _reader = new SCardReader(_context);
 
-            SCardError result = _reader.Connect(readerName, SCardShareMode.Shared, SCardProtocol.Any);
+            _reader.Connect(readerName, SCardShareMode.Shared, SCardProtocol.Any);
 
-            return result == SCardError.Success ? null : SCardHelper.StringifyError(result);
+            Setup(readerName);
+
+            return null;
+
+            //return result == SCardError.Success ? null : SCardHelper.StringifyError(result);
         }
 
-        public string GetConnectedReader()
+        public bool Setup(string readerName)
         {
-            return _reader.ReaderName;
+            _monitor = new SCardMonitor(new SCardContext(), SCardScope.System, true);
+            _monitor.Initialized += (_cardInitalised);
+            _monitor.CardInserted += (_cardInserted);
+            _monitor.CardRemoved += (_cardRemoved);
+            _monitor.Start(readerName);
+
+            return true;
         }
 
         public string GetProtocol()
@@ -131,25 +137,23 @@ namespace NFC_Card_Reader.Peripheral
             return result != SCardError.Success ? null : array.ToString();
         }
 
-        public bool Listen()
-        {
-            _monitor = new SCardMonitor(new SCardContext(), SCardScope.System, true);
-            _monitor.Initialized += new CardInitializedEvent(_cardInitalised);
-            _monitor.CardInserted += new CardInsertedEvent(_cardInserted);
-            _monitor.CardRemoved += new CardRemovedEvent(_cardRemoved);
-            _monitor.Start(_reader.ReaderName);
-
-            return true;
-        }
-
         private void _cardInitalised(object sender, CardStatusEventArgs e)
         {
+            string message = string.Empty;
+
+            if (_reader == null || _monitor == null) return;
+            if (_monitor.Monitoring)
+            {
+                message = string.Format("Now monitoring {0}", _reader.ReaderName);
+            }
         }
         private void _cardInserted(object sender, CardStatusEventArgs e)
         {
+            string test = "is this working";
         }
         private void _cardRemoved(object sender, CardStatusEventArgs e)
         {
+            string test = "is this working";
         }
 
 
