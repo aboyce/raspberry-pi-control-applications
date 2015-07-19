@@ -72,7 +72,7 @@ namespace NFC_Card_Reader
 
         private void BtnReadCard_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(reader.TryToReadCard(), "Read Card");
+            MessageBox.Show(reader.ReadCard(), "Read Card");
         }
 
 #region UI Changes

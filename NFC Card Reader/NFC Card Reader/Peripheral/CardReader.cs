@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using PCSC;
 using PCSC.Iso7816;
 
-// Using https://github.com/danm-de/pcsc-sharp  // Library guide https://danm.de/docs/pcsc-sharp/PCSC/index.html
+// Using https://github.com/danm-de/pcsc-sharp
+// Library guide https://danm.de/docs/pcsc-sharp/PCSC/index.html
 
 namespace NFC_Card_Reader.Peripheral
 {
@@ -131,114 +126,62 @@ namespace NFC_Card_Reader.Peripheral
             SCardContext context = new SCardContext();
             context.Establish(SCardScope.System);
 
-            // TODO: check that the readerName is in the context's GetReaders()
+            if (context.GetReaders().All(r => r != _connectedReader)) // Check to see if the context has _connectedReader as a reader before we use it.
+            {
+                context.Dispose();
+                return string.Format("{0} cannot be found in the list of connected readers", _connectedReader);
+            }
 
             var state = context.GetReaderStatus(_connectedReader);
 
             if (state == null)
             {
                 context.Dispose();
-                return null;
+                return string.Format("Cannot get the reader status of {0}.", _connectedReader);
             }
 
             context.Dispose();
+
             return string.Format("Name: {1}{0}Current State: {2}{0}Event State: {3}{0}" +
                                  "Current State Value: {4}{0}Event State Value: {5}{0}" +
                                  "User Data: {6}{0}Card Change Event Count: {7}{0}" +
                                  "ATR: {8}{0}", Environment.NewLine, state.ReaderName, state.CurrentState,
                                  state.EventState, state.CurrentStateValue, state.EventStateValue, state.UserData,
-                                 state.CardChangeEventCnt, BitConverter.ToString(state.Atr ?? new byte[0]));
+                                 state.CardChangeEventCnt, state.Atr.Length == 0 ? "0" : BitConverter.ToString(state.Atr));
         }
 
         private void _cardInitalised(object sender, CardStatusEventArgs e)
         {
-            string message = string.Empty;
+            string temp_message = string.Empty;
 
             if (string.IsNullOrEmpty(_connectedReader) || _monitor == null) return;
             if (_monitor.Monitoring)
             {
                 _monitoredReaders = _monitor.ReaderNames;
                 string monitoredReaders = _monitor.ReaderNames.Aggregate(string.Empty, (current, reader) => current + " " + reader);
-                message = string.Format("Now monitoring {0}", monitoredReaders);
+                temp_message = string.Format("Now monitoring {0}", monitoredReaders);
                 // TODO: Update the UI
             }
             else
             {
-                message = "Not monitoring any card readers, won't detect that a new card is inserted.";
+                temp_message = "Not monitoring any card readers, won't detect that a new card is inserted.";
             }
-
-            string result = message;
         }
 
         private void _cardInserted(object sender, CardStatusEventArgs e)
         {
-            SCardContext context = new SCardContext();
-            context.Establish(SCardScope.System);
-            SCardReader reader = new SCardReader(context);
-
-            SCardError result = reader.Connect(_connectedReader, SCardShareMode.Shared, SCardProtocol.Any);
-            if (result != SCardError.Success)
-            {
-                context.Dispose();
-                reader.Dispose();
-                // TODO: Get error to UI
-                string errorForUi = SCardHelper.StringifyError(result);
-            }
-            
-            CommandApdu apdu = new CommandApdu(IsoCase.Case2Short, reader.ActiveProtocol)
-            {
-                CLA = 0xFF,
-                Instruction = InstructionCode.GetData,
-                P1 = 0x00,
-                P2 = 0x00,
-                Le = 0
-            };
-
-            result = reader.BeginTransaction();
-            if (result != SCardError.Success)
-            {
-                context.Dispose();
-                reader.Dispose();
-                // TODO: Get error to UI or log
-                string errorForUi = SCardHelper.StringifyError(result);
-            }
-
-            var recievePci = new SCardPCI();
-            var sendPci = SCardPCI.GetPci(reader.ActiveProtocol);
-
-            byte[] recieveBuffer = new byte[256];
-
-            result = reader.Transmit(sendPci, apdu.ToArray(), recievePci, ref recieveBuffer);
-            if (result != SCardError.Success)
-            {
-                context.Dispose();
-                reader.Dispose();
-                // TODO: Get error to UI
-                string errorForUi = SCardHelper.StringifyError(result);
-            }
-
-            var responseApdu = new ResponseApdu(recieveBuffer, IsoCase.Case2Short, reader.ActiveProtocol);
-
-            string SW1 = responseApdu.SW1.ToString();
-            string SW2 = responseApdu.SW2.ToString();
-            string Uid;
-
-            if (responseApdu.HasData)
-            {
-                Uid = BitConverter.ToString(responseApdu.GetData());
-            }
-
-            reader.EndTransaction(SCardReaderDisposition.Leave);
-            reader.Dispose();
-            context.Dispose();
+            ReadCard();
         }
 
         private void _cardRemoved(object sender, CardStatusEventArgs e)
         {
-            string test = "is this working";
         }
 
-        private string ReadCard()
+        /// <summary>
+        /// Will try to connect to _connectedReader and read the card.
+        /// </summary>
+        /// <returns>Either the data from the card or the error message.</returns>
+        public string ReadCard()
         {
             SCardContext context = new SCardContext();
             context.Establish(SCardScope.System);
