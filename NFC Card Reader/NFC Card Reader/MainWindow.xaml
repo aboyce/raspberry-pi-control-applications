@@ -11,5 +11,6 @@
         <Button x:Name="BtnGetStatus" Content="Get Status" HorizontalAlignment="Left" Margin="46,89,0,0" VerticalAlignment="Top" Width="75" Click="BtnGetStatus_Click" IsEnabled="False" Height="20" Grid.ColumnSpan="2"/>
         <ListBox x:Name="LbxReaders" HorizontalAlignment="Left" Height="49" Margin="83,10,0,0" VerticalAlignment="Top" Width="199" IsEnabled="False" SelectionChanged="LbxReaders_SelectionChanged" Grid.ColumnSpan="2"/>
         <Button x:Name="BtnMonitor" Content="Monitor" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="59" Height="22" Click="BtnMonitor_Click" IsEnabled="False"/>
+        <Button x:Name="BtnReadCard" Content="Read Card" HorizontalAlignment="Left" Margin="53,89,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Height="20" Grid.Column="1" Click="BtnReadCard_Click"/>
     </Grid>
 </Window>

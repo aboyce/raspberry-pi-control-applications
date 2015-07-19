@@ -79,6 +79,53 @@ namespace NFC_Card_Reader.Peripheral
             return null;
         }
 
+        /// <summary>
+        /// Will try to connect to the _connectedReader, see if there is a card present, and if so try to read the data.
+        /// </summary>
+        /// <returns>Either the error message or data from the card.</returns>
+        public string TryToReadCard()
+        {
+            SCardContext context = new SCardContext();
+            context.Establish(SCardScope.System);
+            SCardReader reader = new SCardReader(context);
+
+            SCardError result = SCardError.InternalError;
+
+            try
+            {
+                result = reader.Connect(_connectedReader, SCardShareMode.Shared, SCardProtocol.Any);
+            }
+            catch (Exception)
+            {
+                context.Dispose();
+                reader.Dispose();
+                return SCardHelper.StringifyError(result);
+            }
+
+            string message;
+
+            if (result == SCardError.Success)
+            {
+                string[] readerNames; SCardProtocol protocol; SCardState state; byte[] atr;
+                result = reader.Status(out readerNames, out state, out protocol, out atr);
+
+                if (result == SCardError.Success)
+                    message = string.Format("Card detected:{0} Protocol: {1}{0} State: {2}{0} ATR: {3}",
+                        Environment.NewLine, protocol, state, BitConverter.ToString(atr ?? new byte[0]));
+                else
+                    message = string.Format("Unable to read from card.{0}{1}", Environment.NewLine,
+                        SCardHelper.StringifyError(result));
+            }
+            else
+                message = string.Format("No card is detected (or reader reserved by another application){0} {1}",
+                    Environment.NewLine, SCardHelper.StringifyError(result));
+
+            context.Dispose();
+            reader.Dispose();
+
+            return message;
+        }
+
         public string GetReaderStatus()
         {
             SCardContext context = new SCardContext();
@@ -152,7 +199,7 @@ namespace NFC_Card_Reader.Peripheral
             {
                 context.Dispose();
                 reader.Dispose();
-                // TODO: Get error to UI
+                // TODO: Get error to UI or log
                 string errorForUi = SCardHelper.StringifyError(result);
             }
 

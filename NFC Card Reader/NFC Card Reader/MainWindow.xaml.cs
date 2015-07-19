@@ -70,6 +70,11 @@ namespace NFC_Card_Reader
             MessageBox.Show(reader.GetReaderStatus(), "State");
         }
 
+        private void BtnReadCard_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(reader.TryToReadCard(), "Read Card");
+        }
+
 #region UI Changes
 
         private void _initialised()
@@ -81,12 +86,12 @@ namespace NFC_Card_Reader
         private void _monitoring()
         {
             BtnGetStatus.IsEnabled = IsEnabled;
+            BtnReadCard.IsEnabled = IsEnabled;
         }
 
         private void _disconncted()
         {
             LbxReaders.ItemsSource = null;
-
             BtnGetStatus.IsEnabled = false;
             BtnMonitor.IsEnabled = false;
         }
