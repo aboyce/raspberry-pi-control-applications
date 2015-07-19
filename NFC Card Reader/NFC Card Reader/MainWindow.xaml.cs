@@ -45,54 +45,41 @@ namespace NFC_Card_Reader
 
         private void LbxReaders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            BtnSelect.IsEnabled = IsEnabled;
+            BtnMonitor.IsEnabled = IsEnabled;
         }
 
-        private void BtnSelect_Click(object sender, RoutedEventArgs e)
+        private void BtnMonitor_Click(object sender, RoutedEventArgs e)
         {
             var selected = LbxReaders.SelectedItem;
             if (selected == null) return;
 
-            string result = reader.SetSelectedReader(selected.ToString());
+            string result = reader.StartMonitoringSelectedReader(selected.ToString());
 
             if (result == null)
             {
-                MessageBox.Show(string.Format("Connected to {0}", selected.ToString()));
-                //_connected();
+                MessageBox.Show(string.Format("Now monitoring {0}", selected.ToString()));
+                _monitoring();
             }
             else
                 MessageBox.Show(result);
 
         }
 
-        private void BtnGetProtocol_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show(reader.GetProtocol(), "Protocol");
-        }
-
         private void BtnGetStatus_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(reader.GetStatus(), "Result");
-        }
-
-        private void BtnDisconnect_Click(object sender, RoutedEventArgs e)
-        {
-            reader.Disconnect();
-            _disconncted();
+            //MessageBox.Show(reader.GetStatus(), "Result");
         }
 
 #region UI Changes
 
         private void _initialised()
         {
-            BtnSelect.IsEnabled = IsEnabled;
+            BtnMonitor.IsEnabled = IsEnabled;
             LbxReaders.IsEnabled = IsEnabled;
         }
 
-        private void _connected()
+        private void _monitoring()
         {
-            BtnDisconnect.IsEnabled = IsEnabled;
-            BtnGetProtocol.IsEnabled = IsEnabled;
             BtnGetStatus.IsEnabled = IsEnabled;
         }
 
@@ -100,10 +87,8 @@ namespace NFC_Card_Reader
         {
             LbxReaders.ItemsSource = null;
 
-            BtnDisconnect.IsEnabled = false;
-            BtnGetProtocol.IsEnabled = false;
             BtnGetStatus.IsEnabled = false;
-            BtnSelect.IsEnabled = false;
+            BtnMonitor.IsEnabled = false;
         }
 
 #endregion

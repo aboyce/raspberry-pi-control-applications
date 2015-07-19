@@ -3,29 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using PCSC; // Using https://github.com/danm-de/pcsc-sharp  // Library guide https://danm.de/docs/pcsc-sharp/PCSC/index.html
+using PCSC;
+using PCSC.Iso7816;
+
+// Using https://github.com/danm-de/pcsc-sharp  // Library guide https://danm.de/docs/pcsc-sharp/PCSC/index.html
 
 namespace NFC_Card_Reader.Peripheral
 {
     class CardReader
     {
         private string[] _readers;
-        private SCardContext _context;
-        private SCardReader _reader;
+        private string[] _monitoredReaders;
         private SCardMonitor _monitor;
-        private SCardProtocol _protocol = SCardProtocol.Unset;
-
-        private string _checks()
-        {
-            if (_context == null) return "The context is not set";
-
-            if (!_readers.Any()) return "There are no readers loaded";
-
-            if (_readers.Count() > 1) return "Currently cannot handle more that one reader";
-
-            return null;
-        }
+        private string _connectedReader = string.Empty;
 
         /// <summary>
         /// Tries to populate the list of readers and returns it.
@@ -33,12 +25,12 @@ namespace NFC_Card_Reader.Peripheral
         /// <returns>Null if an error occurs. The populated string[] is successful.</returns>
         public string[] PopulateReaders()
         {
-            _context = new SCardContext();
-            _context.Establish(SCardScope.System);
+            SCardContext context = new SCardContext();
+            context.Establish(SCardScope.System);
 
             try
             {
-                _readers = _context.GetReaders();
+                _readers = context.GetReaders();
             }
             catch (Exception)
             {
@@ -46,127 +38,138 @@ namespace NFC_Card_Reader.Peripheral
                     return null;
             }
 
+            context.Dispose();
             return _readers;
-        }
-
-        public string GetConnectedReader()
-        {
-            return _reader != null ? _reader.ReaderName : null;
         }
 
         /// <summary>
         /// Tries to connect to the selected reader.
         /// </summary>
         /// <returns>Null if successful. The error message if not.</returns>
-        public string SetSelectedReader(string readerName)
+        public string StartMonitoringSelectedReader(string readerName)
         {
             if (string.IsNullOrEmpty(readerName)) return "Reader name is null or empty";
             if (!_readers.Contains(readerName)) return "The reader does not exist. [Logic Error]";
-            string checks = _checks();
-            if (checks != null)
-                return checks;
+            _connectedReader = readerName;
 
-            _reader = new SCardReader(_context);
+            SCardContext context = new SCardContext();
+            context.Establish(SCardScope.System);
+            SCardReader reader = new SCardReader(context);
 
-            _reader.Connect(readerName, SCardShareMode.Shared, SCardProtocol.Any);
+            SCardError result = SCardError.InternalError;
 
-            Setup(readerName);
+            try
+            {
+                result = reader.Connect(readerName, SCardShareMode.Shared, SCardProtocol.Any);
+            }
+            catch (Exception)
+            {
+                context.Dispose();
+                reader.Dispose();
+                return SCardHelper.StringifyError(result);
+            }
 
-            return null;
-
-            //return result == SCardError.Success ? null : SCardHelper.StringifyError(result);
-        }
-
-        public bool Setup(string readerName)
-        {
             _monitor = new SCardMonitor(new SCardContext(), SCardScope.System, true);
             _monitor.Initialized += (_cardInitalised);
             _monitor.CardInserted += (_cardInserted);
             _monitor.CardRemoved += (_cardRemoved);
             _monitor.Start(readerName);
 
-            return true;
-        }
-
-        public string GetProtocol()
-        {
-            string checks = _checks();
-            if (checks != null)
-                return checks;
-
-            switch (_reader.ActiveProtocol)
-            {
-                    case SCardProtocol.T0:
-                        _protocol = SCardProtocol.T0;
-                        break;
-                    case SCardProtocol.T1:
-                        _protocol = SCardProtocol.T1;
-                        break;
-                    case SCardProtocol.T15:
-                        _protocol = SCardProtocol.T15;
-                        break;
-                    case SCardProtocol.Raw:
-                        _protocol = SCardProtocol.Raw;
-                        break;
-                    case SCardProtocol.Any:
-                        _protocol = SCardProtocol.Any;
-                        break;
-                    case SCardProtocol.Unset:
-                        _protocol = SCardProtocol.Unset;
-                        break;
-                default:
-                    return "No supported protocol";
-            }
-
-            return _protocol.ToString();
-        }
-
-        public string GetStatus()
-        {
-            string checks = _checks();
-            if (checks != null)
-                return checks;
-
-            string[] name;
-            SCardState state;
-            SCardProtocol protocol;
-            byte[] array;
-
-            SCardError result = _reader.Status(out name, out state, out protocol, out array);
-
-            return result != SCardError.Success ? null : array.ToString();
+            return null;
         }
 
         private void _cardInitalised(object sender, CardStatusEventArgs e)
         {
             string message = string.Empty;
 
-            if (_reader == null || _monitor == null) return;
+            if (string.IsNullOrEmpty(_connectedReader) || _monitor == null) return;
             if (_monitor.Monitoring)
             {
-                message = string.Format("Now monitoring {0}", _reader.ReaderName);
+                _monitoredReaders = _monitor.ReaderNames;
+                string monitoredReaders = _monitor.ReaderNames.Aggregate(string.Empty, (current, reader) => current + " " + reader);
+                message = string.Format("Now monitoring {0}", monitoredReaders);
+                // TODO: Update the UI
             }
+            else
+            {
+                message = "Not monitoring any card readers, won't detect that a new card is inserted.";
+            }
+
+            string result = message;
         }
+
         private void _cardInserted(object sender, CardStatusEventArgs e)
         {
-            string test = "is this working";
+            SCardContext context = new SCardContext();
+            context.Establish(SCardScope.System);
+            SCardReader reader = new SCardReader(context);
+
+            SCardError result = reader.Connect(_connectedReader, SCardShareMode.Shared, SCardProtocol.Any);
+            if (result != SCardError.Success)
+            {
+                context.Dispose();
+                reader.Dispose();
+                // TODO: Get error to UI
+                string errorForUi = SCardHelper.StringifyError(result);
+            }
+            
+            CommandApdu apdu = new CommandApdu(IsoCase.Case2Short, reader.ActiveProtocol)
+            {
+                CLA = 0xFF,
+                Instruction = InstructionCode.GetData,
+                P1 = 0x00,
+                P2 = 0x00,
+                Le = 0
+            };
+
+            result = reader.BeginTransaction();
+            if (result != SCardError.Success)
+            {
+                context.Dispose();
+                reader.Dispose();
+                // TODO: Get error to UI
+                string errorForUi = SCardHelper.StringifyError(result);
+            }
+
+            var recievePci = new SCardPCI();
+            var sendPci = SCardPCI.GetPci(reader.ActiveProtocol);
+
+            byte[] recieveBuffer = new byte[256];
+
+            result = reader.Transmit(sendPci, apdu.ToArray(), recievePci, ref recieveBuffer);
+            if (result != SCardError.Success)
+            {
+                context.Dispose();
+                reader.Dispose();
+                // TODO: Get error to UI
+                string errorForUi = SCardHelper.StringifyError(result);
+            }
+
+            var responseApdu = new ResponseApdu(recieveBuffer, IsoCase.Case2Short, reader.ActiveProtocol);
+
+            string SW1 = responseApdu.SW1.ToString();
+            string SW2 = responseApdu.SW2.ToString();
+            string Uid;
+
+            if (responseApdu.HasData)
+            {
+                Uid = BitConverter.ToString(responseApdu.GetData());
+            }
+
+            reader.EndTransaction(SCardReaderDisposition.Leave);
+            reader.Dispose();
+            context.Dispose();
         }
+
         private void _cardRemoved(object sender, CardStatusEventArgs e)
         {
             string test = "is this working";
         }
 
-
-
-        //public void _CardInitialized(object sender, CardEventArgs e)
+        //public void Disconnect()
         //{
-
+        //    _context.Dispose();
+        //    _reader.Dispose();
         //}
-
-        public void Disconnect()
-        {
-            _context.Dispose();
-            _reader.Dispose();
-        }
     }
 }
