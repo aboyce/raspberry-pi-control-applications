@@ -142,9 +142,9 @@ namespace NFC_Card_Reader.Peripheral
             }
 
             context.Dispose();
-            return string.Format("Name: {1}{0} Current State: {2}{0} Event State: {3}{0}" +
-                                 " Current State Value: {4}{0} Event State Value: {5}{0}" +
-                                 " User Data: {6}{0} Card Change Event Count: {7}{0} " +
+            return string.Format("Name: {1}{0}Current State: {2}{0}Event State: {3}{0}" +
+                                 "Current State Value: {4}{0}Event State Value: {5}{0}" +
+                                 "User Data: {6}{0}Card Change Event Count: {7}{0}" +
                                  "ATR: {8}{0}", Environment.NewLine, state.ReaderName, state.CurrentState,
                                  state.EventState, state.CurrentStateValue, state.EventStateValue, state.UserData,
                                  state.CardChangeEventCnt, BitConverter.ToString(state.Atr ?? new byte[0]));
@@ -238,10 +238,86 @@ namespace NFC_Card_Reader.Peripheral
             string test = "is this working";
         }
 
+        private string ReadCard()
+        {
+            SCardContext context = new SCardContext();
+            context.Establish(SCardScope.System);
+            SCardReader reader = new SCardReader(context);
+           
+            SCardError result = reader.Connect(_connectedReader, SCardShareMode.Shared, SCardProtocol.Any);
+
+            if (result != SCardError.Success)
+            {
+                context.Dispose();
+                reader.Dispose();
+                return string.Format("No card is detected (or reader reserved by another application){0}{1}",
+                    Environment.NewLine, SCardHelper.StringifyError(result));
+            }
+            
+            string[] readerNames; SCardProtocol protocol; SCardState state; byte[] atr;
+            result = reader.Status(out readerNames, out state, out protocol, out atr);
+
+            if (result != SCardError.Success)
+            {
+                context.Dispose();
+                reader.Dispose();
+                return string.Format("Unable to read from card.{0}{1}", Environment.NewLine, SCardHelper.StringifyError(result));
+            }
+
+            string message = string.Format("Card detected:{0}Protocol: {1}{0}State: {2}{0}ATR: {3}{0}",
+                Environment.NewLine, protocol, state, BitConverter.ToString(atr ?? new byte[0]));
+
+            CommandApdu apdu = new CommandApdu(IsoCase.Case2Short, reader.ActiveProtocol)
+            {
+                CLA = 0xFF,
+                Instruction = InstructionCode.GetData,
+                P1 = 0x00,
+                P2 = 0x00,
+                Le = 0
+            };
+
+            result = reader.BeginTransaction();
+
+            if (result != SCardError.Success)
+            {
+                context.Dispose();
+                reader.Dispose();
+                return string.Format("Cannot start transaction.{0} {1}", Environment.NewLine, SCardHelper.StringifyError(result));
+            }
+
+            SCardPCI recievePci = new SCardPCI();
+            IntPtr sendPci = SCardPCI.GetPci(reader.ActiveProtocol);
+
+            byte[] recieveBuffer = new byte[256];
+
+            result = reader.Transmit(sendPci, apdu.ToArray(), recievePci, ref recieveBuffer);
+
+            if (result != SCardError.Success)
+            {
+                context.Dispose();
+                reader.Dispose();
+                return string.Format("Cannot transmit data.{0} {1}", Environment.NewLine, SCardHelper.StringifyError(result));
+            }
+
+            var responseApdu = new ResponseApdu(recieveBuffer, IsoCase.Case2Short, reader.ActiveProtocol);
+
+            message += string.Format("SW1: {1}{0}SW2: {2}{0}", Environment.NewLine, responseApdu.SW1, responseApdu.SW2);
+
+            string data = responseApdu.HasData ? BitConverter.ToString(responseApdu.GetData()) : "--";
+
+            message += string.Format("UID: {0}",data);
+
+            reader.EndTransaction(SCardReaderDisposition.Leave);
+            reader.Disconnect(SCardReaderDisposition.Reset);
+
+            context.Dispose();
+            reader.Dispose();
+            return message;
+        }
+
         //public void Disconnect()
         //{
-        //    _context.Dispose();
-        //    _reader.Dispose();
+        //    _monitor.Dispose();
         //}
     }
 }
