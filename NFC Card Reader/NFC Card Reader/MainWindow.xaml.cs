@@ -67,7 +67,7 @@ namespace NFC_Card_Reader
 
         private void BtnGetStatus_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show(reader.GetStatus(), "Result");
+            MessageBox.Show(reader.GetReaderStatus(), "State");
         }
 
 #region UI Changes

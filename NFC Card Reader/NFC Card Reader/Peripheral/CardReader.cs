@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
@@ -76,6 +77,30 @@ namespace NFC_Card_Reader.Peripheral
             _monitor.Start(readerName);
 
             return null;
+        }
+
+        public string GetReaderStatus()
+        {
+            SCardContext context = new SCardContext();
+            context.Establish(SCardScope.System);
+
+            // TODO: check that the readerName is in the context's GetReaders()
+
+            var state = context.GetReaderStatus(_connectedReader);
+
+            if (state == null)
+            {
+                context.Dispose();
+                return null;
+            }
+
+            context.Dispose();
+            return string.Format("Name: {1}{0} Current State: {2}{0} Event State: {3}{0}" +
+                                 " Current State Value: {4}{0} Event State Value: {5}{0}" +
+                                 " User Data: {6}{0} Card Change Event Count: {7}{0} " +
+                                 "ATR: {8}{0}", Environment.NewLine, state.ReaderName, state.CurrentState,
+                                 state.EventState, state.CurrentStateValue, state.EventStateValue, state.UserData,
+                                 state.CardChangeEventCnt, BitConverter.ToString(state.Atr ?? new byte[0]));
         }
 
         private void _cardInitalised(object sender, CardStatusEventArgs e)
