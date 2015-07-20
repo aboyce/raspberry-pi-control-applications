@@ -258,9 +258,12 @@ namespace NFC_Card_Reader.Peripheral
             return message;
         }
 
-        //public void Disconnect()
-        //{
-        //    _monitor.Dispose();
-        //}
+        public void Disconnect()
+        {
+            _monitor.Initialized -= (_cardInitalised);
+            _monitor.CardInserted -= (_cardInserted);
+            _monitor.CardRemoved -= (_cardRemoved);
+            _monitor.Dispose();
+        }
     }
 }

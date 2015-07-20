@@ -97,6 +97,5 @@ namespace NFC_Card_Reader
         }
 
 #endregion
-
     }
 }
