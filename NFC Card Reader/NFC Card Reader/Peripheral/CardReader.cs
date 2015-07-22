@@ -178,10 +178,28 @@ namespace NFC_Card_Reader.Peripheral
         }
 
         /// <summary>
+        /// Will call ReadCard to read the card, and then build and sent the SSH command to the SSH Client.
+        /// </summary>
+        /// <returns>Either the error message from itself/ReadCard or the SSH Client response.</returns>
+        public string ReadCardAndSend()
+        {
+            string cardId = ReadCard(true);
+
+            if (!cardId.Contains("UID^"))
+                return cardId; // cardId will contain the error message from trying to read the card.
+
+            cardId = cardId.Split('^', '^')[1];
+            Configuration c = new Configuration();
+
+            return c.Populate() ? SSHController.SendCommand(c.Address, c.Username, c.Password, c.Script, string.Format(" {0} {1} {2}", c.ServerUrl, c.DoorId, cardId))
+                : "The required credentials could not be collected from the .config file or application setting.";
+        }
+
+        /// <summary>
         /// Will try to connect to _connectedReader and read the card.
         /// </summary>
-        /// <returns>Either the data from the card or the error message.</returns>
-        public string ReadCard()
+        /// <returns>Either the data from the card or the error message. Or if 'uidOnly' is true, just the UID prefixed with 'UID^' and ending with '^'</returns>
+        public string ReadCard(bool uidOnly = false)
         {
             SCardContext context = new SCardContext();
             context.Establish(SCardScope.System);
@@ -247,6 +265,13 @@ namespace NFC_Card_Reader.Peripheral
             message += string.Format("SW1: {1}{0}SW2: {2}{0}", Environment.NewLine, responseApdu.SW1, responseApdu.SW2);
 
             string data = responseApdu.HasData ? BitConverter.ToString(responseApdu.GetData()) : "--";
+
+            if (uidOnly)
+            {
+                context.Dispose();
+                reader.Dispose();
+                return string.Format("UID^{0}^", data);
+            }
 
             message += string.Format("UID: {0}",data);
 
