@@ -14,8 +14,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xaml;
+using RasPi_Controller.Extension_Methods;
 using RasPi_Controller.Models;
 using RasPi_Controller.ViewModels;
+using RasPi_Controller.Helpers;
 
 namespace RasPi_Controller
 {
@@ -67,7 +69,7 @@ namespace RasPi_Controller
         private void BtnTestNetworkName_Click(object sender, RoutedEventArgs e)
         {
             TextRange content = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
-            string pingResult = _vm.TryToPing(content.Text);
+            string pingResult = NetworkingHelper.TryToPing(content.Text);
 
             if (pingResult == null)
             {
@@ -83,7 +85,7 @@ namespace RasPi_Controller
         private void BtnTestIpAddress_Click(object sender, RoutedEventArgs e)
         {
             TextRange content = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
-            string pingResult = _vm.TryToPing(content.Text);
+            string pingResult = NetworkingHelper.TryToPing(content.Text);
 
             if (pingResult == null)
             {
@@ -99,11 +101,11 @@ namespace RasPi_Controller
         private void BtnSaveRasPi_Click(object sender, RoutedEventArgs e)
         {
             TextRange idContent = new TextRange(TbxRasPiId.Document.ContentStart, TbxRasPiId.Document.ContentEnd);
-            string id = _vm.CleanString(idContent.Text);
+            string id = idContent.Text.Clean();
             TextRange networkNameContent = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
-            string networkName = _vm.CleanString(networkNameContent.Text);
+            string networkName = networkNameContent.Text.Clean();
             TextRange ipAddressContent = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
-            string ipAddress = _vm.CleanString(ipAddressContent.Text);
+            string ipAddress = ipAddressContent.Text.Clean();
             string username = TbxRasPiUsername.Text;
 
             if (!_vm.CheckRaspberryPiIdIsUnique(id))
@@ -130,7 +132,7 @@ namespace RasPi_Controller
         private void BtnSaveScript_Click(object sender, RoutedEventArgs e)
         {
             TextRange idContent = new TextRange(TbxScriptId.Document.ContentStart, TbxScriptId.Document.ContentEnd);
-            string id = _vm.CleanString(idContent.Text);
+            string id = idContent.Text.Clean();
             string name = TbxScriptName.Text;
             string description = TbxScriptDescription.Text;
             string argumentsFormat = TbxScriptArgumentFormat.Text;
