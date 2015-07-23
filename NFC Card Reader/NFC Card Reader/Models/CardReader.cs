@@ -12,19 +12,43 @@ namespace NFC_Card_Reader.Models
         private SCardContext _context;
         private SCardReader _reader;
 
-        public string Name { get { return _reader.ReaderName; } }
+        public string Name { get { return _reader.ReaderName; } set { } }
 
 
-        
-        public CardReader(SCardContext context)
+        public CardReader() : this("Unknown") { }
+
+         public CardReader(string name)
         {
-            _reader = new SCardReader(context);
+            _context = new SCardContext();
+            _reader = new SCardReader(_context);
+            this.Name = name;
+        }
+ 
+
+        public bool Establish()
+        {
+            try
+            {
+                _context.Establish(SCardScope.System);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-
-        public void Establish()
+        public string[] GetReaders()
         {
-            _context.Establish(SCardScope.System);
+            return _context.GetReaders();
+        }
+
+        public void CleanUp()
+        {
+            //_reader.Disconnect;
+            _reader.Dispose();
+            _context.Dispose();
         }
     }
 }

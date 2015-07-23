@@ -12,34 +12,35 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using NFC_Card_Reader.Helpers;
+using NFC_Card_Reader.ViewModels;
 
 namespace NFC_Card_Reader
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ReaderWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ReaderWindow : Window
     {
-        private CardReaderHelper reader;
+        private ReaderViewModel _rvm;
 
-        public MainWindow()
+        public ReaderWindow()
         {
             InitializeComponent();
+
+            _rvm = new ReaderViewModel();
+
+            this.DataContext = _rvm;
         }
 
         private void BtnInitialise_Click(object sender, RoutedEventArgs e)
         {
-            reader = new CardReaderHelper();
-            string[] result = reader.PopulateReaders();
-
-            if (result == null)
+            
+            if (!_rvm.GetReaders())
             {
                 MessageBox.Show("Cannot connect to any readers", "Error");
                 return;
             }
 
-            LbxReaders.ItemsSource = result;
             LbxReaders.IsEnabled = IsEnabled;
         }
 
@@ -53,26 +54,26 @@ namespace NFC_Card_Reader
             var selected = LbxReaders.SelectedItem;
             if (selected == null) return;
 
-            string result = reader.StartMonitoringSelectedReader(selected.ToString());
+            bool result = _rvm.MonitorReader(selected.ToString());
 
-            if (result == null)
+            if (result)
             {
                 MessageBox.Show(string.Format("Now monitoring {0}", selected.ToString()));
                 _monitoring();
             }
             else
-                MessageBox.Show(result);
+                MessageBox.Show("Cannot monitor reader");
 
         }
 
         private void BtnGetStatus_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(reader.GetReaderStatus(), "State");
+            //MessageBox.Show(reader.GetReaderStatus(), "State");
         }
 
         private void BtnReadCard_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(reader.ReadCard(), "Read Card");
+            //MessageBox.Show(reader.ReadCard(), "Read Card");
         }
 
 #region UI Changes

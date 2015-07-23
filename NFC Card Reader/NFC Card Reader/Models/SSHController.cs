@@ -13,9 +13,9 @@ namespace NFC_Card_Reader.Models
         SshCommand _command;
 
         // TODO: Finish the setters. Check they are not null etc.
-        public string Address { get { return _address; } set; }
-        public string Username { get { return _username; } set; }
-        public string Password { get { return _password; } set; }
+        public string Address { get { return _address; } set { _address = value; } }
+        public string Username { get { return _username; } set { _username = value; } }
+        public string Password { get { return _password; } set { _password = value; } }
         public bool IsConnected { get { return _client.IsConnected; } }
 
         private string _address;
@@ -29,7 +29,6 @@ namespace NFC_Card_Reader.Models
             _address = address;
             _username = username;
             _password = password;
-
 
             _client = new SshClient(_address, _username, _password);
         }

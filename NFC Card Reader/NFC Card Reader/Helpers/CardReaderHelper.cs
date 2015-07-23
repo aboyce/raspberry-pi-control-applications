@@ -2,6 +2,7 @@
 using System.Linq;
 using PCSC;
 using PCSC.Iso7816;
+using NFC_Card_Reader.Models;
 
 // Using https://github.com/danm-de/pcsc-sharp
 // Library guide https://danm.de/docs/pcsc-sharp/PCSC/index.html
@@ -21,12 +22,13 @@ namespace NFC_Card_Reader.Helpers
         /// <returns>Null if an error occurs. The populated string[] is successful.</returns>
         public string[] PopulateReaders()
         {
-            SCardContext context = new SCardContext();
-            context.Establish(SCardScope.System);
+            CardReader reader = new CardReader();
+            if (!reader.Establish())
+                return null;
 
             try
             {
-                _readers = context.GetReaders();
+                _readers = reader.GetReaders();
             }
             catch (Exception)
             {
@@ -34,7 +36,7 @@ namespace NFC_Card_Reader.Helpers
                     return null;
             }
 
-            context.Dispose();
+            reader.CleanUp();
             return _readers;
         }
 
