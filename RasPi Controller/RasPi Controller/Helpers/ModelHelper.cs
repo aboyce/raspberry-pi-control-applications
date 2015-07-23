@@ -9,7 +9,7 @@ using RasPi_Controller.Models;
 
 namespace RasPi_Controller.Helpers
 {
-    public static class ViewModelPopulater
+    public static class ModelHelper
     {
         /// <summary>
         /// Tries to load in the Configuration XML file to populate and return an ObservableCollection of RaspberryPis.
@@ -31,7 +31,7 @@ namespace RasPi_Controller.Helpers
                 XmlDocument doc = new XmlDocument();
                 doc.Load(configurationFilePath);
 
-                XmlNode raspberryPisNode = doc.SelectSingleNode("/Configuration/_raspberryPis");
+                XmlNode raspberryPisNode = doc.SelectSingleNode("/Configuration/RaspberryPis");
                 if (raspberryPisNode != null)
                     foreach (XmlNode raspberryPi in raspberryPisNode)
                     {
@@ -45,6 +45,7 @@ namespace RasPi_Controller.Helpers
             }
             catch (Exception e)
             {
+                // TODO: Log
                 return null;
             }
 
@@ -85,6 +86,7 @@ namespace RasPi_Controller.Helpers
             }
             catch (Exception e)
             {
+                // TODO: Log
                 return null;
             }
 
@@ -95,7 +97,7 @@ namespace RasPi_Controller.Helpers
         /// Tries to write the updated configuration back to file.
         /// </summary>
         /// <returns>The error message if something goes wrong. Null if successful.</returns>
-        public static bool SaveConfiguration(List<RaspberryPi> raspberryPis, List<Script> scripts)
+        public static bool SaveConfiguration(ObservableCollection<RaspberryPi> raspberryPis, ObservableCollection<Script> scripts)
         {
             // TODO: Currently only adds new values, would be ideal to be able to update existing entries. Would also need implementing through out the app.
 
@@ -110,7 +112,7 @@ namespace RasPi_Controller.Helpers
             doc.Load(configurationFilePath);
 
             List<string> rasPiIdsInConfigFile = new List<string>();
-            XmlNode raspberryPisNode = doc.SelectSingleNode("/Configuration/_raspberryPis");
+            XmlNode raspberryPisNode = doc.SelectSingleNode("/Configuration/RaspberryPis");
 
             if (raspberryPisNode != null)
                 rasPiIdsInConfigFile.AddRange(from XmlNode rp in raspberryPisNode where rp.Attributes != null select rp.Attributes.GetNamedItem("id").Value);

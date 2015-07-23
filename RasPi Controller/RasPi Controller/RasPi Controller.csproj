@@ -62,7 +62,7 @@
     <Compile Include="Models\Script.cs" />
     <Compile Include="Models\SSHController.cs" />
     <Compile Include="ViewModels\RasPiControllerViewModel.cs" />
-    <Compile Include="Helpers\ViewModelPopulater.cs" />
+    <Compile Include="Helpers\ModelHelper.cs" />
     <Compile Include="Helpers\SSHControllerHelper.cs" />
     <Page Include="RasPiControllerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

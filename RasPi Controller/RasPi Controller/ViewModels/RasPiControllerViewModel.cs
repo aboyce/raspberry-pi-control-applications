@@ -19,10 +19,13 @@ namespace RasPi_Controller.ViewModels
         public MainWindowViewModel()
         {
             // TODO: Check that they both are not null, and decide what to do if they are?
-            RaspberryPis = ViewModelPopulater.LoadRaspberryPisFromConfiguration();
-            Scripts = ViewModelPopulater.LoadScripsFromConfiguration();
+            RaspberryPis = ModelHelper.LoadRaspberryPisFromConfiguration();
+            Scripts = ModelHelper.LoadScripsFromConfiguration();
+        }
 
-            
+        public bool SaveToConfiguration()
+        {
+            return ModelHelper.SaveConfiguration(RaspberryPis, Scripts);
         }
 
         /// <summary>

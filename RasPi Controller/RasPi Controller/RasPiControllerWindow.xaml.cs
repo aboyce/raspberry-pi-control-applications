@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xaml;
+using RasPi_Controller.Models;
 using RasPi_Controller.ViewModels;
 
 namespace RasPi_Controller
@@ -23,8 +24,8 @@ namespace RasPi_Controller
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainWindowViewModel _logic;
-        private ViewModelPopulater _model;
+        private MainWindowViewModel _vm;
+
 
         public MainWindow()
         {
@@ -35,31 +36,21 @@ namespace RasPi_Controller
 
         private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)
         {
-            _logic = new MainWindowViewModel();
-            _model = new ViewModelPopulater();
-            string loadInConfiguration = _model.LoadConfiguration();
-            if (loadInConfiguration != null)
-            {
-                MessageBox.Show(loadInConfiguration, "Error", MessageBoxButton.OK);
-            }
-            else
-            {
-                EnableAll();
-                BtnLoadConfig.Content = "Re-Load Config";
-                BtnLoadConfig.Background = Brushes.FloralWhite;
-            }
+            _vm = new MainWindowViewModel();
+            EnableAll();
+            BtnLoadConfig.Content = "Re-Load Config";
+            BtnLoadConfig.Background = Brushes.FloralWhite;
 
-            LbxRasPis.ItemsSource = _model.RaspberryPis;
-            LbxScripts.ItemsSource = _model.Scripts;
+            LbxRasPis.ItemsSource = _vm.RaspberryPis;
+            LbxScripts.ItemsSource = _vm.Scripts;
         }
 
         private void BtnSaveConfig_Click(object sender, RoutedEventArgs e)
         {
-            string result = _model.SaveConfiguration();
-            if (result == null)
+            if (_vm.SaveToConfiguration())
                 MessageBox.Show("Saved to Config File", "Success");
             else
-                MessageBox.Show(result, "Error");
+                MessageBox.Show("Could not save to config", "Error");
         }
 
         private void BtnSend_Click(object sender, RoutedEventArgs e)
@@ -76,7 +67,7 @@ namespace RasPi_Controller
         private void BtnTestNetworkName_Click(object sender, RoutedEventArgs e)
         {
             TextRange content = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
-            string pingResult = _logic.TryToPing(content.Text);
+            string pingResult = _vm.TryToPing(content.Text);
 
             if (pingResult == null)
             {
@@ -92,7 +83,7 @@ namespace RasPi_Controller
         private void BtnTestIpAddress_Click(object sender, RoutedEventArgs e)
         {
             TextRange content = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
-            string pingResult = _logic.TryToPing(content.Text);
+            string pingResult = _vm.TryToPing(content.Text);
 
             if (pingResult == null)
             {
@@ -108,14 +99,14 @@ namespace RasPi_Controller
         private void BtnSaveRasPi_Click(object sender, RoutedEventArgs e)
         {
             TextRange idContent = new TextRange(TbxRasPiId.Document.ContentStart, TbxRasPiId.Document.ContentEnd);
-            string id = _logic.CleanString(idContent.Text);
+            string id = _vm.CleanString(idContent.Text);
             TextRange networkNameContent = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
-            string networkName = _logic.CleanString(networkNameContent.Text);
+            string networkName = _vm.CleanString(networkNameContent.Text);
             TextRange ipAddressContent = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
-            string ipAddress = _logic.CleanString(ipAddressContent.Text);
+            string ipAddress = _vm.CleanString(ipAddressContent.Text);
             string username = TbxRasPiUsername.Text;
 
-            if (!_model.CheckRaspberryPiIdIsUnique(id))
+            if (!_vm.CheckRaspberryPiIdIsUnique(id))
             {
                 MessageBox.Show("The Id already exists", "Error");
                 TextRange content = new TextRange(TbxRasPiId.Document.ContentStart, TbxRasPiId.Document.ContentEnd);
@@ -129,7 +120,7 @@ namespace RasPi_Controller
             }
             else
             {
-                _model.RaspberryPis.Add(new RaspberryPi { Id = id, NetworkName = networkName, IpAddress = ipAddress, Username = username });
+                _vm.RaspberryPis.Add(new RaspberryPi { Id = id, NetworkName = networkName, IpAddress = ipAddress, Username = username });
                 MessageBox.Show("Raspberry Pi Added", "Success");
             }
 
@@ -139,12 +130,12 @@ namespace RasPi_Controller
         private void BtnSaveScript_Click(object sender, RoutedEventArgs e)
         {
             TextRange idContent = new TextRange(TbxScriptId.Document.ContentStart, TbxScriptId.Document.ContentEnd);
-            string id = _logic.CleanString(idContent.Text);
+            string id = _vm.CleanString(idContent.Text);
             string name = TbxScriptName.Text;
             string description = TbxScriptDescription.Text;
             string argumentsFormat = TbxScriptArgumentFormat.Text;
 
-            if (!_model.CheckScriptIdIsUnique(id))
+            if (!_vm.CheckScriptIdIsUnique(id))
             {
                 MessageBox.Show("The Id already exists", "Error");
                 TextRange content = new TextRange(TbxScriptId.Document.ContentStart, TbxScriptId.Document.ContentEnd);
@@ -158,7 +149,7 @@ namespace RasPi_Controller
             }
             else
             {
-                _model.Scripts.Add(new Script { Id = id, Name = name, Description = description, ArgumentFormat = argumentsFormat });
+                _vm.Scripts.Add(new Script { Id = id, Name = name, Description = description, ArgumentFormat = argumentsFormat });
                 MessageBox.Show("Script Added", "Success");
             }
 
