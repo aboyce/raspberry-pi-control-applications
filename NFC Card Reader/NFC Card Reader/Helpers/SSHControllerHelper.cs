@@ -1,9 +1,9 @@
 ﻿using System;
 using Renci.SshNet;
 
-namespace NFC_Card_Reader.Peripheral
+namespace NFC_Card_Reader.Helpers
 {
-    public static class SSHController
+    public static class SSHControllerHelper
     {
         /// <summary>
         /// Sends a command with or without arguments to a remote SSH server, and then returns the response. (Ensure the response will be a single line with no required input!)

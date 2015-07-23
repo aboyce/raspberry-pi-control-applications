@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using NFC_Card_Reader.Peripheral;
+using NFC_Card_Reader.Helpers;
 
 namespace NFC_Card_Reader
 {
@@ -21,7 +21,7 @@ namespace NFC_Card_Reader
     /// </summary>
     public partial class MainWindow : Window
     {
-        private CardReader reader;
+        private CardReaderHelper reader;
 
         public MainWindow()
         {
@@ -30,7 +30,7 @@ namespace NFC_Card_Reader
 
         private void BtnInitialise_Click(object sender, RoutedEventArgs e)
         {
-            reader = new CardReader();
+            reader = new CardReaderHelper();
             string[] result = reader.PopulateReaders();
 
             if (result == null)

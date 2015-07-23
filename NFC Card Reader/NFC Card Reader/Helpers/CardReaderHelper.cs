@@ -6,9 +6,9 @@ using PCSC.Iso7816;
 // Using https://github.com/danm-de/pcsc-sharp
 // Library guide https://danm.de/docs/pcsc-sharp/PCSC/index.html
 
-namespace NFC_Card_Reader.Peripheral
+namespace NFC_Card_Reader.Helpers
 {
-    class CardReader
+    class CardReaderHelper
     {
         private string[] _readers;
         private string[] _monitoredReaders;
@@ -191,7 +191,7 @@ namespace NFC_Card_Reader.Peripheral
             cardId = cardId.Split('^', '^')[1];
             Configuration c = new Configuration();
 
-            return c.Populate() ? SSHController.SendCommand(c.Address, c.Username, c.Password, c.Script, string.Format(" {0} {1} {2}", c.ServerUrl, c.DoorId, cardId))
+            return c.Populate() ? SSHControllerHelper.SendCommand(c.Address, c.Username, c.Password, c.Script, string.Format(" {0} {1} {2}", c.ServerUrl, c.DoorId, cardId))
                 : "The required credentials could not be collected from the .config file or application setting.";
         }
 
