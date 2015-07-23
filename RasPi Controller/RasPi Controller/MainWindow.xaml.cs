@@ -22,8 +22,8 @@ namespace RasPi_Controller
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainWindowLogic _logic;
-        private Model _model;
+        private MainWindowViewModel _logic;
+        private ViewModelPopulater _model;
 
         public MainWindow()
         {
@@ -34,8 +34,8 @@ namespace RasPi_Controller
 
         private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)
         {
-            _logic = new MainWindowLogic();
-            _model = new Model();
+            _logic = new MainWindowViewModel();
+            _model = new ViewModelPopulater();
             string loadInConfiguration = _model.LoadConfiguration();
             if (loadInConfiguration != null)
             {

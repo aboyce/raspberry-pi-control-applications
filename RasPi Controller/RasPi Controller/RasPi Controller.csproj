@@ -58,9 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Entities.cs" />
-    <Compile Include="MainWindowLogic.cs" />
-    <Compile Include="Model.cs" />
+    <Compile Include="Models\RaspberryPi.cs" />
+    <Compile Include="Models\Script.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Helpers\ViewModelPopulater.cs" />
     <Compile Include="SSHController.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

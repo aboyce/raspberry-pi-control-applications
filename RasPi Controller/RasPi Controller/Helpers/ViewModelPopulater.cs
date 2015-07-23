@@ -4,25 +4,26 @@ using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using RasPi_Controller.Models;
 
-namespace RasPi_Controller
+namespace RasPi_Controller.Helpers
 {
-    public class Model
+    public static class ViewModelPopulater
     {
-        public List<RaspberryPi> RaspberryPis = new List<RaspberryPi>();
-        public List<Script> Scripts = new List<Script>();
 
         /// <summary>
-        /// Tries to load in the Configuration XML file to populate the RaspberryPi and Script lists.
+        /// Tries to load in the Configuration XML file to populate and return a list of RaspberryPis.
         /// </summary>
-        /// <returns>The error message if something goes wrong. Null if successful.</returns>
-        public string LoadConfiguration()
+        /// <returns>The null if something goes wrong. The List if successful.</returns>
+        public static List<RaspberryPi> LoadRaspberryPisFromConfiguration()
         {
+            List<RaspberryPi> raspberryPis = new List<RaspberryPi>();
+
             string configurationFilePath = ConfigurationManager.AppSettings["ConfigurationFilePath"];
 
             if (!File.Exists(configurationFilePath))
             {
-                return string.Format("File does not exist at [{0}]", configurationFilePath);
+                return null;
             }
 
             try
@@ -30,7 +31,7 @@ namespace RasPi_Controller
                 XmlDocument doc = new XmlDocument();
                 doc.Load(configurationFilePath);
 
-                XmlNode raspberryPisNode = doc.SelectSingleNode("/Configuration/RaspberryPis");
+                XmlNode raspberryPisNode = doc.SelectSingleNode("/Configuration/_raspberryPis");
                 if (raspberryPisNode != null)
                     foreach (XmlNode raspberryPi in raspberryPisNode)
                     {
@@ -39,8 +40,36 @@ namespace RasPi_Controller
                         string networkName = raspberryPi.Attributes.GetNamedItem("networkName").Value;
                         string ipAddress = raspberryPi.Attributes.GetNamedItem("ipAddress").Value;
                         string username = raspberryPi.Attributes.GetNamedItem("username").Value;
-                        RaspberryPis.Add(new RaspberryPi {Id = id, NetworkName = networkName, IpAddress = ipAddress, Username = username});
+                        raspberryPis.Add(new RaspberryPi {Id = id, NetworkName = networkName, IpAddress = ipAddress, Username = username});
                     }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+            return raspberryPis;
+        }
+
+        /// <summary>
+        /// Tries to load in the Configuration XML file to populate and return a list of Scripts.
+        /// </summary>
+        /// <returns>The null if something goes wrong. The List if successful.</returns>
+        public static List<Script> LoadScripsFromConfiguration()
+        {
+            List<Script> scripts = new List<Script>();
+
+            string configurationFilePath = ConfigurationManager.AppSettings["ConfigurationFilePath"];
+
+            if (!File.Exists(configurationFilePath))
+            {
+                return null;
+            }
+
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(configurationFilePath);
 
                 XmlNode scriptsNode = doc.SelectSingleNode("/Configuration/Scripts");
                 if (scriptsNode != null)
@@ -51,22 +80,22 @@ namespace RasPi_Controller
                         string name = script.Attributes.GetNamedItem("name").Value;
                         string description = script.Attributes.GetNamedItem("description").Value;
                         string argumentFormat = script.Attributes.GetNamedItem("argumentFormat").Value;
-                        Scripts.Add(new Script {Id = id, Name = name, Description = description, ArgumentFormat = argumentFormat});
+                        scripts.Add(new Script { Id = id, Name = name, Description = description, ArgumentFormat = argumentFormat });
                     }
             }
             catch (Exception e)
             {
-                return e.Message;
+                return null;
             }
 
-            return null;
+            return scripts;
         }
 
         /// <summary>
         /// Tries to write the updated configuration back to file.
         /// </summary>
         /// <returns>The error message if something goes wrong. Null if successful.</returns>
-        public string SaveConfiguration()
+        public static bool SaveConfiguration(List<RaspberryPi> raspberryPis, List<Script> scripts)
         {
             // TODO: Currently only adds new values, would be ideal to be able to update existing entries. Would also need implementing through out the app.
 
@@ -74,19 +103,19 @@ namespace RasPi_Controller
 
             if (!File.Exists(configurationFilePath))
             {
-                return string.Format("File does not exist at [{0}]", configurationFilePath);
+                return false;
             }
 
             XmlDocument doc = new XmlDocument();
             doc.Load(configurationFilePath);
 
             List<string> rasPiIdsInConfigFile = new List<string>();
-            XmlNode raspberryPisNode = doc.SelectSingleNode("/Configuration/RaspberryPis");
+            XmlNode raspberryPisNode = doc.SelectSingleNode("/Configuration/_raspberryPis");
 
             if (raspberryPisNode != null)
                 rasPiIdsInConfigFile.AddRange(from XmlNode rp in raspberryPisNode where rp.Attributes != null select rp.Attributes.GetNamedItem("id").Value);
 
-            foreach (RaspberryPi pi in RaspberryPis)
+            foreach (RaspberryPi pi in raspberryPis)
             {
                 if (rasPiIdsInConfigFile.Any(id => id == pi.Id)) continue;
                 XmlElement rasPiElement = doc.CreateElement(string.Empty, "RaspberryPi", string.Empty);
@@ -103,7 +132,7 @@ namespace RasPi_Controller
             if(scriptsNode != null)
                 scriptIdsInConfigFile.AddRange(from XmlNode s in scriptsNode where s.Attributes != null select s.Attributes.GetNamedItem("id").Value);
 
-            foreach (Script s in Scripts)
+            foreach (Script s in scripts)
             {
                 if (scriptIdsInConfigFile.Any(id => id == s.Id)) continue;
                 XmlElement scriptElement = doc.CreateElement(string.Empty, "Script", string.Empty);
@@ -116,27 +145,7 @@ namespace RasPi_Controller
 
             doc.Save(configurationFilePath);
 
-            return null;
-        }
-
-        /// <summary>
-        /// Check that the Raspberry Pi Id does not already exist.
-        /// </summary>
-        /// <param name="id">The Id to check</param>
-        /// <returns>False if it is not unique. True if it is.</returns>
-        public bool CheckRaspberryPiIdIsUnique(string id)
-        {
-            return RaspberryPis.All(pi => pi.Id != id);
-        }
-
-        /// <summary>
-        /// Check that the Script Id does not already exist.
-        /// </summary>
-        /// <param name="id">The Id to check</param>
-        /// <returns>False if it is not unique. True if it is.</returns>
-        public bool CheckScriptIdIsUnique(string id)
-        {
-            return Scripts.All(script => script.Id != id);
+            return true;
         }
     }
 }
