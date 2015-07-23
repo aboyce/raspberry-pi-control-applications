@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xaml;
+using RasPi_Controller.ViewModels;
 
 namespace RasPi_Controller
 {

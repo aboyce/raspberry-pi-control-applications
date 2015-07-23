@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -8,17 +9,20 @@ using System.Threading.Tasks;
 using RasPi_Controller.Models;
 using RasPi_Controller.Helpers;
 
-namespace RasPi_Controller
+namespace RasPi_Controller.ViewModels
 {
     class MainWindowViewModel
     {
-        public List<RaspberryPi> RaspberryPis = new List<RaspberryPi>();
-        public List<Script> Scripts = new List<Script>();
+        public ObservableCollection<RaspberryPi> RaspberryPis;
+        public ObservableCollection<Script> Scripts;
 
         public MainWindowViewModel()
         {
+            // TODO: Check that they both are not null, and decide what to do if they are?
             RaspberryPis = ViewModelPopulater.LoadRaspberryPisFromConfiguration();
             Scripts = ViewModelPopulater.LoadScripsFromConfiguration();
+
+            
         }
 
         /// <summary>

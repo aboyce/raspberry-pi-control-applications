@@ -2,6 +2,7 @@
 using System.IO;
 using System.Configuration;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml;
 using RasPi_Controller.Models;
@@ -10,14 +11,13 @@ namespace RasPi_Controller.Helpers
 {
     public static class ViewModelPopulater
     {
-
         /// <summary>
-        /// Tries to load in the Configuration XML file to populate and return a list of RaspberryPis.
+        /// Tries to load in the Configuration XML file to populate and return an ObservableCollection of RaspberryPis.
         /// </summary>
-        /// <returns>The null if something goes wrong. The List if successful.</returns>
-        public static List<RaspberryPi> LoadRaspberryPisFromConfiguration()
+        /// <returns>The null if something goes wrong. The ObservableCollection if successful.</returns>
+        public static ObservableCollection<RaspberryPi> LoadRaspberryPisFromConfiguration()
         {
-            List<RaspberryPi> raspberryPis = new List<RaspberryPi>();
+            ObservableCollection<RaspberryPi> raspberryPis = new ObservableCollection<RaspberryPi>();
 
             string configurationFilePath = ConfigurationManager.AppSettings["ConfigurationFilePath"];
 
@@ -52,12 +52,12 @@ namespace RasPi_Controller.Helpers
         }
 
         /// <summary>
-        /// Tries to load in the Configuration XML file to populate and return a list of Scripts.
+        /// Tries to load in the Configuration XML file to populate and return a ObservableCollection of Scripts.
         /// </summary>
-        /// <returns>The null if something goes wrong. The List if successful.</returns>
-        public static List<Script> LoadScripsFromConfiguration()
+        /// <returns>The null if something goes wrong. The ObservableCollection if successful.</returns>
+        public static ObservableCollection<Script> LoadScripsFromConfiguration()
         {
-            List<Script> scripts = new List<Script>();
+            ObservableCollection<Script> scripts = new ObservableCollection<Script>();
 
             string configurationFilePath = ConfigurationManager.AppSettings["ConfigurationFilePath"];
 

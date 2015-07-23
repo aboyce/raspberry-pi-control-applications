@@ -60,10 +60,11 @@
     </ApplicationDefinition>
     <Compile Include="Models\RaspberryPi.cs" />
     <Compile Include="Models\Script.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Models\SSHController.cs" />
+    <Compile Include="ViewModels\RasPiControllerViewModel.cs" />
     <Compile Include="Helpers\ViewModelPopulater.cs" />
-    <Compile Include="SSHController.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Helpers\SSHControllerHelper.cs" />
+    <Page Include="RasPiControllerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -71,8 +72,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="RasPiControllerWindow.xaml.cs">
+      <DependentUpon>RasPiControllerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -104,7 +105,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="configuration.xml" />
+    <Resource Include="configuration.xml">
+      <SubType>Designer</SubType>
+    </Resource>
     <Resource Include="Information.txt" />
     <Content Include="Libraries\Renci.SshNet.dll" />
   </ItemGroup>
