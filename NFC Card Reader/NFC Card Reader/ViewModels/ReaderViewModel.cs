@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace NFC_Card_Reader.ViewModels
 {
-    class ReaderViewModel
+    public class ReaderViewModel
     {
+
+
+
+
     }
 }

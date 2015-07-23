@@ -1,5 +1,5 @@
 ﻿using System;
-using Renci.SshNet;
+using NFC_Card_Reader.Models;
 
 namespace NFC_Card_Reader.Helpers
 {
@@ -20,16 +20,15 @@ namespace NFC_Card_Reader.Helpers
 
             try
             {
-                SshClient client = new SshClient(address, username, password);
-                client.Connect();
-                if (client.IsConnected)
+                SSHController _controller = new SSHController(address, username, password);
+                _controller.Connect();
+                if (_controller.IsConnected)
                 {
-                    SshCommand command = client.CreateCommand(string.Format("{0} {1}", scriptName, arguments));
-                    command.Execute();
-                    response = command.Result;
+                    _controller.CreateCommand(string.Format("{0} {1}", scriptName, arguments));
+                    _controller.Execute();
+                    response = _controller.Result();
                 }
-                client.Disconnect();
-                client.Dispose();
+                _controller.CleanUp();
             }
             catch (Exception exception)
             {
