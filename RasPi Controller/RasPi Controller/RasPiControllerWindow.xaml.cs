@@ -32,14 +32,16 @@ namespace RasPi_Controller
         public MainWindow()
         {
             InitializeComponent();
+            _vm = new MainWindowViewModel();
+
+            DataContext = _vm;
         }
 
 #region Buttons
 
         private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)
         {
-            _vm = new MainWindowViewModel();
-            EnableAll();
+            //EnableAll();
             BtnLoadConfig.Content = "Re-Load Config";
             BtnLoadConfig.Background = Brushes.FloralWhite;
 

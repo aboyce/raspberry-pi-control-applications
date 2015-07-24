@@ -12,10 +12,10 @@
         <Label x:Name="LbRasPiPassword" Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,246,0,0" IsEnabled="False"/>
         <PasswordBox x:Name="PwPasPiPassword" HorizontalAlignment="Left" Margin="464,272,0,0" VerticalAlignment="Top" Width="120" Height="23" IsEnabled="False"/>
         <Button x:Name="BtnSend" Content="Send" HorizontalAlignment="Left" Margin="268,319,0,0" VerticalAlignment="Top" Width="54" Height="37" Click="BtnSend_Click" IsEnabled="False"/>
-        <Button x:Name="BtnLoadConfig" Content="Load Config" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="112" Height="22" Click="BtnLoadConfig_Click" Background="#FF1EE200" BorderThickness="1,1,2,2"/>
-        <ListBox x:Name="LbxRasPis" HorizontalAlignment="Left" Height="47" Margin="12,87,0,0" VerticalAlignment="Top" Width="365" SelectionChanged="LbxRasPis_SelectionChanged" IsEnabled="False"/>
+        <Button x:Name="BtnLoadConfig" Content="{Binding LoadButton}"  Command="{Binding LoadConfigCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="112" Height="22" Background="#FF1EE200" BorderThickness="1,1,2,2"/>
+        <ListBox x:Name="LbxRasPis" ItemsSource="{Binding RaspberryPis}" HorizontalAlignment="Left" Height="47" Margin="12,87,0,0" VerticalAlignment="Top" Width="365" SelectionChanged="LbxRasPis_SelectionChanged" IsEnabled="False"/>
         <Label x:Name="LbRasPis" Content="Raspberry Pis" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,56,0,0" IsEnabled="False"/>
-        <ListBox x:Name="LbxScripts" HorizontalAlignment="Left" Height="47" Margin="12,175,0,0" VerticalAlignment="Top" Width="365" SelectionChanged="LbxScripts_SelectionChanged" IsEnabled="False"/>
+        <ListBox x:Name="LbxScripts" ItemsSource="{Binding Scripts}" HorizontalAlignment="Left" Height="47" Margin="12,175,0,0" VerticalAlignment="Top" Width="365" SelectionChanged="LbxScripts_SelectionChanged" IsEnabled="False"/>
         <Label x:Name="LbScripts" Content="Scripts" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,144,0,0" IsEnabled="False"/>
         <Label x:Name="LbRasPiHeader" Content="Raspberry Pi" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,6,0,0" FontWeight="Bold" IsEnabled="False"/>
         <Label x:Name="LbRasPiNetworkName" Content="Network Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,84,0,0" IsEnabled="False"/>
