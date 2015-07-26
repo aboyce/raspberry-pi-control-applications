@@ -38,33 +38,12 @@ namespace RasPi_Controller
 
 #region Buttons
 
-        private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)
-        {
-            //EnableAll();
-            BtnLoadConfig.Content = "Re-Load Config";
-            BtnLoadConfig.Background = Brushes.FloralWhite;
-
-            LbxRasPis.ItemsSource = _vm.RaspberryPis;
-            LbxScripts.ItemsSource = _vm.Scripts;
-        }
-
         private void BtnSaveConfig_Click(object sender, RoutedEventArgs e)
         {
             if (_vm.SaveToConfiguration())
                 MessageBox.Show("Saved to Config File", "Success");
             else
                 MessageBox.Show("Could not save to config", "Error");
-        }
-
-        private void BtnSend_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Get everything validated and then send command.
-
-            // TODO: Check network name and ip address, if possible pick ip address.
-            // TODO: Check username is valid.
-            // TODO: See if passwords are required, if so check this, if not it should be fine.
-            // TODO: Check the script name is valid.
-            // TODO: Return the result.
         }
 
         private void BtnTestNetworkName_Click(object sender, RoutedEventArgs e)
@@ -97,66 +76,6 @@ namespace RasPi_Controller
                 content.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
                 MessageBox.Show(pingResult, "Error");
             }
-        }
-
-        private void BtnSaveRasPi_Click(object sender, RoutedEventArgs e)
-        {
-            TextRange idContent = new TextRange(TbxRasPiId.Document.ContentStart, TbxRasPiId.Document.ContentEnd);
-            string id = idContent.Text.Clean();
-            TextRange networkNameContent = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
-            string networkName = networkNameContent.Text.Clean();
-            TextRange ipAddressContent = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
-            string ipAddress = ipAddressContent.Text.Clean();
-            string username = TbxRasPiUsername.Text;
-
-            if (!_vm.CheckRaspberryPiIdIsUnique(id))
-            {
-                MessageBox.Show("The Id already exists", "Error");
-                TextRange content = new TextRange(TbxRasPiId.Document.ContentStart, TbxRasPiId.Document.ContentEnd);
-                content.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
-                return;
-            }
-
-            if (networkName == string.Empty || ipAddress == string.Empty || username == string.Empty)
-            {
-                MessageBox.Show("Cannot save Raspberry Pi as there is missing content, please fill in relevant fields.", "Error");
-            }
-            else
-            {
-                _vm.RaspberryPis.Add(new RaspberryPi { Id = id, NetworkName = networkName, IpAddress = ipAddress, Username = username });
-                MessageBox.Show("Raspberry Pi Added", "Success");
-            }
-
-            LbxRasPis.Items.Refresh();
-        }
-
-        private void BtnSaveScript_Click(object sender, RoutedEventArgs e)
-        {
-            TextRange idContent = new TextRange(TbxScriptId.Document.ContentStart, TbxScriptId.Document.ContentEnd);
-            string id = idContent.Text.Clean();
-            string name = TbxScriptName.Text;
-            string description = TbxScriptDescription.Text;
-            string argumentsFormat = TbxScriptArgumentFormat.Text;
-
-            if (!_vm.CheckScriptIdIsUnique(id))
-            {
-                MessageBox.Show("The Id already exists", "Error");
-                TextRange content = new TextRange(TbxScriptId.Document.ContentStart, TbxScriptId.Document.ContentEnd);
-                content.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
-                return;
-            }
-
-            if (name == string.Empty || description == string.Empty || argumentsFormat == string.Empty)
-            {
-                MessageBox.Show("Cannot save Script as there is missing content, please fill in all relevant fields (including 'Arguments Format').", "Error");
-            }
-            else
-            {
-                _vm.Scripts.Add(new Script { Id = id, Name = name, Description = description, ArgumentFormat = argumentsFormat });
-                MessageBox.Show("Script Added", "Success");
-            }
-
-            LbxScripts.Items.Refresh();
         }
 
 #endregion
@@ -258,17 +177,21 @@ namespace RasPi_Controller
 
         private void BtnHelp_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(string.Format("This application is indented to send SSH commands to a remote location. {0}{0}" +
-                                          "The minimal requirements are; {0}" +
-                                          " - Network Name or IP Address {0}" +
-                                          " - Username/Password and Script Name/SSH Command. {0}{0}" +
-                                          "The 'Test' buttons will ping the relevant field, and return either green or red with error. {0}{0}" +
-                                          "The arguments can be left blank, but if present, will be added to the end of the script/command. {0}{0}" +
-                                          "'Arguments Format' and 'Script Description' are both just for information but may be useful to other users. {0}{0}" +
-                                          "You can store both Raspberry Pi (remote machine) and Script information in the XML file that is referenced in the .config file, this is to save retyping the same data. {0}" +
-                                          "[Ensure that the XML file follows the examples formatting, and is valid XML] {0}{0}" +
-                                          "Any queries contact via https://github.com/aboyce"
-                                          , Environment.NewLine), "Help", MessageBoxButton.OK);
+            
+        }
+        private void BtnSend_Click(object sender, RoutedEventArgs e)
+        {
+        }
+        private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void BtnSaveScript_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void BtnSaveRasPi_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

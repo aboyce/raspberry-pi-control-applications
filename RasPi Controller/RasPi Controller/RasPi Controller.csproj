@@ -59,6 +59,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\SaveScriptCommand.cs" />
+    <Compile Include="Commands\SaveRasPiCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\LoadConfigCommand.cs" />
     <Compile Include="Commands\SendCommand.cs" />

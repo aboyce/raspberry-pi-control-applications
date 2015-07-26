@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -10,36 +11,63 @@ using RasPi_Controller.Models;
 using RasPi_Controller.Helpers;
 using System.Windows.Input;
 using RasPi_Controller.Commands;
-using System.ComponentModel;
 
 namespace RasPi_Controller.ViewModels
 {
-    public class RasPiControllerWindowViewModel
+    public class RasPiControllerWindowViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<RaspberryPi> RaspberryPis;
-        public ObservableCollection<Script> Scripts;
+        private ObservableCollection<RaspberryPi> _raspberryPis;
+        public ObservableCollection<RaspberryPi> RaspberryPis {
+            get { return _raspberryPis; }
+            set { _raspberryPis = value; NotifyPropertyChanged("RaspberryPis"); }
+        }
+
+        private ObservableCollection<Script> _scripts;
+        public ObservableCollection<Script> Scripts {
+            get { return _scripts; }
+            set { _scripts = value; NotifyPropertyChanged("Scripts"); }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand LoadConfigCommand { get; set; }
+        public ICommand HelpCommand { get; set; }
+        public ICommand SendCommand { get; set; }
+        public ICommand SaveRasPiCommand { get; set; }
+        public ICommand SaveScriptCommand { get; set; }
 
-        public bool LoadedFromConfig { get; set; }
+        private bool _loadedFromConfig;
+        public bool LoadedFromConfig
+        {
+            get { return _loadedFromConfig;}
+            set { _loadedFromConfig = value;
+                NotifyPropertyChanged("LoadedFromConfig");
+            }
+        }
         public bool ObservableCollectionsHaveChanged { get; set; }
 
-        public string LoadButton { get; set; }
-
         public RasPiControllerWindowViewModel()
+        {
+            Setup();
+        }
+
+        private void Setup()
         {
             // TODO: Check that they both are not null, and decide what to do if they are?
             RaspberryPis = ModelHelper.LoadRaspberryPisFromConfiguration();
             Scripts = ModelHelper.LoadScripsFromConfiguration();
 
-            LoadButton = "Load Config";
-
             LoadConfigCommand = new LoadConfigCommand(this);
-
+            HelpCommand = new HelpCommand(this);
+            SendCommand = new SendCommand(this);
+            SaveRasPiCommand = new SaveRasPiCommand(this);
+            SaveScriptCommand = new SaveRasPiCommand(this);
         }
 
- 
-        
+        protected void NotifyPropertyChanged(string property)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
 
 
 
