@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RasPi_Controller.Extension_Methods
+﻿namespace RasPi_Controller.Extension_Methods
 {
     public static class ExtensionMethods
     {

@@ -58,7 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\LoadConfigCommand.cs" />
+    <Compile Include="Commands\SendCommand.cs" />
     <Compile Include="Extension Methods\ExtensionMethods.cs" />
     <Compile Include="Helpers\NetworkingHelper.cs" />
     <Compile Include="Models\RaspberryPi.cs" />

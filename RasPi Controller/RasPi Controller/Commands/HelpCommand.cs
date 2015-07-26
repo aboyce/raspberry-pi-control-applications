@@ -9,9 +9,9 @@ using RasPi_Controller.ViewModels;
 
 namespace RasPi_Controller.Commands
 {
-    public class LoadConfigCommand : CommandBase
+    public class HelpCommand : CommandBase
     {
-        public LoadConfigCommand(RasPiControllerWindowViewModel vm) : base(vm)
+        public HelpCommand(RasPiControllerWindowViewModel vm) : base(vm)
         {
         }
 
@@ -22,15 +22,12 @@ namespace RasPi_Controller.Commands
 
         public override void Execute(object parameter)
         {
-
             //_vm.EnableAll();
             //BtnLoadConfig.Content = "Re-Load Config";
             //BtnLoadConfig.Background = Brushes.FloralWhite;
 
             //LbxRasPis.ItemsSource = _vm.RaspberryPis;
             //LbxScripts.ItemsSource = _vm.Scripts;
-
-            base_vm.LoadedFromConfig = true;
         }
     }
 }

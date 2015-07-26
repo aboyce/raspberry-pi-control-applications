@@ -14,24 +14,27 @@ using System.ComponentModel;
 
 namespace RasPi_Controller.ViewModels
 {
-    public class MainWindowViewModel
+    public class RasPiControllerWindowViewModel
     {
         public ObservableCollection<RaspberryPi> RaspberryPis;
         public ObservableCollection<Script> Scripts;
 
         public ICommand LoadConfigCommand { get; set; }
 
+        public bool LoadedFromConfig { get; set; }
+        public bool ObservableCollectionsHaveChanged { get; set; }
+
         public string LoadButton { get; set; }
 
-        public MainWindowViewModel()
+        public RasPiControllerWindowViewModel()
         {
             // TODO: Check that they both are not null, and decide what to do if they are?
             RaspberryPis = ModelHelper.LoadRaspberryPisFromConfiguration();
             Scripts = ModelHelper.LoadScripsFromConfiguration();
 
-            this.LoadButton = "Load Config";
+            LoadButton = "Load Config";
 
-            this.LoadConfigCommand = new LoadConfigCommand(this);
+            LoadConfigCommand = new LoadConfigCommand(this);
 
         }
 
@@ -47,7 +50,7 @@ namespace RasPi_Controller.ViewModels
         /// <summary>
         /// Tries to save the two ObservableCollections to the XML Config file at the location in the app.config file.
         /// </summary>
-        /// <returns>True if successfull, False if not.</returns>
+        /// <returns>True if successful, False if not.</returns>
         public bool SaveToConfiguration()
         {
             return ModelHelper.SaveConfiguration(RaspberryPis, Scripts);

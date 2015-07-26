@@ -26,13 +26,12 @@ namespace RasPi_Controller
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainWindowViewModel _vm;
-
+        private readonly RasPiControllerWindowViewModel _vm;
 
         public MainWindow()
         {
             InitializeComponent();
-            _vm = new MainWindowViewModel();
+            _vm = new RasPiControllerWindowViewModel();
 
             DataContext = _vm;
         }
