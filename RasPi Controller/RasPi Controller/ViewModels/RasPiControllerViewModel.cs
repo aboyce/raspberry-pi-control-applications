@@ -31,7 +31,7 @@ namespace RasPi_Controller.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand LoadConfigCommand { get; set; }
-        public ICommand TestIPAddressCommand  { get; set; }
+        public ICommand TestIpAddressCommand  { get; set; }
         public ICommand TestNetworkNameCommand { get; set; }
         public ICommand SendCommand { get; set; }
         public ICommand SaveRasPiCommand { get; set; }
@@ -61,7 +61,7 @@ namespace RasPi_Controller.ViewModels
             Scripts = ModelHelper.LoadScripsFromConfiguration();
 
             LoadConfigCommand = new LoadConfigCommand(this);
-            TestIPAddressCommand = new TestIPAddressCommand(this);
+            TestIpAddressCommand = new TestIpAddressCommand(this);
             TestNetworkNameCommand = new TestNetworkNameCommand(this);
             SendCommand = new SendCommand(this);
             SaveRasPiCommand = new SaveRasPiCommand(this);

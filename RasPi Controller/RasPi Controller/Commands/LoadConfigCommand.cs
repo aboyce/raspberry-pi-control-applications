@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using RasPi_Controller.Helpers;
 using RasPi_Controller.ViewModels;
 
 
@@ -15,18 +16,17 @@ namespace RasPi_Controller.Commands
 
         public override bool CanExecute(object parameter)
         {
-            return true;
+            return ModelHelper.ConfigFileExists();
         }
 
         public override void Execute(object parameter)
         {
             base_vm.LoadedFromConfig = true;
+            base_vm.RaspberryPis = ModelHelper.LoadRaspberryPisFromConfiguration();
+            base_vm.Scripts = ModelHelper.LoadScripsFromConfiguration();
 
             //_vm.EnableAll(); **CANNOT DO YET
             //BtnLoadConfig.Background = Brushes.FloralWhite;
-
-            //LbxRasPis.ItemsSource = _vm.RaspberryPis; **SHOULD BE AUTOMATIC AFTER INOTIFIED
-            //LbxScripts.ItemsSource = _vm.Scripts; **SHOULD BE AUTOMATIC AFTER INOTIFIED
         }
     }
 }

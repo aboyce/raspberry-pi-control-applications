@@ -149,5 +149,10 @@ namespace RasPi_Controller.Helpers
 
             return true;
         }
+
+        public static bool ConfigFileExists()
+        {
+            return File.Exists(ConfigurationManager.AppSettings["ConfigurationFilePath"]);
+        }
     }
 }

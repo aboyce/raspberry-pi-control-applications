@@ -9,9 +9,9 @@ using RasPi_Controller.ViewModels;
 
 namespace RasPi_Controller.Commands
 {
-    public class TestIPAddressCommand : CommandBase
+    public class TestIpAddressCommand : CommandBase
     {
-        public TestIPAddressCommand(RasPiControllerWindowViewModel vm) : base(vm) { }
+        public TestIpAddressCommand(RasPiControllerWindowViewModel vm) : base(vm) { }
 
         public override bool CanExecute(object parameter)
         {
