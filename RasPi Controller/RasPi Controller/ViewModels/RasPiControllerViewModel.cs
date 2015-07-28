@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using RasPi_Controller.Models;
 using RasPi_Controller.Helpers;
 using System.Windows.Input;
@@ -85,13 +86,13 @@ namespace RasPi_Controller.ViewModels
 
 
         /// <summary>
-        /// Forwards on a message to the view to display in a message box
+        /// Puts the header and message in a MessageBox.Show
         /// </summary>
         /// <param name="header">The message header</param>
         /// <param name="message">The message body</param>
         public void MessageToView(string header, string message)
         {
-            RasPiControllerWindow.DisplayMessage(header, message);
+            MessageBox.Show(message, header);
         }
 
         /// <summary>

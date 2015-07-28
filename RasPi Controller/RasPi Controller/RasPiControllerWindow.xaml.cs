@@ -32,11 +32,6 @@ namespace RasPi_Controller
             DataContext = new RasPiControllerWindowViewModel();
         }
 
-        public static void DisplayMessage(string header, string message)
-        {
-            MessageBox.Show(message, header);
-        }
-
         #region Changed Text
 
         private void TbxRasPiNetworkName_KeyDown(object sender, KeyEventArgs e)
