@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using RasPi_Controller.ViewModels;
+using RasPi_Controller.Helpers;
 
 
 namespace RasPi_Controller.Commands
@@ -15,15 +16,25 @@ namespace RasPi_Controller.Commands
 
         public override bool CanExecute(object parameter)
         {
-            return true;
+            return ModelHelper.ConfigFileExists();
         }
 
         public override void Execute(object parameter)
         {
-            //if (_vm.SaveToConfiguration())
-            //    MessageBox.Show("Saved to Config File", "Success");
-            //else
-            //    MessageBox.Show("Could not save to config", "Error");
+            if (!ModelHelper.ConfigFileExists())
+            {
+                base_vm.MessageToView("Error", "The config file doesn't exist");
+                return;
+            }
+
+            if (base_vm.SaveToConfiguration())
+            {
+                base_vm.MessageToView("Success", "Saved to the config file");
+            }
+            else
+            {
+                base_vm.MessageToView("Error", "Could not save to the config file");
+            }
         }
     }
 }

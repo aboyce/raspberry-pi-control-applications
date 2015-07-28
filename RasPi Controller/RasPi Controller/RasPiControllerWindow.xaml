@@ -6,7 +6,7 @@
         <Grid Name="TopLeft">
             <Button x:Name="BtnLoadConfig" Content="Re-Load Config"  Command="{Binding LoadConfigCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="112" Height="22" Background="#FF1EE200" BorderThickness="1,1,2,2"/>
             <Button x:Name="BtnHelp" Content="?" Command="{Binding HelpCommand}" HorizontalAlignment="Left" Margin="127,10,0,0" VerticalAlignment="Top" Width="19" Height="22" Background="#FFF5DDA8"/>
-            <Button x:Name="BtnSaveConfig" Content="Save Config" Command="{Binding SaveConfigCommand}" HorizontalAlignment="Left" Margin="170,11,0,0" VerticalAlignment="Top" Width="112" Height="22" Background="#FF1EE200" BorderThickness="1,1,2,2" IsEnabled="False"/>
+            <Button x:Name="BtnSaveConfig" Content="Save Config" Command="{Binding SaveConfigCommand}" HorizontalAlignment="Left" Margin="170,11,0,0" VerticalAlignment="Top" Width="112" Height="22" Background="#FF1EE200" BorderThickness="1,1,2,2"/>
         </Grid>
         <Grid Name="LeftSide">
             <Grid Name="RaspberryPis">

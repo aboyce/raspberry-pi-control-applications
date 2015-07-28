@@ -127,23 +127,13 @@ namespace RasPi_Controller
             BtnSaveConfig.IsEnabled = IsEnabled;
         }
 
-        private void BtnHelp_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
         private void BtnSend_Click(object sender, RoutedEventArgs e)
-        {
-        }
-        private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)
         {
         }
         private void BtnSaveScript_Click(object sender, RoutedEventArgs e)
         {
         }
         private void BtnSaveRasPi_Click(object sender, RoutedEventArgs e)
-        {
-        }
-        private void BtnSaveConfig_Click(object sender, RoutedEventArgs e)
         {
         }
         private void BtnTestNetworkName_Click(object sender, RoutedEventArgs e)
