@@ -22,21 +22,22 @@ using RasPi_Controller.Helpers;
 namespace RasPi_Controller
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for RasPiControllerWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class RasPiControllerWindow : Window
     {
-        private readonly RasPiControllerWindowViewModel _vm;
-
-        public MainWindow()
+        public RasPiControllerWindow()
         {
             InitializeComponent();
-            _vm = new RasPiControllerWindowViewModel();
-
-            DataContext = _vm;
+            DataContext = new RasPiControllerWindowViewModel();
         }
 
-#region Changed Text
+        public static void DisplayMessage(string header, string message)
+        {
+            MessageBox.Show(message, header);
+        }
+
+        #region Changed Text
 
         private void TbxRasPiNetworkName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -64,7 +65,7 @@ namespace RasPi_Controller
 
 #endregion
 
-#region Selection Changed
+        #region Selection Changed
 
         private void LbxRasPis_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

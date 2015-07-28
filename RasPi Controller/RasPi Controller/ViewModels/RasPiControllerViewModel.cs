@@ -16,6 +16,8 @@ namespace RasPi_Controller.ViewModels
 {
     public class RasPiControllerWindowViewModel : INotifyPropertyChanged
     {
+        #region Properties
+
         private ObservableCollection<RaspberryPi> _raspberryPis;
         public ObservableCollection<RaspberryPi> RaspberryPis {
             get { return _raspberryPis; }
@@ -49,6 +51,10 @@ namespace RasPi_Controller.ViewModels
         }
         public bool ObservableCollectionsHaveChanged { get; set; }
 
+#endregion
+
+        #region Constructor and Setup
+
         public RasPiControllerWindowViewModel()
         {
             Setup();
@@ -75,11 +81,18 @@ namespace RasPi_Controller.ViewModels
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
 
+#endregion
 
 
-
-
-
+        /// <summary>
+        /// Forwards on a message to the view to display in a message box
+        /// </summary>
+        /// <param name="header">The message header</param>
+        /// <param name="message">The message body</param>
+        public void MessageToView(string header, string message)
+        {
+            RasPiControllerWindow.DisplayMessage(header, message);
+        }
 
         /// <summary>
         /// Tries to save the two ObservableCollections to the XML Config file at the location in the app.config file.

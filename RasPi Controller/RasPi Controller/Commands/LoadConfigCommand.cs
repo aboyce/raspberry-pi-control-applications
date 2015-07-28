@@ -25,6 +25,8 @@ namespace RasPi_Controller.Commands
             base_vm.RaspberryPis = ModelHelper.LoadRaspberryPisFromConfiguration();
             base_vm.Scripts = ModelHelper.LoadScripsFromConfiguration();
 
+            base_vm.MessageToView("Loaded", "Loaded in config");
+
             //_vm.EnableAll(); **CANNOT DO YET
             //BtnLoadConfig.Background = Brushes.FloralWhite;
         }

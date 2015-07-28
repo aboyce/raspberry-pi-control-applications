@@ -1,4 +1,4 @@
-﻿<Window x:Class="RasPi_Controller.MainWindow"
+﻿<Window x:Class="RasPi_Controller.RasPiControllerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="RasPi Controller" Height="423.304" Width="771.755">
