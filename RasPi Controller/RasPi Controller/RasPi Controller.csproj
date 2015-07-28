@@ -59,6 +59,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\TestIPAddressCommand.cs" />
+    <Compile Include="Commands\TestNetworkNameCommand.cs" />
+    <Compile Include="Commands\SaveConfigCommand.cs" />
     <Compile Include="Commands\SaveScriptCommand.cs" />
     <Compile Include="Commands\SaveRasPiCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />

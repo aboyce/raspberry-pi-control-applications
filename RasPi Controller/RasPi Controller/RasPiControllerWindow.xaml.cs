@@ -36,50 +36,6 @@ namespace RasPi_Controller
             DataContext = _vm;
         }
 
-#region Buttons
-
-        private void BtnSaveConfig_Click(object sender, RoutedEventArgs e)
-        {
-            if (_vm.SaveToConfiguration())
-                MessageBox.Show("Saved to Config File", "Success");
-            else
-                MessageBox.Show("Could not save to config", "Error");
-        }
-
-        private void BtnTestNetworkName_Click(object sender, RoutedEventArgs e)
-        {
-            TextRange content = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
-            string pingResult = NetworkingHelper.TryToPing(content.Text);
-
-            if (pingResult == null)
-            {
-                content.ApplyPropertyValue(ForegroundProperty, Brushes.Green);
-            }
-            else
-            {
-                content.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
-                MessageBox.Show(pingResult, "Error");
-            }
-        }
-
-        private void BtnTestIpAddress_Click(object sender, RoutedEventArgs e)
-        {
-            TextRange content = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
-            string pingResult = NetworkingHelper.TryToPing(content.Text);
-
-            if (pingResult == null)
-            {
-                content.ApplyPropertyValue(ForegroundProperty, Brushes.Green);
-            }
-            else
-            {
-                content.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
-                MessageBox.Show(pingResult, "Error");
-            }
-        }
-
-#endregion
-
 #region Changed Text
 
         private void TbxRasPiNetworkName_KeyDown(object sender, KeyEventArgs e)
@@ -185,12 +141,19 @@ namespace RasPi_Controller
         private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)
         {
         }
-
         private void BtnSaveScript_Click(object sender, RoutedEventArgs e)
         {
         }
-
         private void BtnSaveRasPi_Click(object sender, RoutedEventArgs e)
+        {
+        }
+        private void BtnSaveConfig_Click(object sender, RoutedEventArgs e)
+        {
+        }
+        private void BtnTestNetworkName_Click(object sender, RoutedEventArgs e)
+        {
+        }
+        private void BtnTestIpAddress_Click(object sender, RoutedEventArgs e)
         {
         }
     }

@@ -31,10 +31,13 @@ namespace RasPi_Controller.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand LoadConfigCommand { get; set; }
-        public ICommand HelpCommand { get; set; }
+        public ICommand TestIPAddressCommand  { get; set; }
+        public ICommand TestNetworkNameCommand { get; set; }
         public ICommand SendCommand { get; set; }
         public ICommand SaveRasPiCommand { get; set; }
         public ICommand SaveScriptCommand { get; set; }
+        public ICommand SaveConfigCommand { get; set; }
+        public ICommand HelpCommand { get; set; }
 
         private bool _loadedFromConfig;
         public bool LoadedFromConfig
@@ -58,10 +61,13 @@ namespace RasPi_Controller.ViewModels
             Scripts = ModelHelper.LoadScripsFromConfiguration();
 
             LoadConfigCommand = new LoadConfigCommand(this);
-            HelpCommand = new HelpCommand(this);
+            TestIPAddressCommand = new TestIPAddressCommand(this);
+            TestNetworkNameCommand = new TestNetworkNameCommand(this);
             SendCommand = new SendCommand(this);
             SaveRasPiCommand = new SaveRasPiCommand(this);
             SaveScriptCommand = new SaveRasPiCommand(this);
+            SaveConfigCommand = new SaveConfigCommand(this);
+            HelpCommand = new HelpCommand(this);
         }
 
         protected void NotifyPropertyChanged(string property)
