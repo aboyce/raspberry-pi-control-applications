@@ -36,54 +36,26 @@ namespace RasPi_Controller
 
         private void TbxRasPiNetworkName_KeyDown(object sender, KeyEventArgs e)
         {
-            TextRange content = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
-            content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
+            //TextRange content = new TextRange(TbxRasPiNetworkName.Document.ContentStart, TbxRasPiNetworkName.Document.ContentEnd);
+            //content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
         }
 
         private void TbxRasPiIpAddress_KeyDown(object sender, KeyEventArgs e)
         {
-            TextRange content = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
-            content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
+            //TextRange content = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
+            //content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
         }
 
         private void TbxRasPiId_KeyDown(object sender, KeyEventArgs e)
         {
-            TextRange content = new TextRange(TbxRasPiId.Document.ContentStart, TbxRasPiId.Document.ContentEnd);
-            content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
+            //TextRange content = new TextRange(TbxRasPiId.Document.ContentStart, TbxRasPiId.Document.ContentEnd);
+            //content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
         }
 
         private void TbxScriptId_KeyDown(object sender, KeyEventArgs e)
         {
-            TextRange content = new TextRange(TbxScriptId.Document.ContentStart, TbxScriptId.Document.ContentEnd);
-            content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
-        }
-
-#endregion
-
-        #region Selection Changed
-
-        private void LbxRasPis_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (LbxRasPis.SelectedItem == null) return;
-            RaspberryPi rasPi = (RaspberryPi)LbxRasPis.SelectedItem;
-            TbxRasPiId.Document.Blocks.Clear();
-            TbxRasPiId.Document.Blocks.Add(new Paragraph(new Run(rasPi.Id)));
-            TbxRasPiNetworkName.Document.Blocks.Clear();
-            TbxRasPiNetworkName.Document.Blocks.Add(new Paragraph(new Run(rasPi.NetworkName)));
-            TbxRasPiIpAddress.Document.Blocks.Clear();
-            TbxRasPiIpAddress.Document.Blocks.Add(new Paragraph(new Run(rasPi.IpAddress)));
-            TbxRasPiUsername.Text = rasPi.Username;
-        }
-
-        private void LbxScripts_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (LbxScripts.SelectedItem == null) return;
-            Script script = (Script)LbxScripts.SelectedItem;
-            TbxScriptId.Document.Blocks.Clear();
-            TbxScriptId.Document.Blocks.Add(new Paragraph(new Run(script.Id)));
-            TbxScriptName.Text = script.Name;
-            TbxScriptDescription.Text = script.Description;
-            TbxScriptArgumentFormat.Text = script.ArgumentFormat;
+            //TextRange content = new TextRange(TbxScriptId.Document.ContentStart, TbxScriptId.Document.ContentEnd);
+            //content.ApplyPropertyValue(ForegroundProperty, Brushes.Black);
         }
 
 #endregion

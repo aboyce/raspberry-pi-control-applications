@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -7,10 +8,8 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using RasPi_Controller.Models;
 using RasPi_Controller.Helpers;
-using System.Windows.Input;
 using RasPi_Controller.Commands;
 
 namespace RasPi_Controller.ViewModels
@@ -22,14 +21,18 @@ namespace RasPi_Controller.ViewModels
         private ObservableCollection<RaspberryPi> _raspberryPis;
         public ObservableCollection<RaspberryPi> RaspberryPis {
             get { return _raspberryPis; }
-            set { _raspberryPis = value; NotifyPropertyChanged("RaspberryPis"); }
-        }
-
+            set { _raspberryPis = value; NotifyPropertyChanged("RaspberryPis"); } }
         private ObservableCollection<Script> _scripts;
         public ObservableCollection<Script> Scripts {
             get { return _scripts; }
-            set { _scripts = value; NotifyPropertyChanged("Scripts"); }
-        }
+            set { _scripts = value; NotifyPropertyChanged("Scripts"); } }
+
+        private RaspberryPi _selectedRasPi;
+        public RaspberryPi SelectedRasPi { get { return _selectedRasPi; }
+            set { _selectedRasPi = value; NotifyPropertyChanged("SelectedRasPi"); } }
+        private Script _selectedScript;
+        public Script SelectedScript { get { return _selectedScript; }
+            set { _selectedScript = value; NotifyPropertyChanged("SelectedScript"); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -43,14 +46,9 @@ namespace RasPi_Controller.ViewModels
         public ICommand HelpCommand { get; set; }
 
         private bool _loadedFromConfig;
-        public bool LoadedFromConfig
-        {
-            get { return _loadedFromConfig;}
-            set { _loadedFromConfig = value;
-                NotifyPropertyChanged("LoadedFromConfig");
-            }
+        public bool LoadedFromConfig { get { return _loadedFromConfig; }
+            set { _loadedFromConfig = value; NotifyPropertyChanged("LoadedFromConfig"); }
         }
-        public bool ObservableCollectionsHaveChanged { get; set; }
 
 #endregion
 
@@ -75,6 +73,10 @@ namespace RasPi_Controller.ViewModels
             SaveScriptCommand = new SaveRasPiCommand(this);
             SaveConfigCommand = new SaveConfigCommand(this);
             HelpCommand = new HelpCommand(this);
+
+            // TODO: Check that these are not null and what to do if they are. (Probably just a new()).
+            _selectedRasPi = _raspberryPis[0];
+            _selectedScript = _scripts[0];
         }
 
         protected void NotifyPropertyChanged(string property)
