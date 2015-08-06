@@ -3,8 +3,6 @@
   <RaspberryPis>
     <RaspberryPi id="Room" networkName="Adam-RasPi-Server" ipAddress="192.168.1.93" username="remote" />
     <RaspberryPi id="Test" networkName="Test-RasPi" ipAddress="10.10.10.100" username="pi" />
-    <RaspberryPi id="Room4Two" networkName="Adam-RasPi-Server" ipAddress="192.168.1.93" username="remote" />
-    <RaspberryPi id="Room3Two" networkName="Adam-RasPi-Server" ipAddress="192.168.1.93" username="remote" />
   </RaspberryPis>
   <Scripts>
     <Script id="Door Management" name="DoorManagement.py" description="To control the opening of doors." argumentFormat="[url] [doorId] [cardId]" />

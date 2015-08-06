@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using RasPi_Controller.Helpers;
 using RasPi_Controller.ViewModels;
 
 
@@ -20,18 +15,17 @@ namespace RasPi_Controller.Commands
 
         public override void Execute(object parameter)
         {
-            //TextRange content = new TextRange(TbxRasPiIpAddress.Document.ContentStart, TbxRasPiIpAddress.Document.ContentEnd);
-            //string pingResult = NetworkingHelper.TryToPing(content.Text);
+            // TODO: Get this on a separate thread.
+            string pingResult = NetworkingHelper.TryToPing(base_vm.SelectedRasPi.IpAddress);
 
-            //if (pingResult == null)
-            //{
-            //    content.ApplyPropertyValue(ForegroundProperty, Brushes.Green);
-            //}
-            //else
-            //{
-            //    content.ApplyPropertyValue(ForegroundProperty, Brushes.Red);
-            //    MessageBox.Show(pingResult, "Error");
-            //}
+            if (pingResult == null)
+            {
+                base_vm.MessageToView("Success", "Ping succeeded");
+            }
+            else
+            {
+                base_vm.MessageToView("Error", pingResult);
+            }
         }
     }
 }

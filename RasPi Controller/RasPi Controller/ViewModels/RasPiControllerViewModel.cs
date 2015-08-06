@@ -40,8 +40,8 @@ namespace RasPi_Controller.ViewModels
         public ICommand TestIpAddressCommand  { get; set; }
         public ICommand TestNetworkNameCommand { get; set; }
         public ICommand SendCommand { get; set; }
-        public ICommand SaveRasPiCommand { get; set; }
-        public ICommand SaveScriptCommand { get; set; }
+        public ICommand AddRasPiCommand { get; set; }
+        public ICommand AddScriptCommand { get; set; }
         public ICommand SaveConfigCommand { get; set; }
         public ICommand HelpCommand { get; set; }
 
@@ -69,14 +69,10 @@ namespace RasPi_Controller.ViewModels
             TestIpAddressCommand = new TestIpAddressCommand(this);
             TestNetworkNameCommand = new TestNetworkNameCommand(this);
             SendCommand = new SendCommand(this);
-            SaveRasPiCommand = new SaveRasPiCommand(this);
-            SaveScriptCommand = new SaveRasPiCommand(this);
+            AddRasPiCommand = new AddRasPiCommand(this);
+            AddScriptCommand = new AddRasPiCommand(this);
             SaveConfigCommand = new SaveConfigCommand(this);
             HelpCommand = new HelpCommand(this);
-
-            // TODO: Check that these are not null and what to do if they are. (Probably just a new()).
-            _selectedRasPi = _raspberryPis[0];
-            _selectedScript = _scripts[0];
         }
 
         protected void NotifyPropertyChanged(string property)
@@ -85,7 +81,6 @@ namespace RasPi_Controller.ViewModels
         }
 
 #endregion
-
 
         /// <summary>
         /// Puts the header and message in a MessageBox.Show

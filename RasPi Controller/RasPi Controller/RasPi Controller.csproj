@@ -62,8 +62,8 @@
     <Compile Include="Commands\TestIPAddressCommand.cs" />
     <Compile Include="Commands\TestNetworkNameCommand.cs" />
     <Compile Include="Commands\SaveConfigCommand.cs" />
-    <Compile Include="Commands\SaveScriptCommand.cs" />
-    <Compile Include="Commands\SaveRasPiCommand.cs" />
+    <Compile Include="Commands\AddScriptCommand.cs" />
+    <Compile Include="Commands\AddRasPiCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\LoadConfigCommand.cs" />
     <Compile Include="Commands\SendCommand.cs" />
@@ -75,7 +75,7 @@
     <Compile Include="ViewModels\RasPiControllerViewModel.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
     <Compile Include="Helpers\SSHControllerHelper.cs" />
-    <Page Include="RasPiControllerWindow.xaml">
+    <Page Include="Views\RasPiControllerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -83,7 +83,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="RasPiControllerWindow.xaml.cs">
+    <Compile Include="Views\RasPiControllerWindow.xaml.cs">
       <DependentUpon>RasPiControllerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
