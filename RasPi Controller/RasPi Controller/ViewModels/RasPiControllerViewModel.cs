@@ -34,6 +34,18 @@ namespace RasPi_Controller.ViewModels
         public Script SelectedScript { get { return _selectedScript; }
             set { _selectedScript = value; NotifyPropertyChanged("SelectedScript"); } }
 
+        private string _password;
+        public string Password {
+            get { return _password; }
+            set { _password = value; NotifyPropertyChanged("Password"); }
+        }
+        
+        private string _arguments;
+        public string Arguments {
+            get { return _arguments; }
+            set { _arguments = value; NotifyPropertyChanged("Arguments"); }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand LoadConfigCommand { get; set; }
@@ -45,10 +57,6 @@ namespace RasPi_Controller.ViewModels
         public ICommand SaveConfigCommand { get; set; }
         public ICommand HelpCommand { get; set; }
 
-        private bool _loadedFromConfig;
-        public bool LoadedFromConfig { get { return _loadedFromConfig; }
-            set { _loadedFromConfig = value; NotifyPropertyChanged("LoadedFromConfig"); }
-        }
 
 #endregion
 
@@ -70,7 +78,7 @@ namespace RasPi_Controller.ViewModels
             TestNetworkNameCommand = new TestNetworkNameCommand(this);
             SendCommand = new SendCommand(this);
             AddRasPiCommand = new AddRasPiCommand(this);
-            AddScriptCommand = new AddRasPiCommand(this);
+            AddScriptCommand = new AddScriptCommand(this);
             SaveConfigCommand = new SaveConfigCommand(this);
             HelpCommand = new HelpCommand(this);
         }

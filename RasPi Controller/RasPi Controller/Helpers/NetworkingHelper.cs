@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using RasPi_Controller.Extension_Methods;
@@ -46,9 +44,8 @@ namespace RasPi_Controller.Helpers
                 {
                     ipHost = Dns.GetHostEntry(toCheck);
                 }
-                catch (Exception e)
+                catch
                 {
-                    string debug = e.Message;
                     return null;
                 }
 
@@ -78,7 +75,7 @@ namespace RasPi_Controller.Helpers
                 return "Invalid IP Address/Hostname";
 
             Ping ping = new Ping();
-            PingReply reply = null;
+            PingReply reply;
 
             try
             {

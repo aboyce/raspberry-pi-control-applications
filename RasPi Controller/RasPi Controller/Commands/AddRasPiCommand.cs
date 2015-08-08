@@ -23,12 +23,18 @@ namespace RasPi_Controller.Commands
 
         public override void Execute(object parameter)
         {
+            if (!base_vm.CheckRaspberryPiIdIsUnique(base_vm.SelectedRasPi.Id))
+            {
+                base_vm.MessageToView("Error", "The Id already exists");
+                return;
+            }
+
+
+
+
+
             base_vm.SelectedRasPi = new RaspberryPi();
-            //if (!base_vm.CheckRaspberryPiIdIsUnique(base_vm.SelectedRasPi.Id))
-            //{
-            //    base_vm.MessageToView("Error", "The Id already exists");
-            //    return;
-            //}
+            
 
             //if (base_vm.SelectedRasPi.NetworkName == string.Empty || base_vm.SelectedRasPi.IpAddress == string.Empty || base_vm.SelectedRasPi.Username == string.Empty)
             //{

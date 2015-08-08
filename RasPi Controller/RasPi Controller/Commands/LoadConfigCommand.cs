@@ -15,7 +15,6 @@ namespace RasPi_Controller.Commands
 
         public override void Execute(object parameter)
         {
-            base_vm.LoadedFromConfig = true;
             base_vm.RaspberryPis = ModelHelper.LoadRaspberryPisFromConfiguration();
             base_vm.Scripts = ModelHelper.LoadScripsFromConfiguration();
             base_vm.MessageToView("Loaded", "Loaded in config");

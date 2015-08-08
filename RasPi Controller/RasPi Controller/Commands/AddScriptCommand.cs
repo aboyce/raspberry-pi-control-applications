@@ -16,7 +16,7 @@ namespace RasPi_Controller.Commands
 
         public override bool CanExecute(object parameter)
         {
-            return false;
+            return base_vm.SelectedScript != null;
         }
 
         public override void Execute(object parameter)

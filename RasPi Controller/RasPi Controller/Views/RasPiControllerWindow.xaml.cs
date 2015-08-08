@@ -3,9 +3,7 @@ using RasPi_Controller.ViewModels;
 
 namespace RasPi_Controller.Views
 {
-    /// <summary>
-    /// Interaction logic for RasPiControllerWindow.xaml
-    /// </summary>
+
     public partial class RasPiControllerWindow : Window
     {
         public RasPiControllerWindow()

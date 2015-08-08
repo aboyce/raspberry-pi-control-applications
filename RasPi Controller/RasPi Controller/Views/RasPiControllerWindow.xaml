@@ -46,7 +46,7 @@
                 <Label x:Name="LbScriptName" Content="Script Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,86,0,0"/>
                 <TextBox x:Name="TbxScriptName" Text="{Binding SelectedScript.Name}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,112,0,0"/>
                 <Label x:Name="LbScriptArguments" Content="Arguments" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,140,0,0"/>
-                <TextBox x:Name="TbxScriptArguments" Text="{Binding SelectedScript.Arguments}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,166,0,0"/>
+                <TextBox x:Name="TbxScriptArguments" Text="{Binding Arguments}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,166,0,0"/>
                 <Label x:Name="LbScriptDescription" Content="Script Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,194,0,0"/>
                 <TextBox x:Name="TbxScriptDescription" Text="{Binding SelectedScript.Description}" HorizontalAlignment="Left" Height="104" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,220,0,0"/>
                 <Button x:Name="BtnAddScript" Content="Add New Script" Command="{Binding AddScriptCommand}" HorizontalAlignment="Left" Margin="623,342,0,0" VerticalAlignment="Top" Width="120"/>

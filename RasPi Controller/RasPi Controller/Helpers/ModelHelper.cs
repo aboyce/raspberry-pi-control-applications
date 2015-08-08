@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -43,7 +42,7 @@ namespace RasPi_Controller.Helpers
                         raspberryPis.Add(new RaspberryPi {Id = id, NetworkName = networkName, IpAddress = ipAddress, Username = username});
                     }
             }
-            catch (Exception e)
+            catch
             {
                 // TODO: Log
                 return null;
@@ -84,7 +83,7 @@ namespace RasPi_Controller.Helpers
                         scripts.Add(new Script { Id = id, Name = name, Description = description, ArgumentFormat = argumentFormat });
                     }
             }
-            catch (Exception e)
+            catch
             {
                 // TODO: Log
                 return null;
