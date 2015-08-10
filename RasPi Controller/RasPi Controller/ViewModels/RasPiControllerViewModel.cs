@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using RasPi_Controller.Models;
@@ -34,17 +35,13 @@ namespace RasPi_Controller.ViewModels
         public Script SelectedScript { get { return _selectedScript; }
             set { _selectedScript = value; NotifyPropertyChanged("SelectedScript"); } }
 
-        private string _password;
-        public string Password {
-            get { return _password; }
-            set { _password = value; NotifyPropertyChanged("Password"); }
-        }
+        private SecureString _password;
+        public SecureString Password { get { return _password; }
+            set { _password = value; NotifyPropertyChanged("Password"); } }
         
         private string _arguments;
-        public string Arguments {
-            get { return _arguments; }
-            set { _arguments = value; NotifyPropertyChanged("Arguments"); }
-        }
+        public string Arguments { get { return _arguments; }
+            set { _arguments = value; NotifyPropertyChanged("Arguments"); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

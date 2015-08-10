@@ -14,7 +14,8 @@ namespace RasPi_Controller.Commands
 
         public override bool CanExecute(object parameter)
         {
-            return false;
+            //TODO: Add checking if that be executed
+            return true;
         }
 
         public override void Execute(object parameter)
@@ -46,6 +47,8 @@ namespace RasPi_Controller.Commands
                 base_vm.MessageToView("Error", "Please ensure you have selected a Raspberry Pi, Script and Username");
                 return;
             }
+
+            string password = SecureStringHelper.GetString(base_vm.Password);
 
 
             // TODO: Get everything validated and then send command.

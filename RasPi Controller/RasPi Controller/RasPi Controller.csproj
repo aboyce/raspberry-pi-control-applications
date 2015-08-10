@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviours\PasswordBoxBindingBehaviour.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\TestIPAddressCommand.cs" />
     <Compile Include="Commands\TestNetworkNameCommand.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Commands\SendCommand.cs" />
     <Compile Include="Extension Methods\ExtensionMethods.cs" />
     <Compile Include="Helpers\NetworkingHelper.cs" />
+    <Compile Include="Helpers\SecureStringHelper.cs" />
     <Compile Include="Models\RaspberryPi.cs" />
     <Compile Include="Models\Script.cs" />
     <Compile Include="Models\SSHController.cs" />
