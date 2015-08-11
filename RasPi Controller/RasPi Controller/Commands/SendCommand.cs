@@ -71,8 +71,8 @@ namespace RasPi_Controller.Commands
 
             if (response.Length > 1)
             {
-                string result = response.Substring(0, 1);
-                response = response.Substring(1, response.Length - 1);
+                string result = SSHControllerHelper.Prefix(response);
+                response = SSHControllerHelper.Message(response);
 
                 switch (result)
                 {

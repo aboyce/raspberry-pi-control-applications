@@ -37,5 +37,25 @@ namespace RasPi_Controller.Helpers
 
             return "P" + response; // P = Pass
         }
+
+        /// <summary>
+        /// Removes the message from SendCommand's response, leaving only the 'P' or 'F', i.e. the result.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>A 'P' or 'F' depending on the result from SendCommand</returns>
+        public static string Prefix(string message)
+        {
+            return message.Substring(0, 1);
+        }
+
+        /// <summary>
+        /// Removes the prefix from SendCommand's response, leaving just the message.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>|The message without the 'P' or 'F' prefix</returns>
+        public static string Message(string message)
+        {
+            return message.Substring(1, message.Length - 1);
+        }
     }
 }
