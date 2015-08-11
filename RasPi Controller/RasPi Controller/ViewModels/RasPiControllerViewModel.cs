@@ -98,6 +98,27 @@ namespace RasPi_Controller.ViewModels
         }
 
         /// <summary>
+        /// Puts the header and message in a MessageBox.Show and asks the user a Yes/No.
+        /// </summary>
+        /// <param name="header">The message header</param>
+        /// <param name="message">The message body</param>
+        /// <returns>True if the user selected Yes. False if the user selected No, or an error.</returns>
+        public bool YesNoToView(string header, string message)
+        {
+            MessageBoxResult result = MessageBox.Show(message, header, MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    return true;
+                case MessageBoxResult.No:
+                    return false;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
         /// Tries to save the two ObservableCollections to the XML Config file at the location in the app.config file.
         /// </summary>
         /// <returns>True if successful, False if not.</returns>
