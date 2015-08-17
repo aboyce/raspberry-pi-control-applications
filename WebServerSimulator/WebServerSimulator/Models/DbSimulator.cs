@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebServerSimulator.Helpers;
 
 namespace WebServerSimulator.Models
 {
@@ -18,21 +19,24 @@ namespace WebServerSimulator.Models
 
         private void PopulateWithData()
         {
-            Doors = new List<Door>
-            {
-                new Door { DoorId = "1"},
-                new Door { DoorId = "2"},
-                new Door { DoorId = "3"},
-                new Door { DoorId = "4"}
-            };
+            string[] doorIds = DbSimulatorHelper.LoadInFromTextFile("doors.txt");
+            string[] cardIds = DbSimulatorHelper.LoadInFromTextFile("cards.txt");
 
-            Cards = new List<Card>()
+            Doors = new List<Door>();
+            Cards = new List<Card>();
+
+            if (doorIds == null || cardIds == null)
+                return;
+
+            foreach (string doorId in doorIds)
             {
-                new Card {CardId = "123456"},
-                new Card {CardId = "789456"},
-                new Card {CardId = "456132"},
-                new Card {CardId = "147258"}
-            };
+                Doors.Add(new Door {DoorId = doorId});
+            }
+            
+            foreach (string cardId in cardIds)
+            {
+                Cards.Add(new Card { CardId = cardId });
+            }
         }
     }
 }

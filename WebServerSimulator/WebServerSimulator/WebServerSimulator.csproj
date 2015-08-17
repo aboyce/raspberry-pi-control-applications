@@ -64,6 +64,7 @@
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\StopCommand.cs" />
     <Compile Include="Commands\StartCommand.cs" />
+    <Compile Include="Helpers\DbSimulatorHelper.cs" />
     <Compile Include="Helpers\Server.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\DbSimulator.cs" />
@@ -100,6 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="doors.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="cards.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
