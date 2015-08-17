@@ -18,7 +18,7 @@ lite_mode = False
 GPIO.setmode(GPIO.BCM)
 gpio_list = [RELAY_ONE, RELAY_TWO, RELAY_THREE, RELAY_FOUR, RELAY_FIVE, RELAY_SIX, RELAY_SEVEN, RELAY_EIGHT]
 
-if len(sys.argv > 1):  # argv[0] is the file path
+if len(sys.argv) > 1:  # argv[0] is the file path
     if sys.argv[1] == '-lite':
         lite_mode = True
 

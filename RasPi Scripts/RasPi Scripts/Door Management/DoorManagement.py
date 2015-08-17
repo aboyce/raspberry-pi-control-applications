@@ -12,7 +12,7 @@ import time
 import requests
 
 # DoorManagement.py version
-VERSION_NUMBER = '0.2'
+VERSION_NUMBER = '0.3'
 
 TIME_TO_OPEN_DOOR = 2  # seconds
 
@@ -31,6 +31,8 @@ DOOR_RELAY_FOUR = None
 door_to_gpio_dict = {DOOR_ID_ONE: DOOR_RELAY_ONE, DOOR_ID_TWO: DOOR_RELAY_TWO,
                      DOOR_ID_THREE: DOOR_RELAY_THREE, DOOR_ID_FOUR: DOOR_RELAY_FOUR}
 
+lite_mode = False
+
 # string url
 url = None
 # int door_id
@@ -43,8 +45,9 @@ card_id = None
 # For consistency, 'message' should be either, 'Debug: MESSAGE', 'Info: MESSAGE', 'Warn: MESSAGE', 'Error: MESSAGE'.
 # Example; Log('Error: no values provided')
 def log(message):
-    log_message = time.strftime("%H:%M:%S") + ' - DoorManagement(v' + VERSION_NUMBER + ') - ' + '[ ' + message + ' ]'
-    print(log_message)
+    if not lite_mode:
+        log_message = time.strftime("%H:%M:%S") + ' - DoorManagement(v' + VERSION_NUMBER + ') - ' + '[ ' + message + ' ]'
+        print(log_message)
     return
 
 
@@ -52,6 +55,8 @@ def log(message):
 # Returns: True if it could extract values. The error message if not.
 def valid_arguments():
     length_of_args = len(sys.argv)
+
+    # TODO: Re-write this so that they can be in any order and explicitly wrote out. e.g. -u bob.com -d 01 -c 882 -lite
 
     # The args[0] is the file path.
     if length_of_args > 1:
@@ -61,7 +66,11 @@ def valid_arguments():
             return False
 
         # Check we have all of the arguments.
-        if length_of_args == 4:
+        if length_of_args == 4 or length_of_args == 5:
+
+            if sys.argv[4] == '-lite':
+                global lite_mode
+                lite_mode = True
             # Checking url (assume it is if it contains 'http').
             if 'http' in sys.argv[1]:
                 log('Info: url is present')
@@ -103,7 +112,6 @@ def valid_arguments():
         else:
             log('Error: please provide correct number of arguments')
             return False
-
     return True
 
 
@@ -156,7 +164,6 @@ def open_door():
 
 
 def main():
-    log('Info: started')
 
     if not valid_arguments():
         log('Info: stopping due to invalid arguments')

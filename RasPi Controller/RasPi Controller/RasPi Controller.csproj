@@ -60,6 +60,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Behaviours\PasswordBoxBindingBehaviour.cs" />
+    <Compile Include="Commands\NewScriptCommand.cs" />
+    <Compile Include="Commands\NewRasPiCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\TestIPAddressCommand.cs" />
     <Compile Include="Commands\TestNetworkNameCommand.cs" />

@@ -4,62 +4,64 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Behaviours="clr-namespace:RasPi_Controller.Behaviours"
         x:Class="RasPi_Controller.Views.RasPiControllerWindow"
         Title="RasPi Controller" Height="423.304" Width="771.755">
-	<Grid>
-		<Grid x:Name="TopLeft">
-			<Button x:Name="BtnLoadConfig" Content="Re-Load Config"  Command="{Binding LoadConfigCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="112" Height="22" Background="#FF1EE200" BorderThickness="1,1,2,2"/>
-			<Button x:Name="BtnHelp" Content="?" Command="{Binding HelpCommand}" HorizontalAlignment="Left" Margin="127,10,0,0" VerticalAlignment="Top" Width="19" Height="22" Background="#FFF5DDA8"/>
-			<Button x:Name="BtnSaveConfig" Content="Save Config" Command="{Binding SaveConfigCommand}" HorizontalAlignment="Left" Margin="170,11,0,0" VerticalAlignment="Top" Width="112" Height="22" Background="#FF1EE200" BorderThickness="1,1,2,2"/>
-		</Grid>
-		<Grid x:Name="LeftSide">
-			<Grid x:Name="RaspberryPis">
-				<Label x:Name="LbRasPis" Content="Raspberry Pis" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,56,0,0"/>
-				<ListBox x:Name="LbxRasPis" ItemsSource="{Binding RaspberryPis, Mode=TwoWay}" SelectedItem="{Binding SelectedRasPi}"  HorizontalAlignment="Left" Height="47" Margin="12,87,0,0" VerticalAlignment="Top" Width="365"/>
-			</Grid>
-			<Grid x:Name="Scripts">
-				<Label x:Name="LbScripts" Content="Scripts" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,144,0,0"/>
-				<ListBox x:Name="LbxScripts" ItemsSource="{Binding Scripts}" SelectedItem="{Binding SelectedScript}"  HorizontalAlignment="Left" Height="47" Margin="12,175,0,0" VerticalAlignment="Top" Width="365"/>
-			</Grid>
-			<Grid x:Name="Arguments">
-				<Label x:Name="LbScriptArgumentFormat" Content="Arguments Format" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,226,0,0" Width="110" FontStyle="Italic"/>
-				<TextBox x:Name="TbxScriptArgumentFormat" Text="{Binding SelectedScript.ArgumentFormat}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Margin="12,252,0,0" FontStyle="Italic"/>
-			</Grid>
-		</Grid>
-		<Grid x:Name="RightSide">
-			<Grid x:Name="RaspberryPi">
-				<Label x:Name="LbRasPiHeader" Content="Raspberry Pi" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,6,0,0" FontWeight="Bold"/>
-				<Label x:Name="LbRasPiId" Content="ID" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,35,0,0"/>
-				<TextBox x:Name="TbxRasPiId" Text="{Binding SelectedRasPi.Id}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="464,61,0,0"/>
-				<Label x:Name="LbRasPiNetworkName" Content="Network Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,84,0,0"/>
-				<Button x:Name="BtnTestNetworkName" Content="Test" Command="{Binding TestNetworkNameCommand}" HorizontalAlignment="Left" Margin="432,110,0,0" VerticalAlignment="Top" Width="32" Height="23"/>
-				<TextBox x:Name="TbxRasPiNetworkName" Text="{Binding SelectedRasPi.NetworkName}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="464,110,0,0"/>
-				<Label x:Name="LbRasPiIpAddress" Content="IP Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,138,0,0"/>
-				<Button x:Name="BtnTestIpAddress" Content="Test" Command="{Binding TestIpAddressCommand}" HorizontalAlignment="Left" Margin="432,164,0,0" VerticalAlignment="Top" Width="32" Height="23"/>
-				<TextBox x:Name="TbxRasPiIpAddress" Text="{Binding SelectedRasPi.IpAddress}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="464,164,0,0"/>
-				<Label x:Name="LbRasPiUsername" Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,192,0,0"/>
-				<TextBox x:Name="TbxRasPiUsername" Text="{Binding SelectedRasPi.Username}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="464,218,0,0"/>
-				<Label x:Name="LbRasPiPassword" Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,246,0,0"/>
-				<PasswordBox x:Name="PwPasPiPassword" HorizontalAlignment="Left" Margin="464,272,0,0" VerticalAlignment="Top" Width="120" Height="23">
-					<i:Interaction.Behaviors>
-						<Behaviours:PasswordBoxBindingBehaviour Password="{Binding Password}"/>
-					</i:Interaction.Behaviors>
+    <Grid>
+        <Grid x:Name="TopLeft">
+            <Button Content="Re-Load Config"  Command="{Binding LoadConfigCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="112" Height="22" Background="#FF1EE200" BorderThickness="1,1,2,2"/>
+            <Button Content="?" Command="{Binding HelpCommand}" HorizontalAlignment="Left" Margin="127,10,0,0" VerticalAlignment="Top" Width="19" Height="22" Background="#FFF5DDA8"/>
+            <Button Content="Save Config" Command="{Binding SaveConfigCommand}" HorizontalAlignment="Left" Margin="170,11,0,0" VerticalAlignment="Top" Width="112" Height="22" Background="#FF1EE200" BorderThickness="1,1,2,2"/>
+        </Grid>
+        <Grid x:Name="LeftSide">
+            <Grid x:Name="RaspberryPis">
+                <Label Content="Raspberry Pis" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,56,0,0"/>
+                <ListBox ItemsSource="{Binding RaspberryPis, Mode=TwoWay}" SelectedItem="{Binding SelectedRasPi}"  HorizontalAlignment="Left" Height="47" Margin="12,87,0,0" VerticalAlignment="Top" Width="365"/>
+            </Grid>
+            <Grid x:Name="Scripts">
+                <Label Content="Scripts" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,144,0,0"/>
+                <ListBox ItemsSource="{Binding Scripts}" SelectedItem="{Binding SelectedScript}"  HorizontalAlignment="Left" Height="47" Margin="12,175,0,0" VerticalAlignment="Top" Width="365"/>
+            </Grid>
+            <Grid x:Name="Arguments">
+                <Label Content="Arguments Format" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,226,0,0" Width="110" FontStyle="Italic"/>
+                <TextBox Text="{Binding SelectedScript.ArgumentFormat}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Margin="12,252,0,0" FontStyle="Italic"/>
+            </Grid>
+        </Grid>
+        <Grid x:Name="RightSide">
+            <Grid x:Name="RaspberryPi">
+                <Label Content="Raspberry Pi" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,6,0,0" FontWeight="Bold"/>
+                <Label Content="ID" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,35,0,0"/>
+                <TextBox Text="{Binding SelectedRasPi.Id}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="464,61,0,0"/>
+                <Label Content="Network Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,84,0,0"/>
+                <Button Content="Test" Command="{Binding TestNetworkNameCommand}" HorizontalAlignment="Left" Margin="432,110,0,0" VerticalAlignment="Top" Width="32" Height="23"/>
+                <TextBox Text="{Binding SelectedRasPi.NetworkName}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="464,110,0,0"/>
+                <Label Content="IP Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,138,0,0"/>
+                <Button Content="Test" Command="{Binding TestIpAddressCommand}" HorizontalAlignment="Left" Margin="432,164,0,0" VerticalAlignment="Top" Width="32" Height="23"/>
+                <TextBox Text="{Binding SelectedRasPi.IpAddress}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="464,164,0,0"/>
+                <Label Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,192,0,0"/>
+                <TextBox Text="{Binding SelectedRasPi.Username}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="464,218,0,0"/>
+                <Label Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="464,246,0,0"/>
+                <PasswordBox HorizontalAlignment="Left" Margin="464,272,0,0" VerticalAlignment="Top" Width="120" Height="23">
+                    <i:Interaction.Behaviors>
+                        <Behaviours:PasswordBoxBindingBehaviour Password="{Binding Password}"/>
+                    </i:Interaction.Behaviors>
                 </PasswordBox>
-				<Button x:Name="BtnAddRasPi" Content="Add new Raspberry Pi" Command="{Binding AddRasPiCommand}" HorizontalAlignment="Left" Margin="464,314,0,0" VerticalAlignment="Top" Width="120" Height="25"/>
-			</Grid>
-			<Grid x:Name="Script">
-				<Label x:Name="LbScriptHeader" Content="Script" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,6,0,0" FontWeight="Bold"/>
-				<Label x:Name="LbScriptId" Content="ID" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,35,0,0"/>
-				<TextBox x:Name="TbxScriptId" Text="{Binding SelectedScript.Id}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="623,61,0,0"/>
-				<Label x:Name="LbScriptName" Content="Script Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,86,0,0"/>
-				<TextBox x:Name="TbxScriptName" Text="{Binding SelectedScript.Name}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,112,0,0"/>
-				<Label x:Name="LbScriptArguments" Content="Arguments" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,140,0,0"/>
-				<TextBox x:Name="TbxScriptArguments" Text="{Binding Arguments}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,166,0,0"/>
-				<Label x:Name="LbScriptDescription" Content="Script Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,194,0,0"/>
-				<TextBox x:Name="TbxScriptDescription" Text="{Binding SelectedScript.Description}" HorizontalAlignment="Left" Height="104" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,220,0,0"/>
-				<Button x:Name="BtnAddScript" Content="Add New Script" Command="{Binding AddScriptCommand}" HorizontalAlignment="Left" Margin="623,342,0,0" VerticalAlignment="Top" Width="120"/>
-			</Grid>
-		</Grid>
-		<Grid x:Name="Bottom">
-			<Button x:Name="BtnSend" Content="Send" Command="{Binding SendCommand}" HorizontalAlignment="Left" Margin="268,319,0,0" VerticalAlignment="Top" Width="54" Height="37"/>
-		</Grid>
-	</Grid>
+                <Button Content="New" Command="{Binding NewRasPiCommand}" HorizontalAlignment="Left" Margin="464,314,0,0" VerticalAlignment="Top" Width="40" Height="20"/>
+                <Button Content="Add" Command="{Binding AddRasPiCommand}" HorizontalAlignment="Left" Margin="544,314,0,0" VerticalAlignment="Top" Width="40" Height="20"/>
+            </Grid>
+            <Grid x:Name="Script">
+                <Label Content="Script" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,6,0,0" FontWeight="Bold"/>
+                <Label Content="ID" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,32,0,0"/>
+                <TextBox Text="{Binding SelectedScript.Id}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="120" Margin="623,58,0,0"/>
+                <Label Content="Script Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,86,0,0"/>
+                <TextBox Text="{Binding SelectedScript.Name}" HorizontalAlignment="Left" Height="56" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,112,0,0" ScrollViewer.CanContentScroll="True"/>
+                <Label Content="Arguments" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,173,0,0"/>
+                <TextBox Text="{Binding Arguments}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,199,0,0" ScrollViewer.CanContentScroll="True"/>
+                <Label Content="Script Description" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="623,227,0,0" RenderTransformOrigin="0.49,2.231"/>
+                <TextBox Text="{Binding SelectedScript.Description}" HorizontalAlignment="Left" Height="61" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="623,253,0,0" ScrollViewer.CanContentScroll="True"/>
+                <Button Content="New" Command="{Binding NewScriptCommand}" HorizontalAlignment="Left" Margin="623,342,0,0" VerticalAlignment="Top" Width="40"/>
+                <Button Content="Add" Command="{Binding AddScriptCommand}" HorizontalAlignment="Left" Margin="700,342,0,0" VerticalAlignment="Top" Width="40"/>
+            </Grid>
+        </Grid>
+        <Grid x:Name="Bottom">
+            <Button Content="Send" Command="{Binding SendCommand}" HorizontalAlignment="Left" Margin="268,319,0,0" VerticalAlignment="Top" Width="54" Height="37"/>
+        </Grid>
+    </Grid>
 </Window>

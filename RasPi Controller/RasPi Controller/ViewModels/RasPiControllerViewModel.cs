@@ -49,7 +49,9 @@ namespace RasPi_Controller.ViewModels
         public ICommand TestIpAddressCommand  { get; set; }
         public ICommand TestNetworkNameCommand { get; set; }
         public ICommand SendCommand { get; set; }
+        public ICommand NewRasPiCommand { get; set; }
         public ICommand AddRasPiCommand { get; set; }
+        public ICommand NewScriptCommand { get; set; }
         public ICommand AddScriptCommand { get; set; }
         public ICommand SaveConfigCommand { get; set; }
         public ICommand HelpCommand { get; set; }
@@ -66,16 +68,17 @@ namespace RasPi_Controller.ViewModels
 
         private void Setup()
         {
-            // TODO: Check that they both are not null, and decide what to do if they are?
-            RaspberryPis = ModelHelper.LoadRaspberryPisFromConfiguration();
-            Scripts = ModelHelper.LoadScripsFromConfiguration();
+            RaspberryPis = ModelHelper.LoadRaspberryPisFromConfiguration() ?? new ObservableCollection<RaspberryPi>();
+            Scripts = ModelHelper.LoadScripsFromConfiguration() ?? new ObservableCollection<Script>();
 
             LoadConfigCommand = new LoadConfigCommand(this);
             TestIpAddressCommand = new TestIpAddressCommand(this);
             TestNetworkNameCommand = new TestNetworkNameCommand(this);
             SendCommand = new SendCommand(this);
             AddRasPiCommand = new AddRasPiCommand(this);
+            NewRasPiCommand = new NewRasPiCommand(this);
             AddScriptCommand = new AddScriptCommand(this);
+            NewScriptCommand = new NewScriptCommand(this);
             SaveConfigCommand = new SaveConfigCommand(this);
             HelpCommand = new HelpCommand(this);
         }

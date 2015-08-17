@@ -1,4 +1,5 @@
-﻿using RasPi_Controller.Helpers;
+﻿using System.Threading.Tasks;
+using RasPi_Controller.Helpers;
 using RasPi_Controller.ViewModels;
 
 
@@ -15,17 +16,19 @@ namespace RasPi_Controller.Commands
 
         public override void Execute(object parameter)
         {
-            // TODO: Get this on a separate thread.
-            string pingResult = NetworkingHelper.TryToPing(base_vm.SelectedRasPi.IpAddress);
+            Task.Run(() =>
+            {
+                string pingResult = NetworkingHelper.TryToPing(base_vm.SelectedRasPi.IpAddress);
 
-            if (pingResult == null)
-            {
-                base_vm.MessageToView("Success", "Ping succeeded");
-            }
-            else
-            {
-                base_vm.MessageToView("Error", pingResult);
-            }
+                if (pingResult == null)
+                {
+                    base_vm.MessageToView("Success", "Ping succeeded");
+                }
+                else
+                {
+                    base_vm.MessageToView("Error", pingResult);
+                }
+            });
         }
     }
 }

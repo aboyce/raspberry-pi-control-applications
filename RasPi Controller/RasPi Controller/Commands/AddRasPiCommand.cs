@@ -23,28 +23,25 @@ namespace RasPi_Controller.Commands
 
         public override void Execute(object parameter)
         {
-            if (!base_vm.CheckRaspberryPiIdIsUnique(base_vm.SelectedRasPi.Id))
+            if (string.IsNullOrEmpty(base_vm.SelectedRasPi.Id) || string.IsNullOrEmpty(base_vm.SelectedRasPi.NetworkName)
+                || string.IsNullOrEmpty(base_vm.SelectedRasPi.IpAddress) || string.IsNullOrEmpty(base_vm.SelectedRasPi.Username))
             {
-                base_vm.MessageToView("Error", "The Id already exists");
+                base_vm.MessageToView("Error", "Cannot save Raspberry Pi as there is missing content, please fill in relevant fields.");
                 return;
             }
-
-
-
-
-
-            base_vm.SelectedRasPi = new RaspberryPi();
-            
-
-            //if (base_vm.SelectedRasPi.NetworkName == string.Empty || base_vm.SelectedRasPi.IpAddress == string.Empty || base_vm.SelectedRasPi.Username == string.Empty)
-            //{
-            //    base_vm.MessageToView("Error", "Cannot save Raspberry Pi as there is missing content, please fill in relevant fields.");
-            //}
-            //else
-            //{
-            //    base_vm.RaspberryPis.Add(base_vm.SelectedRasPi);
-            //    base_vm.MessageToView("Success", "Raspberry Pi " + base_vm.SelectedRasPi.Id + " was added to memory.");
-            //}
+            else
+            {
+                if (!base_vm.CheckRaspberryPiIdIsUnique(base_vm.SelectedRasPi.Id))
+                {
+                    base_vm.MessageToView("Error", "The Id already exists");
+                    return;
+                }
+                else
+                {
+                    base_vm.RaspberryPis.Add(base_vm.SelectedRasPi);
+                    base_vm.MessageToView("Success", "Raspberry Pi " + base_vm.SelectedRasPi.Id + " was added to memory.");
+                }
+            }
         }
     }
 }
