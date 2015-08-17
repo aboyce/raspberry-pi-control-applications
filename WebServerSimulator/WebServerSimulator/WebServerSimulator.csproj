@@ -65,6 +65,9 @@
     <Compile Include="Commands\StopCommand.cs" />
     <Compile Include="Commands\StartCommand.cs" />
     <Compile Include="Helpers\Server.cs" />
+    <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\DbSimulator.cs" />
+    <Compile Include="Models\Door.cs" />
     <Compile Include="ViewModels\WebServerSimulatorViewModel.cs" />
     <Compile Include="Views\WebServerSimulator.xaml.cs">
       <DependentUpon>WebServerSimulator.xaml</DependentUpon>

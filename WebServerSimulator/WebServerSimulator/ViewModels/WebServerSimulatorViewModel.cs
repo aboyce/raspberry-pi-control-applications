@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using WebServerSimulator.Commands;
 using WebServerSimulator.Helpers;
+using WebServerSimulator.Models;
 
 namespace WebServerSimulator.ViewModels
 {
@@ -24,6 +25,8 @@ namespace WebServerSimulator.ViewModels
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
 
+        private DbSimulator _db;
+
         private ObservableCollection<string> _logMessages; 
         public ObservableCollection<string> LogMessages {
             get { return _logMessages; }
@@ -32,11 +35,12 @@ namespace WebServerSimulator.ViewModels
 
         public WebServerSimulatorViewModel()
         {
+            _db = new DbSimulator();
             _logMessages = new ObservableCollection<string>();
-            Server = new Server(LogMessages);
+            Server = new Server(_db, LogMessages);
+
             StartCommand = new StartCommand(this);
             StopCommand = new StopCommand(this);
-            Log("VM Set Up");
         }
 
         public void Log(string message)
