@@ -14,13 +14,13 @@ RELAY_SIX = 16
 RELAY_SEVEN = 20
 RELAY_EIGHT = 21
 
-single_response_only = False
+lite_mode = False
 GPIO.setmode(GPIO.BCM)
 gpio_list = [RELAY_ONE, RELAY_TWO, RELAY_THREE, RELAY_FOUR, RELAY_FIVE, RELAY_SIX, RELAY_SEVEN, RELAY_EIGHT]
 
 if len(sys.argv > 1):  # argv[0] is the file path
     if sys.argv[1] == '-lite':
-        single_response_only = True
+        lite_mode = True
 
 for p in gpio_list:
     GPIO.setup(p, GPIO.OUT)
@@ -28,13 +28,13 @@ for p in gpio_list:
 
 for p in gpio_list:
     GPIO.output(p, GPIO.LOW)
-    if not single_response_only:
+    if not lite_mode:
         print("Pin Number: " + str(p) + " turned on")
     time.sleep(SLEEP_TIME)
 
 for p in gpio_list:
     GPIO.output(p, GPIO.HIGH)
-    if not single_response_only:
+    if not lite_mode:
         print("Pin Number: " + str(p) + " turned off")
     time.sleep(SLEEP_TIME)
 
