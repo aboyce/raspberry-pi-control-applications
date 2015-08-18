@@ -2,35 +2,46 @@
 #   - the 'url' to send the request
 #   - the 'door_id' that should be opened if the credentials are valid
 #   - the 'card_id' from the card that is requesting to open the door
+#   - to enable lite mode '-lite', if not present will be by defaulted to off
 # The script will;
 #   - Check the arguments and extract them the best it can, the 'url' is checked to see if it is reachable.
 #   - Send a request off to the 'url' with the 'door_id' and 'card_id', this should return True or False.
 #   - If True is returned it will send a pulse to the assigned GPIO port.
 
+# ********************************************************************************************************************
+# ********************************************************************************************************************
+# USER CHANGEABLE VARIABLES
+
+# DoorManagement.py version
+VERSION_NUMBER = '0.4'
+
+TIME_TO_OPEN_DOOR = 2  # seconds
+
+# Server door Ids that this script can control
+DOOR_ID_ONE = 1
+DOOR_ID_TWO = 2
+DOOR_ID_THREE = 3
+DOOR_ID_FOUR = 4
+
+# GPIO Ports/Doors (The GPIO ports that are to be opened for each of the above door Ids)
+DOOR_RELAY_ONE = 5
+DOOR_RELAY_TWO = 6
+DOOR_RELAY_THREE = 13
+DOOR_RELAY_FOUR = 19
+
+# ********************************************************************************************************************
+# ********************************************************************************************************************
+
 import sys
 import time
 import requests
 
-# DoorManagement.py version
-VERSION_NUMBER = '0.3'
-
-TIME_TO_OPEN_DOOR = 2  # seconds
-
-# Server door IDs
-DOOR_ID_ONE = None
-DOOR_ID_TWO = None
-DOOR_ID_THREE = None
-DOOR_ID_FOUR = None
-
-# GPIO Ports/Doors
-DOOR_RELAY_ONE = None
-DOOR_RELAY_TWO = None
-DOOR_RELAY_THREE = None
-DOOR_RELAY_FOUR = None
-
 door_to_gpio_dict = {DOOR_ID_ONE: DOOR_RELAY_ONE, DOOR_ID_TWO: DOOR_RELAY_TWO,
                      DOOR_ID_THREE: DOOR_RELAY_THREE, DOOR_ID_FOUR: DOOR_RELAY_FOUR}
 
+# When calling the scripts remotely it is often not required to have detailed logging return to the user.
+# With lite_mode it should only return a single string that the caller can then use to see if the script ran ok or not.
+# By default it will log everything, the argument '-lite' will enable lite_mode.
 lite_mode = False
 
 # string url
@@ -43,15 +54,20 @@ card_id = None
 
 # For debugging, prints the message out in the format [time] - [script(version)] - [message]
 # For consistency, 'message' should be either, 'Debug: MESSAGE', 'Info: MESSAGE', 'Warn: MESSAGE', 'Error: MESSAGE'.
-# Example; Log('Error: no values provided')
-def log(message):
-    if not lite_mode:
-        log_message = time.strftime("%H:%M:%S") + ' - DoorManagement(v' + VERSION_NUMBER + ') - ' + '[ ' + message + ' ]'
+# By default will log the message, unless 'lite mode' is enabled where only one message should be printed. However if
+#  the message is to be returned to the user you can use the bool to force that through even in lite mode.
+# Example; Log('Error: no values provided')     Example; Log('Debug: Finished Script', True)
+def log(message, log_on_lite_mode=False):
+    if not lite_mode:  # If it is not lite mode, print the full log.
+        log_message = \
+            time.strftime("%H:%M:%S") + ' - DoorManagement(v' + VERSION_NUMBER + ') - ' + '[ ' + message + ' ]'
         print(log_message)
-    return
+    else:  # If it is lite mode.
+        if log_on_lite_mode:  # Check if we are the single return string and print that.
+            print(message)
 
 
-# Tries to populate 'url', 'door_id' and 'card_id' variables.
+# Tries to populate 'url', 'door_id', 'card_id' and '-lite' variables.
 # Returns: True if it could extract values. The error message if not.
 def valid_arguments():
     length_of_args = len(sys.argv)
@@ -67,10 +83,11 @@ def valid_arguments():
 
         # Check we have all of the arguments.
         if length_of_args == 4 or length_of_args == 5:
-
+            # To detect if lite mode is to be enabled or not (see bool above).
             if sys.argv[4] == '-lite':
                 global lite_mode
                 lite_mode = True
+
             # Checking url (assume it is if it contains 'http').
             if 'http' in sys.argv[1]:
                 log('Info: url is present')
@@ -144,7 +161,7 @@ def open_door():
     import RPi.GPIO as GPIO
 
     if os.name == 'nt':
-        log('Warn: script running on a Windows OS, cannot open door directly')
+        log('Warn: script running on a Windows OS, cannot open door as no GPIO')
         return False
 
     gpio_to_open = door_to_gpio_dict.get(door_id, default=None)
@@ -177,7 +194,7 @@ def main():
         log('Info: stopping due to not being able to open the door')
         return
 
-    log('Info: finished successfully')
+    log('Finished successfully', True)
 
 
 # The Python interpreter checks that the module is running as the main program, if it is imported from another module
