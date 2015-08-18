@@ -51,20 +51,29 @@ namespace WebServerSimulator.Helpers
 
             try
             {
+                IsRunning = true;
                 Log("Server Started");
-                _listener.Prefixes.Add("http://localhost:1500/DoorManagement/");
+                _listener.Prefixes.Add("http://192.168.1.99/");
                 _listener.Start();
                 Log("Listener Started");
-                IsRunning = true;
 
                 while (_listener.IsListening)
                 {
                     Log("Now listening");
                     HttpListenerContext context = _listener.GetContext();
-                    NameValueCollection arguments = context.Request.QueryString;
 
-                    string door = arguments.Get(DOORID);
-                    string card = arguments.Get(CARDID);
+                    string door = "";
+                    string card = "";
+
+                    string rawData = System.Web.HttpUtility.UrlDecode(new StreamReader(context.Request.InputStream, context.Request.ContentEncoding).ReadToEnd());
+
+                    if (!string.IsNullOrEmpty(rawData) && rawData.Contains("&"))
+                    {
+                        string[] rawDataSplit = rawData.Split('&');
+
+                        card = rawDataSplit[0].Substring(CARDID.Length + 1); // For some reason the door_id and card_id are reversed compared the order they where sent in.
+                        door = rawDataSplit[1].Substring(DOORID.Length + 1);
+                    }
 
                     if (string.IsNullOrEmpty(door) || string.IsNullOrEmpty(card))
                     {
@@ -105,6 +114,7 @@ namespace WebServerSimulator.Helpers
             }
             catch (Exception e)
             {
+                IsRunning = false;
                 if (e.Message ==
                     "The I/O operation has been aborted because of either a thread exit or an application request")
                     Log("Stopped Listening");

@@ -18,10 +18,10 @@ VERSION_NUMBER = '0.4'
 TIME_TO_OPEN_DOOR = 2  # seconds
 
 # Server door Ids that this script can control
-DOOR_ID_ONE = 1
-DOOR_ID_TWO = 2
-DOOR_ID_THREE = 3
-DOOR_ID_FOUR = 4
+DOOR_ID_ONE = '1'
+DOOR_ID_TWO = '2'
+DOOR_ID_THREE = '3'
+DOOR_ID_FOUR = '4'
 
 # GPIO Ports/Doors (The GPIO ports that are to be opened for each of the above door Ids)
 DOOR_RELAY_ONE = 5
@@ -32,6 +32,7 @@ DOOR_RELAY_FOUR = 19
 # ********************************************************************************************************************
 # ********************************************************************************************************************
 
+import os
 import sys
 import time
 import requests
@@ -84,15 +85,16 @@ def valid_arguments():
         # Check we have all of the arguments.
         if length_of_args == 4 or length_of_args == 5:
             # To detect if lite mode is to be enabled or not (see bool above).
-            if sys.argv[4] == '-lite':
-                global lite_mode
-                lite_mode = True
+            if length_of_args == 5:
+                if sys.argv[4] == '-lite':
+                    global lite_mode
+                    lite_mode = True
 
             # Checking url (assume it is if it contains 'http').
             if 'http' in sys.argv[1]:
                 log('Info: url is present')
                 # Check to see if we get a code 200 from the url.
-                if (requests.head(sys.argv[1])).status_code == 200:
+                if os.system("ping -c 1 " + sys.argv[1][7:]) == 0:
                     log('Info: server responded')
                     global url
                     url = str(sys.argv[1])
@@ -137,10 +139,8 @@ def send_data():
 
     try:
         session = requests.Session()
-        response = session.post(
-            url=url,
-            data={'door_id': door_id, 'card_id': card_id},
-        )
+        response = session.post(url=url, data={'door_id': door_id, 'card_id': card_id})
+
         # The server should return 'True' if the request is valid and the door should be opened.
         server_response = response.text
     except:
@@ -164,7 +164,8 @@ def open_door():
         log('Warn: script running on a Windows OS, cannot open door as no GPIO')
         return False
 
-    gpio_to_open = door_to_gpio_dict.get(door_id, default=None)
+    gpio_to_open = door_to_gpio_dict.get(door_id)
+    log('Info: Door to open is ' + str(door_id) + ' on GPIO number ' + str(gpio_to_open))
 
     if gpio_to_open is None:
         log('Error: could not get GPIO for the door_id ' + door_id)
@@ -172,9 +173,9 @@ def open_door():
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(gpio_to_open, GPIO.OUT)
-    GPIO.output(gpio_to_open, GPIO.HIGH)
-    time.sleep(TIME_TO_OPEN_DOOR)
     GPIO.output(gpio_to_open, GPIO.LOW)
+    time.sleep(TIME_TO_OPEN_DOOR)
+    GPIO.output(gpio_to_open, GPIO.HIGH)
     GPIO.cleanup()
 
     return True
@@ -187,7 +188,7 @@ def main():
         return
 
     if not send_data():
-        log('Info: stopping due to being decline from server')
+        log('Info: stopping due to being declined from server')
         return
 
     if not open_door():
