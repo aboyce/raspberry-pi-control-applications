@@ -13,7 +13,7 @@
 # USER CHANGEABLE VARIABLES
 
 # DoorManagement.py version
-VERSION_NUMBER = '0.4'
+VERSION_NUMBER = '0.7'
 
 TIME_TO_OPEN_DOOR = 2  # seconds
 
@@ -32,7 +32,6 @@ DOOR_RELAY_FOUR = 19
 # ********************************************************************************************************************
 # ********************************************************************************************************************
 
-import os
 import sys
 import time
 import requests
@@ -71,6 +70,7 @@ def log(message, log_on_lite_mode=False):
 # Tries to populate 'url', 'door_id', 'card_id' and '-lite' variables.
 # Returns: True if it could extract values. The error message if not.
 def valid_arguments():
+    import subprocess
     length_of_args = len(sys.argv)
 
     # TODO: Re-write this so that they can be in any order and explicitly wrote out. e.g. -u bob.com -d 01 -c 882 -lite
@@ -93,8 +93,10 @@ def valid_arguments():
             # Checking url (assume it is if it contains 'http').
             if 'http' in sys.argv[1]:
                 log('Info: url is present')
-                # Check to see if we get a code 200 from the url.
-                if os.system("ping -c 1 " + sys.argv[1][7:]) == 0:
+                # Check to see if we can contact the url.
+                proc = subprocess.Popen(['ping', '-c', '1', sys.argv[1][7:]], stdout=subprocess.PIPE)
+                stdout, stderr = proc.communicate()
+                if proc.returncode == 0:
                     log('Info: server responded')
                     global url
                     url = str(sys.argv[1])
@@ -144,7 +146,7 @@ def send_data():
         # The server should return 'True' if the request is valid and the door should be opened.
         server_response = response.text
     except:
-        log('Error: exception caught when contacting server')
+        log('Error: exception caught when contacting server', True)
         return False
 
     log('Debug: server response = ' + server_response)
@@ -152,7 +154,7 @@ def send_data():
         log('Info: credentials valid')
         return True
     else:
-        log('Info: credentials failed')
+        log('Info: credentials failed', True)
         return False
 
 
@@ -184,18 +186,18 @@ def open_door():
 def main():
 
     if not valid_arguments():
-        log('Info: stopping due to invalid arguments')
+        log('Error: invalid arguments', True)
         return
 
     if not send_data():
-        log('Info: stopping due to being declined from server')
+        # Will '-lite' log within the method.
         return
 
     if not open_door():
-        log('Info: stopping due to not being able to open the door')
+        log('Error: not able to open the door', True)
         return
 
-    log('Finished successfully', True)
+    log('Info: Finished successfully', True)
 
 
 # The Python interpreter checks that the module is running as the main program, if it is imported from another module

@@ -137,7 +137,7 @@ namespace WebServerSimulator.Helpers
 
             App.Current.Dispatcher.Invoke((Action)delegate
             {
-                _logMessages.Add(message);
+                _logMessages.Add(string.Format("[{0}:{1}:{2}.{3}] {4}", DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond, message));
             });
         }
     }

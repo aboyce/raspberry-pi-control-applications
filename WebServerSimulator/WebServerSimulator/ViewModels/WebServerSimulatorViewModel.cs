@@ -45,7 +45,7 @@ namespace WebServerSimulator.ViewModels
 
         public void Log(string message)
         {
-            LogMessages.Add(message);
+            LogMessages.Add(string.Format("[{0}:{1}:{2}.{3}] {4}", DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond, message));
         }
     }
 }

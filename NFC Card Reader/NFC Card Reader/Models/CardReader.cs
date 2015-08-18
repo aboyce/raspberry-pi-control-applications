@@ -50,5 +50,10 @@ namespace NFC_Card_Reader.Models
             _reader.Dispose();
             _context.Dispose();
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

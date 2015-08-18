@@ -1,15 +1,16 @@
-﻿<Window x:Class="WebServerSimulator.Views.WebServerSimulator"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:Behaviours="clr-namespace:WebServerSimulator.Behaviours" x:Class="WebServerSimulator.Views.WebServerSimulator"
         Title="Web Server Simulator" Height="350" Width="559" ResizeMode="CanMinimize">
-    <Grid>
-        <Button Content="Start" Command="{Binding StartCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="Stop" Command="{Binding StopCommand}" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75"/>
-        <ListBox ItemsSource="{Binding LogMessages}" HorizontalAlignment="Left" Height="276" Margin="10,35,0,0" VerticalAlignment="Top" Width="533">
-            <i:Interaction.Behaviors>
-               
-            </i:Interaction.Behaviors>
-        </ListBox>
-    </Grid>
+	<Grid>
+		<Button Content="Start" Command="{Binding StartCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
+		<Button Content="Stop" Command="{Binding StopCommand}" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75"/>
+		<ListBox ItemsSource="{Binding LogMessages}" HorizontalAlignment="Left" Height="259" Margin="10,35,0,0" VerticalAlignment="Top" Width="517">
+			<i:Interaction.Behaviors>
+				<Behaviours:ListBoxAutoScrollBehaviour/>
+			</i:Interaction.Behaviors>
+		</ListBox>
+	</Grid>
 </Window>

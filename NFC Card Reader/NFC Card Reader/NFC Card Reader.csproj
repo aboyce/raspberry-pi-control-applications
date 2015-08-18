@@ -62,9 +62,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\MonitorCommand.cs" />
+    <Compile Include="Commands\GetStatusCommand.cs" />
+    <Compile Include="Commands\ReadCardCommand.cs" />
+    <Compile Include="Commands\InitialiseCommand.cs" />
     <Compile Include="Models\SSHController.cs" />
     <Compile Include="ViewModels\ReaderViewModel.cs" />
-    <Page Include="ReaderWindow.xaml">
+    <Page Include="Views\ReaderWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -74,7 +79,7 @@
     </Compile>
     <Compile Include="Models\CardReader.cs" />
     <Compile Include="Models\Configuration.cs" />
-    <Compile Include="ReaderWindow.xaml.cs">
+    <Compile Include="Views\ReaderWindow.xaml.cs">
       <DependentUpon>ReaderWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

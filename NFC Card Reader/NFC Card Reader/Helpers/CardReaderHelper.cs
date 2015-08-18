@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using PCSC;
 using PCSC.Iso7816;
@@ -9,12 +10,35 @@ using NFC_Card_Reader.Models;
 
 namespace NFC_Card_Reader.Helpers
 {
-    class CardReaderHelper
+    public class CardReaderHelper
     {
         private string[] _readers;
         private string[] _monitoredReaders;
         private SCardMonitor _monitor;
         private string _connectedReader = string.Empty;
+
+
+        public ObservableCollection<CardReader> GetCardReaders()
+        {
+            ObservableCollection<CardReader> cardReaders = new ObservableCollection<CardReader>();
+
+            string[] stringReaders = PopulateReaders();
+
+            foreach (string readerName in stringReaders)
+            {
+                cardReaders.Add(new CardReader(readerName));
+            }
+
+            return cardReaders;
+        }
+
+        public bool MonitorReader(string reader)
+        {
+            if (StartMonitoringSelectedReader(reader) == null)
+                return true;
+            else
+                return false;
+        }
 
         /// <summary>
         /// Tries to populate the list of readers and returns it.
