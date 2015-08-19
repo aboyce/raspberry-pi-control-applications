@@ -56,7 +56,6 @@ namespace RasPi_Controller.ViewModels
         public ICommand SaveConfigCommand { get; set; }
         public ICommand HelpCommand { get; set; }
 
-
 #endregion
 
         #region Constructor and Setup

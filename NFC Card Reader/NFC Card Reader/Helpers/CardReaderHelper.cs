@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Documents;
 using PCSC;
 using PCSC.Iso7816;
 using NFC_Card_Reader.Models;
@@ -13,10 +15,8 @@ namespace NFC_Card_Reader.Helpers
     public class CardReaderHelper
     {
         private string[] _readers;
-        private string[] _monitoredReaders;
         private SCardMonitor _monitor;
         private string _connectedReader = string.Empty;
-
 
         public ObservableCollection<CardReader> GetCardReaders()
         {
@@ -30,14 +30,6 @@ namespace NFC_Card_Reader.Helpers
             }
 
             return cardReaders;
-        }
-
-        public bool MonitorReader(string reader)
-        {
-            if (StartMonitoringSelectedReader(reader) == null)
-                return true;
-            else
-                return false;
         }
 
         /// <summary>
@@ -68,7 +60,7 @@ namespace NFC_Card_Reader.Helpers
         /// Tries to connect to the selected reader.
         /// </summary>
         /// <returns>Null if successful. The error message if not.</returns>
-        public string StartMonitoringSelectedReader(string readerName)
+        public string StartMonitoringReader(string readerName)
         {
             if (string.IsNullOrEmpty(readerName)) return "Reader name is null or empty";
             if (!_readers.Contains(readerName)) return "The reader does not exist. [Logic Error]";
@@ -99,6 +91,17 @@ namespace NFC_Card_Reader.Helpers
 
             return null;
         }
+
+        /// <summary>
+        /// Checks to see if the readerName is being monitored
+        /// </summary>
+        /// <param name="readerName">The name of the reader to check</param>
+        /// <returns>True if it being monitored. False if not.</returns>
+        public bool IsMonitoringCardReader(string readerName)
+        {
+            return _monitor != null && _monitor.ReaderNames != null && _monitor.ReaderNames.Contains(readerName);
+        }
+
 
         /// <summary>
         /// Will try to connect to the _connectedReader, see if there is a card present, and if so try to read the data.
@@ -178,25 +181,11 @@ namespace NFC_Card_Reader.Helpers
 
         private void _cardInitalised(object sender, CardStatusEventArgs e)
         {
-            string temp_message = string.Empty;
-
-            if (string.IsNullOrEmpty(_connectedReader) || _monitor == null) return;
-            if (_monitor.Monitoring)
-            {
-                _monitoredReaders = _monitor.ReaderNames;
-                string monitoredReaders = _monitor.ReaderNames.Aggregate(string.Empty, (current, reader) => current + " " + reader);
-                temp_message = string.Format("Now monitoring {0}", monitoredReaders);
-                // TODO: Update the UI
-            }
-            else
-            {
-                temp_message = "Not monitoring any card readers, won't detect that a new card is inserted.";
-            }
         }
 
         private void _cardInserted(object sender, CardStatusEventArgs e)
         {
-            ReadCard();
+            //ReadCard();
         }
 
         private void _cardRemoved(object sender, CardStatusEventArgs e)
@@ -215,9 +204,9 @@ namespace NFC_Card_Reader.Helpers
                 return cardId; // cardId will contain the error message from trying to read the card.
 
             cardId = cardId.Split('^', '^')[1];
-            Configuration c = new Configuration();
+            Configuration config = new Configuration();
 
-            return c.Populate() ? SSHControllerHelper.SendCommand(c.Address, c.Username, c.Password, c.Script, string.Format(" {0} {1} {2}", c.ServerUrl, c.DoorId, cardId))
+            return config.Populate() ? SSHControllerHelper.SendCommand(config.Address, config.Username, config.Password, config.Script, string.Format(" {0} {1} {2}", config.ServerUrl, config.DoorId, cardId))
                 : "The required credentials could not be collected from the .config file or application setting.";
         }
 
@@ -311,6 +300,9 @@ namespace NFC_Card_Reader.Helpers
 
         public void Disconnect()
         {
+            if (_monitor == null)
+                return;
+
             _monitor.Initialized -= (_cardInitalised);
             _monitor.CardInserted -= (_cardInserted);
             _monitor.CardRemoved -= (_cardRemoved);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,16 +13,24 @@ using NFC_Card_Reader.Models;
 
 namespace NFC_Card_Reader.ViewModels
 {
-    public class ReaderViewModel
+    public class ReaderViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<CardReader> CardReaders;
+        private ObservableCollection<CardReader> _cardReaders;
+        public ObservableCollection<CardReader> CardReaders {
+            get { return _cardReaders; }
+            set { _cardReaders = value; NotifyPropertyChanged("CardReaders"); } }
 
-        public ICommand InitialiseCommand;
-        public ICommand MonitorCommand;
-        public ICommand GetStatusCommand;
-        public ICommand ReadCardCommand;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public string ReaderName { get; set; }
+        public ICommand InitialiseCommand { get; set; }
+        public ICommand MonitorCommand { get; set; }
+        public ICommand GetStatusCommand { get; set; }
+        public ICommand ReadCardCommand { get; set; }
+
+        private CardReader _currentReader;
+        public CardReader CurrentReader {
+            get { return _currentReader; }
+            set { _currentReader = value; NotifyPropertyChanged("CurrentReader"); } }
 
         public CardReaderHelper ReaderHelper;
 
@@ -33,6 +42,11 @@ namespace NFC_Card_Reader.ViewModels
             MonitorCommand = new MonitorCommand(this);
             GetStatusCommand = new GetStatusCommand(this);
             ReadCardCommand = new ReadCardCommand(this);
+        }
+
+        protected void NotifyPropertyChanged(string property)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
 
         /// <summary>

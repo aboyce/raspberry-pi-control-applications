@@ -13,7 +13,7 @@
         <Grid x:Name="LeftSide">
             <Grid x:Name="RaspberryPis">
                 <Label Content="Raspberry Pis" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,56,0,0"/>
-                <ListBox ItemsSource="{Binding RaspberryPis, Mode=TwoWay}" SelectedItem="{Binding SelectedRasPi}"  HorizontalAlignment="Left" Height="47" Margin="12,87,0,0" VerticalAlignment="Top" Width="365"/>
+                <ListBox ItemsSource="{Binding RaspberryPis}" SelectedItem="{Binding SelectedRasPi}"  HorizontalAlignment="Left" Height="47" Margin="12,87,0,0" VerticalAlignment="Top" Width="365"/>
             </Grid>
             <Grid x:Name="Scripts">
                 <Label Content="Scripts" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,144,0,0"/>

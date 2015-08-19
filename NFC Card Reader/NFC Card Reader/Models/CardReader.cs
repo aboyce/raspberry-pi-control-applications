@@ -12,7 +12,7 @@ namespace NFC_Card_Reader.Models
         private SCardContext _context;
         private SCardReader _reader;
 
-        public string Name { get { return _reader.ReaderName; } set { } }
+        public string Name { get; set;}
 
 
         public CardReader() : this("Unknown") { }
@@ -21,7 +21,7 @@ namespace NFC_Card_Reader.Models
         {
             _context = new SCardContext();
             _reader = new SCardReader(_context);
-            this.Name = name;
+            Name = name;
         }
  
 

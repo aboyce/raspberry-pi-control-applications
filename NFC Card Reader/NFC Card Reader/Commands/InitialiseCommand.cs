@@ -18,11 +18,12 @@ namespace NFC_Card_Reader.Commands
 
         public override void Execute(object parameter)
         {
-            base_vm.CardReaders = base_vm.ReaderHelper.GetCardReaders();
+            // Make sure we try to clean up, there may have been a previous session.
+            base_vm.ReaderHelper.Disconnect();
 
+            base_vm.CardReaders = base_vm.ReaderHelper.GetCardReaders();
             if(base_vm.CardReaders.Count == 0)
                 base_vm.MessageToView("Error", "No card readers present");
         }
-
     }
 }

@@ -11,15 +11,5 @@ namespace RasPi_Controller.Views
             InitializeComponent();
             DataContext = new RasPiControllerWindowViewModel();
         }
-
-        private void BtnSend_Click(object sender, RoutedEventArgs e)
-        {
-        }
-        private void BtnSaveScript_Click(object sender, RoutedEventArgs e)
-        {
-        }
-        private void BtnSaveRasPi_Click(object sender, RoutedEventArgs e)
-        {
-        }
     }
 }

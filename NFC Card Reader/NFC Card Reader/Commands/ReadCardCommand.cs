@@ -13,12 +13,12 @@ namespace NFC_Card_Reader.Commands
 
         public override bool CanExecute(object parameter)
         {
-            return false;
+            return base_vm.CurrentReader != null && base_vm.ReaderHelper.IsMonitoringCardReader(base_vm.CurrentReader.Name);
         }
 
         public override void Execute(object parameter)
         {
-            //MessageBox.Show(reader.ReadCard(), "Read Card");
+            base_vm.MessageToView("Read Card", base_vm.ReaderHelper.ReadCard());
         }
     }
 }

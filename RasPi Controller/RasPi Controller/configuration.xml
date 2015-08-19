@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Configuration>
   <RaspberryPis>
-    <RaspberryPi id="Room" networkName="Adam-RasPi-Server" ipAddress="192.168.1.93" username="remote" />
-    <RaspberryPi id="Test" networkName="Test-RasPi" ipAddress="10.10.10.100" username="pi" />
+    <RaspberryPi id="RoomS" networkName="Adam-RasPi-Server" ipAddress="192.168.1.93" username="remote" />
+    <RaspberryPi id="RoomD" networkName="Adam-RasPi-Desktop" ipAddress="192.168.1.95" username="pi" />
   </RaspberryPis>
   <Scripts>
-    <Script id="Door Management" name="DoorManagement.py" description="To control the opening of doors." argumentFormat="[url] [doorId] [cardId]" />
-    <Script id="Testing" name="PowerManager.py" description="To turn on, off or reset up to two machines." argumentFormat="[S or D] [P or R or PH]" />
+    <Script id="Door Management" name="sudo python DoorManagement.py" description="To control the opening of doors." argumentFormat="[url] [doorId] [cardId] ?[-lite]" />
+    <Script id="Relay Test" name="sudo python StepThroughTest.py" description="To test the relay connection" argumentFormat="N/A" />
     <Script id="TestingTesting" name="Manage.py" description="To turn on, off or reset up to two machines." argumentFormat="[S or D] [P or R or PH]" />
   </Scripts>
 </Configuration>
