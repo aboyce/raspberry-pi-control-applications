@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Documents;
 using PCSC;
 using PCSC.Iso7816;
@@ -185,7 +186,7 @@ namespace NFC_Card_Reader.Helpers
 
         private void _cardInserted(object sender, CardStatusEventArgs e)
         {
-            //ReadCard();
+            Task.Run(() => { System.Windows.MessageBox.Show(ReadCardAndSend()); });
         }
 
         private void _cardRemoved(object sender, CardStatusEventArgs e)
