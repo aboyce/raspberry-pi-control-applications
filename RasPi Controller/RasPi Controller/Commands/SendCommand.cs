@@ -15,8 +15,14 @@ namespace RasPi_Controller.Commands
 
         public override bool CanExecute(object parameter)
         {
-            //TODO: Add checking if that be executed
-            return true;
+            if (base_vm.SelectedRasPi != null
+                && base_vm.SelectedScript != null
+                && base_vm.SelectedRasPi.Username != ""
+                && base_vm.SelectedScript.Name != ""
+                && (base_vm.SelectedRasPi.IpAddress != "" || base_vm.SelectedRasPi.NetworkName != ""))
+                return true;
+            
+            return false;
         }
 
         public override void Execute(object parameter)

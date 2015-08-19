@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using WebServerSimulator.Commands;
 using WebServerSimulator.Models;
 
 namespace WebServerSimulator.Helpers
@@ -53,7 +48,17 @@ namespace WebServerSimulator.Helpers
             {
                 IsRunning = true;
                 Log("Server Started");
-                _listener.Prefixes.Add("http://192.168.1.99/");
+
+                string prefix = ConfigurationManager.AppSettings["ServerPrefix"];
+                string ipAddress = ConfigurationManager.AppSettings["ServerAddress"];
+
+                if (string.IsNullOrEmpty(prefix))
+                    prefix = "";
+
+                if (string.IsNullOrEmpty(ipAddress))
+                    ipAddress = "127.0.0.1/";
+
+                _listener.Prefixes.Add(prefix + ipAddress);
                 _listener.Start();
                 Log("Listener Started");
 

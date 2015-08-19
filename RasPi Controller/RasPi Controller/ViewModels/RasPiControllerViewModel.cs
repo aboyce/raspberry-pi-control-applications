@@ -87,7 +87,7 @@ namespace RasPi_Controller.ViewModels
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Puts the header and message in a MessageBox.Show
