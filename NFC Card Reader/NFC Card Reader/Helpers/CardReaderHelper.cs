@@ -19,6 +19,8 @@ namespace NFC_Card_Reader.Helpers
         private SCardMonitor _monitor;
         private string _connectedReader = string.Empty;
 
+        public bool AutoSend { get; set; }
+
         public ObservableCollection<CardReader> GetCardReaders()
         {
             ObservableCollection<CardReader> cardReaders = new ObservableCollection<CardReader>();
@@ -186,7 +188,8 @@ namespace NFC_Card_Reader.Helpers
 
         private void _cardInserted(object sender, CardStatusEventArgs e)
         {
-            Task.Run(() => { System.Windows.MessageBox.Show(ReadCardAndSend()); });
+            if(AutoSend)
+                Task.Run(() => { ReadCardAndSend(); });
         }
 
         private void _cardRemoved(object sender, CardStatusEventArgs e)

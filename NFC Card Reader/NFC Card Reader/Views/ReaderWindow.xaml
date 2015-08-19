@@ -4,9 +4,10 @@
         Title="NFC Card Reader" Height="167" Width="305" Background="#FF5B5B5B" ResizeMode="NoResize">
     <Grid>
         <Button Content="Initialise" Command="{Binding InitialiseCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="59" Height="22"/>
-        <Button Content="Get Status" Command="{Binding GetStatusCommand}" HorizontalAlignment="Left" Margin="54,89,0,0" VerticalAlignment="Top" Width="75" Height="20" Grid.ColumnSpan="2"/>
+        <Button Content="Get Status" Command="{Binding GetStatusCommand}" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="75" Height="20"/>
         <ListBox ItemsSource="{Binding CardReaders}" SelectedItem="{Binding CurrentReader}" HorizontalAlignment="Left" Height="49" Margin="83,10,0,0" VerticalAlignment="Top" Width="199" Grid.ColumnSpan="2"/>
         <Button Content="Monitor" Command="{Binding MonitorCommand}" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="59" Height="22"/>
-        <Button Content="Read Card" Command="{Binding ReadCardCommand}" HorizontalAlignment="Left" Margin="153,89,0,0" VerticalAlignment="Top" Width="75" Height="20"/>
+        <Button Content="Read Card" Command="{Binding ReadCardCommand}" HorizontalAlignment="Left" Margin="90,85,0,0" VerticalAlignment="Top" Width="75" Height="20"/>
+        <CheckBox Content="Auto Send" IsChecked="{Binding AutoSend}" HorizontalAlignment="Left" Margin="207,88,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.468,0.467" Height="17"/>
     </Grid>
 </Window>

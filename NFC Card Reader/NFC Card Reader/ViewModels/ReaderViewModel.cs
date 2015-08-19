@@ -27,17 +27,21 @@ namespace NFC_Card_Reader.ViewModels
         public ICommand GetStatusCommand { get; set; }
         public ICommand ReadCardCommand { get; set; }
 
+        public CardReaderHelper ReaderHelper;
+
         private CardReader _currentReader;
         public CardReader CurrentReader {
             get { return _currentReader; }
             set { _currentReader = value; NotifyPropertyChanged("CurrentReader"); } }
 
-        public CardReaderHelper ReaderHelper;
+        private bool _autoSend;
+        public bool AutoSend { get { return _autoSend; }
+            set { _autoSend = value; if (ReaderHelper != null) ReaderHelper.AutoSend = value; NotifyPropertyChanged("AutoSend"); } } // Also let ReaderHelper know this has changed.
 
         public ReaderViewModel()
         {
             ReaderHelper = new CardReaderHelper();
-            
+
             InitialiseCommand = new InitialiseCommand(this);
             MonitorCommand = new MonitorCommand(this);
             GetStatusCommand = new GetStatusCommand(this);
