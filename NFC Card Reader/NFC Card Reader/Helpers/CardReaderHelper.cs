@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Documents;
+using BYC.Helpers;
 using PCSC;
 using PCSC.Iso7816;
 using NFC_Card_Reader.Models;
