@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RasPi_Controller</RootNamespace>
     <AssemblyName>RasPi Controller</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Helpers">
+      <HintPath>C:\Libraries\Helpers\Release\Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="Renci.SshNet, Version=2014.4.6.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libraries\Renci.SshNet.dll</HintPath>
@@ -71,15 +75,10 @@
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\LoadConfigCommand.cs" />
     <Compile Include="Commands\SendCommand.cs" />
-    <Compile Include="Extension Methods\ExtensionMethods.cs" />
-    <Compile Include="Helpers\NetworkingHelper.cs" />
-    <Compile Include="Helpers\SecureStringHelper.cs" />
     <Compile Include="Models\RaspberryPi.cs" />
     <Compile Include="Models\Script.cs" />
-    <Compile Include="Models\SSHController.cs" />
     <Compile Include="ViewModels\RasPiControllerViewModel.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
-    <Compile Include="Helpers\SSHControllerHelper.cs" />
     <Page Include="Views\RasPiControllerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
