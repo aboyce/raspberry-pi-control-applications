@@ -69,7 +69,7 @@
     <Compile Include="Commands\StopCommand.cs" />
     <Compile Include="Commands\StartCommand.cs" />
     <Compile Include="Helpers\DbSimulatorHelper.cs" />
-    <Compile Include="Helpers\Server.cs" />
+    <Compile Include="Core\Server.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\DbSimulator.cs" />
     <Compile Include="Models\Door.cs" />

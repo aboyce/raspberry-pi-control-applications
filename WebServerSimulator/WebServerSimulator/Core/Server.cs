@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using WebServerSimulator.Models;
 
-namespace WebServerSimulator.Helpers
+namespace WebServerSimulator.Core
 {
     public class Server
     {

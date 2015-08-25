@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WebServerSimulator.Commands;
+using WebServerSimulator.Core;
 using WebServerSimulator.Helpers;
 using WebServerSimulator.Models;
 
