@@ -1,12 +1,13 @@
-# ************************************************************************************************************************************
-# * If you are using arguments, they must be in the format [SYSTEM NAME ('S' or 'D')] and then [BUTTON TO PRESS('P' or 'R' or 'PH']  *
-# ************************************************************************************************************************************
+# ********************************************************************************************************************
+# * If you are using arguments, they must be in the format                                                           *
+# * [SYSTEM NAME ('S' or 'D')] and then [BUTTON TO PRESS('P' or 'R' or 'PH']                                         *
+# ********************************************************************************************************************
 
 import sys
 import time
 
 # PowerManager.py version
-VERSION_NUMBER = "1.1"
+VERSION_NUMBER = "1.2"
 
 BUTTON_PRESS_TIME = 1  # seconds
 BUTTON_HOLD_TIME = 5  # seconds
@@ -32,7 +33,7 @@ def log(message):
 
 def valid_arguments():
     log('Debug: valid_arguments')
-    if len(sys.argv > 1):
+    if len(sys.argv) > 1:
         if sys.argv[1] == 'S' or sys.argv[1] == 'D':
             global machine_to_control
             machine_to_control = sys.argv[1]
@@ -50,23 +51,23 @@ def user_interface():  # Will return False if the user wants to exit the applica
     log('Debug: user_interface')
     message_to_ask = "What do you want to control: "
 
-    print "\033[1m" + "Power Manager v" + VERSION_NUMBER + "\033[0m"
-    print ""
+    print("\033[1m" + "Power Manager v" + VERSION_NUMBER + "\033[0m")
+    print("")
 
     while True:
-        print "For Server -> " + "\033[1m" + "S" + "\033[0m"
-        print "For Desktop -> " + "\033[1m" + "D" + "\033[0m"
-        print "(To exit -> " + "\033[1m" + "exit" + "\033[0m" + ")"
+        print("For Server -> " + "\033[1m" + "S" + "\033[0m")
+        print("For Desktop -> " + "\033[1m" + "D" + "\033[0m")
+        print("(To exit -> " + "\033[1m" + "exit" + "\033[0m" + ")")
         global machine_to_control
         machine_to_control = raw_input(message_to_ask)
         if machine_to_control == "S" or machine_to_control == "D":
             break
         elif machine_to_control == "exit":
             return False
-        print ""
-        print "Please enter a correct value!"
-        print ""
-    print ""
+        print("")
+        print( "Please enter a correct value!")
+        print("")
+    print("")
 
     if machine_to_control == "S":
         message_to_ask = "What button on the Server do you want to press: "
@@ -74,20 +75,20 @@ def user_interface():  # Will return False if the user wants to exit the applica
         message_to_ask = "What button on the Server do you want to press: "
 
     while True:
-        print "For Power -> " + "\033[1m" + "P" + "\033[0m"
-        print "For Reset -> " + "\033[1m" + "R" + "\033[0m"
-        print "For Power Hold -> " + "\033[1m" + "PH" + "\033[0m"
-        print "(To exit -> " + "\033[1m" + "exit" + "\033[0m" + ")"
+        print("For Power -> " + "\033[1m" + "P" + "\033[0m")
+        print("For Reset -> " + "\033[1m" + "R" + "\033[0m")
+        print("For Power Hold -> " + "\033[1m" + "PH" + "\033[0m")
+        print("(To exit -> " + "\033[1m" + "exit" + "\033[0m" + ")")
         global button_to_press
         button_to_press = raw_input(message_to_ask)
         if button_to_press == "P" or button_to_press == "R" or button_to_press == "PH":
             break
         elif button_to_press == "exit":
             return False
-        print ""
-        print "Please enter a correct value!"
-        print ""
-    print ""
+        print("")
+        print("Please enter a correct value!")
+        print("")
+    print("")
 
     return True
 
