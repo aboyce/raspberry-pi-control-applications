@@ -1,7 +1,7 @@
-# The script should be ran with arguments (in the correct order), they should be;
-#   - the 'url' to send the request
-#   - the 'door_id' that should be opened if the credentials are valid
-#   - the 'card_id' from the card that is requesting to open the door
+# The script should be ran with arguments, they should be;
+#   - the '-u' [url] to send the request
+#   - the '-d' [door id] that should be opened if the credentials are valid
+#   - the '-c' [card id] from the card that is requesting to open the door
 #   - to enable lite mode '-lite', if not present will be by defaulted to off
 # The script will;
 #   - Check the arguments and extract them the best it can, the 'url' is checked to see if it is reachable.
@@ -13,7 +13,7 @@
 # USER CHANGEABLE VARIABLES
 
 # DoorManagement.py version
-VERSION_NUMBER = '0.7'
+VERSION_NUMBER = '0.8'
 
 TIME_TO_OPEN_DOOR = 2  # seconds
 
@@ -63,76 +63,97 @@ def log(message, log_on_lite_mode=False):
             time.strftime("%H:%M:%S") + ' - DoorManagement(v' + VERSION_NUMBER + ') - ' + '[ ' + message + ' ]'
         print(log_message)
     else:  # If it is lite mode.
-        if log_on_lite_mode:  # Check if we are the single return string and print that.
+        if log_on_lite_mode:  # Check if we are overriding it.
             print(message)
 
 
 # Tries to populate 'url', 'door_id', 'card_id' and '-lite' variables.
-# Returns: True if it could extract values. The error message if not.
+# Returns: True if it could extract values. False if not.
 def valid_arguments():
-    import subprocess
-    length_of_args = len(sys.argv)
 
-    # TODO: Re-write this so that they can be in any order and explicitly wrote out. e.g. -u bob.com -d 01 -c 882 -lite
+    length_of_args = len(sys.argv)  # Just to stop calling len() repeatedly.
 
-    # The args[0] is the file path.
-    if length_of_args > 1:
-        if sys.argv[1] == 'help':
-            log('REQUIRED ARGS (u d c): \'url\' \'door_id\' \'card_id\'')
-            log('Info: Requested help')
-            return False
+    if length_of_args > 1:  # args[0] is the file path so will always be there.
+        is_value = None  # Used to distinguish if an unknown value is a part of a pair (i.e. -u and 8.8.8.8).
 
-        # Check we have all of the arguments.
-        if length_of_args == 4 or length_of_args == 5:
-            # To detect if lite mode is to be enabled or not (see bool above).
-            if length_of_args == 5:
-                if sys.argv[4] == '-lite':
-                    global lite_mode
-                    lite_mode = True
+        # To detect lite mode, we have to do a separate pass, as it could be at the end of the arguments and we may
+        #   have already done some logging before reaching the -lite.
+        for arg_index in range(length_of_args):  # Work our way through all of the arguments.
+            if sys.argv[arg_index] == '-lite':  # Detect if it is lite mode
+                global lite_mode
+                lite_mode = True
+                break  # As soon as we reach it, exit the loop as that is all we needed.
 
-            # Checking url (assume it is if it contains 'http').
-            if 'http' in sys.argv[1]:
-                log('Info: url is present')
-                # Check to see if we can contact the url.
-                proc = subprocess.Popen(['ping', '-c', '1', sys.argv[1][7:]], stdout=subprocess.PIPE)
-                stdout, stderr = proc.communicate()
-                if proc.returncode == 0:
-                    log('Info: server responded')
-                    global url
-                    url = str(sys.argv[1])
-                    log('Info: url = ' + url)
+        for arg_index in range(length_of_args):  # Work our way through all of the arguments, again...
+
+            if arg_index == 0:  # We don't need to try the first argument as it is the file path, so move on.
+                continue
+
+            if sys.argv[arg_index] == 'help':  # If the user requested help, just log it and no point continuing.
+                log('REQUIRED ARGS (-u -d -c): \'url\' \'door_id\' \'card_id\'')
+                log('Info: Requested help')
+                return False
+
+            elif sys.argv[arg_index] == '-u':  # Try to get the url.
+                if (arg_index + 1) < length_of_args:  # Prevent an out of bounds error, in case there is no value.
+                    log('Info: url is present')
+                    # Check to see if we can contact the url.
+                    import subprocess
+                    proc = subprocess.Popen(['ping', '-c', '1', sys.argv[arg_index + 1]], stdout=subprocess.PIPE)
+                    stdout, stderr = proc.communicate()
+                    if proc.returncode == 0:
+                        log('Info: server responded')
+                        global url
+                        url = str(sys.argv[arg_index + 1])
+                        log('Info: url = ' + url)
+                        is_value = arg_index + 1  # So that we know the next value is the one we have just used.
+                        continue  # We have the value, there is no point continuing with this pass.
+                    else:
+                        log('Error: the server is unavailable')
+                        return False
                 else:
-                    log('Error: the server is unavailable')
+                    log('Error: detected the url but the value is out of the bounds of the array')
                     return False
-            else:
-                log('Error: the url is not present, please use full address (http://...)')
-                return False
 
-            # Checking door_id (assume it is there if it is an int)
-            if sys.argv[2].isdigit():
-                log('Info: door_id is present')
-                global door_id
-                door_id = sys.argv[2]
-                log('Info: door_id = ' + door_id)
-                if door_id not in door_to_gpio_dict:
-                    log('Error: the door_id ' + door_id + ' is not managed by this device')
+            elif sys.argv[arg_index] == '-d':  # Try to get the door_id.
+                if (arg_index + 1) < length_of_args:  # Prevent an out of bounds error, in case there is no value.
+                    log('Info: door_id is present')
+                    global door_id
+                    door_id = sys.argv[arg_index + 1]
+                    log('Info: door_id = ' + door_id)
+                    if door_id not in door_to_gpio_dict:  # See if the door_id is one we can actually open.
+                        log('Error: the door_id ' + door_id + ' is not managed by this device')
+                        return False
+                    is_value = arg_index + 1  # So that we know the next value is the one we have just used.
+                    continue  # We have the value, there is no point continuing with this pass.
+                else:
+                    log('Error: detected the door_id but the value is out of the bounds of the array')
                     return False
-            else:
-                log('Error: the door_id is not an int')
-                return False
 
-            # Checking card_id (assume it is there if it is present, unsure on the Id format currently).
-            if sys.argv[3] != "":  # TODO: Find a better way of doing this, currently there should always be a value
-                log('Info: card_id is present')
-                global card_id
-                card_id = sys.argv[3]
-                log('Info: card_id = ' + card_id)
+            elif sys.argv[arg_index] == '-c':  # Try to get the card_id
+                if (arg_index + 1) < length_of_args:   # Prevent an out of bounds error, in case there is no value.
+                    log('Info: card_id is present')
+                    global card_id
+                    card_id = sys.argv[arg_index + 1]
+                    log('Info: card_id = ' + card_id)
+                    is_value = arg_index + 1  # So that we know the next value is the one we have just used.
+                    continue  # We have the value, there is no point continuing with this pass.
+                else:
+                    log('Error: detected the card_id but the value is out of the bounds of the array')
+                    return False
+
             else:
-                log('Error: the card_id is not present')
-                return False
-        else:
-            log('Error: please provide correct number of arguments')
-            return False
+                if arg_index is not is_value and sys.argv[arg_index] != '-lite':
+                    log('Error: unknown variable ' + str(sys.argv[arg_index]))
+                    return False
+    else:
+        log('Error: no arguments provided')
+        return False
+
+    if url is None or door_id is None or card_id is None:
+        log('Error: Not all of the required arguments have been provided')
+        return False
+
     return True
 
 
@@ -189,13 +210,13 @@ def main():
         log('Error: invalid arguments', True)
         return
 
-    if not send_data():
+    #if not send_data():
         # Will '-lite' log within the method.
-        return
+        #return
 
-    if not open_door():
-        log('Error: not able to open the door', True)
-        return
+    #if not open_door():
+        #log('Error: not able to open the door', True)
+        #return
 
     log('Info: Finished successfully', True)
 

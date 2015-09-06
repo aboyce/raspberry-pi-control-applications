@@ -7,7 +7,7 @@
 VERSION_NUMBER = "0.1"
 
 # The GPIO pin that will power the fan.
-FAN_GPIO_PIN = 5
+FAN_GPIO_PIN = 18
 
 
 # For debugging, prints the message out in the format [time] - [script(version)] - [message]
@@ -47,23 +47,19 @@ def main():
 
     # We have a result from the arguments, lets do it.
     import RPi.GPIO as GPIO
+    GPIO.setwarnings(False)  # Not ideal, but the only way I am able to leave the fan on, by not cleaning up the GPIO...
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(FAN_GPIO_PIN, GPIO.OUT)
-
-    import time
 
     if turn_on:
         log('Info: Fan on GPIO pin: ' + str(FAN_GPIO_PIN))
         log('Info: Turning fan on')
-        GPIO.output(FAN_GPIO_PIN, GPIO.HIGH)
-        time.sleep(3)
+        GPIO.output(FAN_GPIO_PIN, GPIO.LOW)
 
     elif not turn_on:
         log('Info: Fan on GPIO pin: ' + str(FAN_GPIO_PIN))
         log('Info: Turning fan off')
-        GPIO.output(FAN_GPIO_PIN, GPIO.LOW)
-        time.sleep(3)
-    GPIO.cleanup()
+        GPIO.output(FAN_GPIO_PIN, GPIO.HIGH)
 
 
 if __name__ == "__main__":
