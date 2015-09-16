@@ -211,7 +211,7 @@ namespace NFC_Card_Reader.Helpers
             cardId = cardId.Split('^', '^')[1];
             Configuration config = new Configuration();
 
-            return config.Populate() ? SSHControllerHelper.SendCommand(config.Address, config.Username, config.Password, config.Script, string.Format(" {0} {1} {2}", config.ServerUrl, config.DoorId, cardId))
+            return config.Populate() ? SSHControllerHelper.SendCommand(config.Address, config.Username, config.Password, config.Script, string.Format("-u {0} -d {1} -c {2}", config.ServerUrl, config.DoorId, cardId))
                 : "The required credentials could not be collected from the .config file or application setting.";
         }
 

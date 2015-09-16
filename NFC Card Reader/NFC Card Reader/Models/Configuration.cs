@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using NFC_Card_Reader.Properties;
 
 namespace NFC_Card_Reader
@@ -41,7 +42,7 @@ namespace NFC_Card_Reader
 
                 if (!string.IsNullOrEmpty(scriptPrefix))
                 {
-                    Script = scriptPrefix + script;
+                    Script = $"{scriptPrefix} {script}";
                 }
                 else
                 {

@@ -13,7 +13,7 @@
 # USER CHANGEABLE VARIABLES
 
 # DoorManagement.py version
-VERSION_NUMBER = '0.8'
+VERSION_NUMBER = '0.9'
 
 TIME_TO_OPEN_DOOR = 2  # seconds
 
@@ -161,8 +161,9 @@ def send_data():
     log('Debug: send_data(' + str(url) + ', ' + str(door_id) + ', ' + str(card_id) + ')')
 
     try:
+        server_url = 'http://' + url + '/'
         session = requests.Session()
-        response = session.post(url=url, data={'door_id': door_id, 'card_id': card_id})
+        response = session.post(url=server_url, data={'door_id': door_id, 'card_id': card_id})
 
         # The server should return 'True' if the request is valid and the door should be opened.
         server_response = response.text
@@ -210,13 +211,13 @@ def main():
         log('Error: invalid arguments', True)
         return
 
-    #if not send_data():
-        # Will '-lite' log within the method.
-        #return
+    if not send_data():
+        # Will have '-lite' logged within the method.
+        return
 
-    #if not open_door():
-        #log('Error: not able to open the door', True)
-        #return
+    if not open_door():
+        log('Error: not able to open the door', True)
+        return
 
     log('Info: Finished successfully', True)
 
