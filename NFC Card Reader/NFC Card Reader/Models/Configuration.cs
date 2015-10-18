@@ -27,7 +27,7 @@ namespace NFC_Card_Reader
         {
             string address = ConfigurationManager.AppSettings["SSH_address"];
             string username = ConfigurationManager.AppSettings["SSH_username"];
-            string password = ConfigurationManager.AppSettings["SSH_password"];
+            string password = ConfigurationManager.AppSettings["SSH_identification"];
             string script = ConfigurationManager.AppSettings["SSH_script"];
             string scriptPrefix = ConfigurationManager.AppSettings["SSH_script_prefix"];
             string serverUrl = ConfigurationManager.AppSettings["SSH_server_url"];
