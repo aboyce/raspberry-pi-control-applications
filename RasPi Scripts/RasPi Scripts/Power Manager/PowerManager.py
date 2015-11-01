@@ -7,7 +7,7 @@ import sys
 import time
 
 # PowerManager.py version
-VERSION_NUMBER = "1.2"
+VERSION_NUMBER = "1.3"
 
 BUTTON_PRESS_TIME = 1  # seconds
 BUTTON_HOLD_TIME = 5  # seconds
@@ -95,7 +95,7 @@ def user_interface():  # Will return False if the user wants to exit the applica
 
 def press_button():
     log('Debug: press_button')
-    import Rpi.GPIO as GPIO
+    import RPi.GPIO as GPIO
 
     GPIO.setmode(GPIO.BOARD)
 
@@ -125,12 +125,7 @@ def press_button():
                 time.sleep(BUTTON_HOLD_TIME)
                 GPIO.output(SERVER_POWER, False)
                 log('Info: button released')
-        else:
-            log('Error: machine variables not set correctly')
-            GPIO.cleanup()
-            return
-
-        if machine_to_control == "D":
+        elif machine_to_control == "D":
             if button_to_press == "P":  # Desktop Power
                 GPIO.output(DESKTOP_POWER, True)
                 log('Info: pressing desktop power button')
@@ -152,10 +147,11 @@ def press_button():
         else:
             log('Error: desktop variables not set correctly')
             GPIO.cleanup()
-            return
+            return False
     # TODO: catch and log the error.
     finally:
         GPIO.cleanup()
+        return True
 
 
 def main():
