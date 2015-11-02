@@ -7,14 +7,14 @@ import sys
 import time
 
 # PowerManager.py version
-VERSION_NUMBER = "1.3"
+VERSION_NUMBER = "1.4"
 
 BUTTON_PRESS_TIME = 1  # seconds
 BUTTON_HOLD_TIME = 5  # seconds
 
 # GPIO Ports
-SERVER_POWER = 11
-SERVER_RESET = 15
+SERVER_POWER = 5
+SERVER_RESET = 6
 DESKTOP_POWER = 12
 DESKTOP_RESET = 16
 
@@ -97,7 +97,7 @@ def press_button():
     log('Debug: press_button')
     import RPi.GPIO as GPIO
 
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
 
     GPIO.setup(SERVER_POWER, GPIO.OUT)
     GPIO.setup(SERVER_RESET, GPIO.OUT)
